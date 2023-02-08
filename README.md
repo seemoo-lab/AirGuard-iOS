@@ -67,8 +67,9 @@ Please also change the App Group names accordingly. This can be done editing the
 ## Contact  
 
 We are not able to offer full support for this app. The best way to get things solved is to [start a discussion](https://github.com/seemoo-lab/AirGuard-iOS/discussions) in this repository. 
-
 GitHub issues are closed. Please start a discussion or submit a pull request to the project. 
+
+If you need to get into direct contact, please send an email. You can find our contact details on our [seemoo.de](https://www.seemoo.tu-darmstadt.de/team/aheinrich/).
 
 ### Disclaimer
 AirTag, FindMy and iOS are trademarks of Apple Inc.
