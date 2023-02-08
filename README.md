@@ -29,12 +29,12 @@ Our *locate tracker* option allows you to scan for specific trackers and to find
 
 
 ## Get the app 
-The app is available on the [App Store](https://apps.apple.com/app/id1659427454). 
+It is available on the [App Store](https://apps.apple.com/app/id1659427454). 
 
 <!-- You can may also join our [TestFlight Beta]() -->
 
 <a href='https://apps.apple.com/app/id1659427454' target="_blank">
-  <img alt='Get it on Google Play' src='https://developer.apple.com/app-store/marketing/guidelines/images/badge-example-preferred_2x.png' height="80"/>
+  <img alt='Download on the App Store' src='https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg' height="50"/>
 </a>
 
 ## Details 
