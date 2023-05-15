@@ -1,0 +1,16 @@
+/* 
+  InfoPlist.strings
+  AirGuard
+
+  Created by Leon Böttger on 23.08.22.
+  
+*/
+
+
+NSLocationAlwaysUsageDescription = "Bitte wähle „Immer erlauben“ aus, damit die Hintergrund-Suche ordnungsgemäß funktioniert";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Bitte wähle „Immer erlauben“ aus, damit die Hintergrund-Suche ordnungsgemäß funktioniert";
+NSLocationWhenInUseUsageDescription = "Bitte wähle „Beim Verwenden der App“ aus, damit die Hintergrund-Suche ordnungsgemäß funktioniert";
+
+NSBluetoothAlwaysUsageDescription = "Um nach Trackern suchen zu können, musst du den Bluetooth-Zugriff erlauben.";
+
+NFCReaderUsageDescription = "Wir benötigen Zugriff auf NFC, um den NFC-Chip auslesen zu können, welcher in manchen Trackern verbaut ist.";

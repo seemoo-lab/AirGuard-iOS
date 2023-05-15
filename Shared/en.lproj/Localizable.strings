@@ -1,0 +1,370 @@
+/* 
+  Localizable.strings
+  AirGuard
+
+  Created by Leon Böttger on 11.06.22.
+  
+*/
+
+"unknown_device" = "Unknown";
+"find_my_device" = "Find My Device";
+
+"manual_scan" = "Manual Scan";
+"scan" = "Scan";
+"manual_scan_description" = "Scan for surrounding AirTags, SmartTags, Tiles and more!";
+"manual_scanning_wait" = "A full scan can still take %@.";
+
+"background_scan" = "Background Scan";
+"background_scan_description" = "Get a notification if a tracker might track you!";
+
+"respect_data" = "We respect your data";
+"respect_data_description" = "Developed by researchers at Technical University of Darmstadt without commercial interests.";
+
+"skip_background_scanning" = "Skip and Disable Background Scanning";
+
+"bluetooth_access" = "Bluetooth Access";
+"bluetooth_access_description" = "Trackers use Bluetooth for communication. Please allow Bluetooth access so AirGuard can detect trackers around you.";
+
+"notification_access" = "Notification Access";
+"notification_access_description" = "To receive a notification if you might have been tracked, you need to enable notifications for AirGuard.";
+
+"location_access" = "Location Access";
+"location_access_description" = "We use the location of your device to determine if a tracker is actually following you. All location data stay on your device. Please tap \"Continue\" and select \"Allow While Using App\". Make sure \"Precise\" is turned on.";
+
+"background_location" = "Background Location";
+"background_location_description" = "To be able to use the location in the background as well, we need your permission again. Please tap \"Continue\" and make sure that location access is set to \"Change to Always Allow\".";
+
+"our_study" = "Our Study";
+"our_study_description" = "This app was developed by researchers at the Technical University of Darmstadt. With our study, we want to find out how many people are affected by malicious tracking attempts.
+        
+Trackers are for example the Apple AirTag, Samsung SmartTag and Tile Mate. We want to evaluate how well we can protect people from being tracked with our app.
+
+You can use the app without participating in the study. If you participate, the following conditions apply:
+
+**Data collected**
+• Information about the devices found, such as the type of device, signal strength, and date and time.
+• We log when the app sends you a notification, the date and time of it
+
+Information shared voluntarily
+• Age, gender and location (country, state)
+• Locations where you found a tracker.
+
+**Duration of the study**
+• As long as you have installed the app and want to participate in the study.
+• You can stop participating at any time in the settings.
+
+**Deletion of data**
+You can request deletion of your data by email. To do so, they need to copy your ID for identification from the app and provide it to us. We can then delete the data set associated with you.
+
+**Data processing**
+All data is treated confidentially and stored on servers of the TU Darmstadt. No other persons outside of SEEMOO at TU Darmstadt will have access. An identification of the individual participants is not possible. There are no risks associated with participation. The data processing of this study is carried out according to the data protection regulations of the German Data Protection Regulation (DSGVO) and the Hessian Data Protection and Freedom of Information Act (HDSIG). The data will be used exclusively for the purposes described in the informed consent form.
+
+If you participate in the study, you confirm that you are older than 18 years of age and have read this consent form.
+
+**Contact details:**
+Alexander Heinrich
+(responsible for implementation and data processing)
+Email: aheinrich@seemoo.tu-darmstadt.de";
+
+"age_confirmation" = "I am 18 years or older.";
+
+"delete_study_data" = "Request Deletion of Study Data";
+"deletion_failed" = "Deletion failed";
+"deletion_failed_message" = "The request failed, please try again later.";
+
+
+"participate_study" = "Participate in Study";
+"dont_participate_study" = "Don’t Participate in Study";
+
+"all_done" = "All done!";
+"all_done_description" = "Important: Background scanning only works with Samsung SmartTags and Tile trackers. AirTag protection is already handled by Apple's pre-installed \"Find My\" app.
+
+For technical reasons, not all features are available for every tracker type. For example, the determination if trackers are separated from their owners is only available for SmartTags.";
+
+"we_detected_X_trackers_around_you" = "We detected %@ %@ around you so far.";
+"tracker_singular" = "tracker";
+"tracker_plural" = "trackers";
+
+"first_seen" = "First Seen";
+"last_seen" = "Last seen";
+"tracker_locations" = "Tracker Locations";
+
+"general" = "General";
+"study_settings" = "Study Participation";
+"ignore_trackers_footer" = "Ignoring trackers will stop notifications in the background.";
+"ignore_this_tracker" = "Ignore Tracker";
+"ignore_every" = "Ignore Every";
+"connecting_in_progress" = "Connecting...";
+"playing_in_progress" = "Playing...";
+"play_sound" = "Play Sound";
+
+"more" = "More";
+"more_trackerdetailview_description" = "Learn more, e.g. how to disable the tracker.";
+"website_manufacturer" = "Manufacturer's Website";
+"scan_nfc" = "Information About Owner";
+
+"accuracy" = "Accuracy";
+"background_scanning" = "Background Scanning";
+
+"manage_ignored_devices" = "Manage Ignored Devices";
+"ignored_devices" = "Ignored Devices";
+"device_types" = "Device Types";
+"ignore_type_footer" = "If you disable a device type above, you will no longer receive notifications for any device of this type.";
+"devices" = "Devices";
+
+"seen_x_times_last" = "Seen %@x, last: %@";
+
+"no_trackers_detected_yet" = "We did not detect any trackers following you yet. You are safe.";
+"no_device_detected_yet" = "We did not discover any trackers in the past. Check back later.";
+
+"info" = "Info";
+"privacy_policy" = "Privacy Policy";
+
+"no_bluetooth_access" = "No Bluetooth Access";
+"no_bluetooth_access_description" = "You need to allow AirGuard to access Bluetooth in \"Settings\".";
+
+"bluetooth_off" = "Bluetooth is off";
+"bluetooth_off_description" = "Bluetooth needs to be turned on to use AirGuard.";
+
+"playback_failed" = "Playback Failed!";
+"playback_failed_description" = "The tracker does not allow playback at the moment. This usually means that this tracker is connected to its owner. Thus, it is unlikely that this tracker is actually tracking you.";
+
+"couldnt_connect" = "Couldn't connect!";
+"couldnt_connect_description" = "Your device could not connect to this tracker. This usually means that the tracker is not in range. Move around and try again.";
+
+
+"background_scanning_paused" = "Background scanning paused";
+"background_scanning_paused_description" = "Enable Bluetooth and tap here to resume background scanning.";
+
+"background_location_paused" = "No Location Access";
+"background_location_paused_description" = "You need to set location access to \"Always\" and \"Precise\" for background scanning to work correctly.";
+
+"tracker_follows_you" = "A tracker might follow you!";
+"update_tracker_observing" = "Observed Tracker Update";
+"observed_tracker_not_found" = "Your observed tracker \"%@\" was not found anymore. Tap to mark notifications as false alarms.";
+"tracker_follows_you_description" = "\"%@\" was detected %@ and is still nearby! Tap to see more.";
+"tracker_still_follows_you_description" = "\"%@\" is still nearby! Tap to see more.";
+
+"observe_tracker" = "Observe Tracker";
+"off" = "Off";
+"start_observation" = "Start Observation";
+"observe_tracker_description" = "If you are not sure if this tracker follows you, you can manually observe it.\n\nIn one hour, AirGuard will search for this tracker and deliver a notification immediately, even if you did not move with this tracker. If the tracker is not around anymore, you will receive a notification about that as well.";
+"feature_unavailable" = "Feature Unavailable";
+"observing_unavailable_description" = "Enable background scanning and disable 'Ignore This Tracker' to observe this tracker.";
+
+"mark_false_alarm" = "Mark as False Alarm";
+"unmark_false_alarm" = "Unmark as False Alarm";
+"false_alarm_description" = "By marking notifications as false alarms, you help improving AirGuard.";
+
+"nfc_description" = "Hold the %@ to the top back of your iPhone.";
+
+"now" = "just now";
+
+"home" = "Home";
+"done" = "Done";
+"settings" = "Settings";
+"welcome_to" = "Welcome to";
+"continue" = "Continue";
+
+"notifications" = "Notifications";
+
+"security_level" = "Security Level";
+"low" = "Low";
+"security_level_low_description" = "Using the low security level will delay notifications longer. You shouldn't get many false alarms with this setting, but it's also possible that you won't receive a notification for a tracker which actually follows you.";
+"normal" = "Normal";
+"security_level_normal_description" = "The normal security level provides a good compromise between too many false notifications and fast detection speed of trackers following you.";
+"high" = "High";
+"security_level_high_description" = "Using the high security level will send notifications faster. You will receive notifications for trackers which follow you very fast - but you might also get a lot of false alarms with this setting.";
+
+"information_and_contact" = "Information & Contact";
+"contact_developer" = "Contact Us";
+"credits" = "Credits";
+"developer" = "Developer";
+"maintainer" = "Maintainer";
+"copyright" = "Copyright";
+"information" = "Information";
+"airguard_ios" = "AirGuard for iOS";
+"version" = "Version";
+"copyright_text" = "Image sources:
+
+\"How does AirGuard work\" header: https://www.freepik.com/vectors/archive - Archive vector created by pch.vector - www.freepik.com
+
+\"Find Help\" header: [Image by vectorjuice on Freepik](https://www.freepik.com/free-vector/website-faq-section-user-help-desk-customer-support-frequently-asked-questions-problem-solution-quiz-game-confused-man-cartoon-character_11667041.htm#page=2&query=question%20pct%20vector&position=29&from_view=search&track=ais)
+
+\"If you received a notification\" header: https://www.freepik.com/vectors/tracking - Tracking vector created by pch.vector - www.freepik.com
+
+\"Limitations of this app\" header: https://www.freepik.com/vectors/lazy - Lazy vector created by pch.vector - www.freepik.com
+
+\"Known Trackers\" header: [Image by vectorjuice on Freepik](https://www.freepik.com/free-vector/internet-order-delivery-tracking-gps-navigator-service-website-flat-design-element-pointer-magnifier-map-route-online-planning-path-finding-concept-illustration_11667173.htm)
+";
+
+"tracker_history" = "Tracker History";
+"older_trackers" = "Older Trackers";
+
+"survey_link" = "https://survey.seemoo.tu-darmstadt.de/index.php/117478?G06Q39=AirGuardAppiOS&newtest=Y&lang=en";
+
+"no_location_access" = "No Location Access";
+"no_location_access_description" = "AirGuard can't access your location in the background. Tap to allow location access.";
+"featured" = "Featured";
+
+"nearby" = "Nearby";
+"no_connection" = "Currently Not in Range";
+"owner_connected" = "Connected to Owner in Last 15m";
+"owner_disconnected" = "Separated From Owner";
+"unknown_connection_status" = "Unknown Connection Status";
+
+"locate_tracker" = "Locate Tracker";
+"trying_connection" = "No signal. Connecting...";
+"precision_finding_hint" = "Move slowly and try to maximize the signal strength to find the tracker.";
+"close_stop_searching" = "Close and Stop Searching";
+
+"no_risk" = "No Risk";
+"medium_risk" = "Medium Risk";
+"high_risk" = "High Risk";
+"unknown_risk" = "Unknown Risk";
+
+"background_scanning_disabled" = "Background scanning is disabled.";
+"x_potential_trackers_detected" = "%@ %@ of potential trackers in the last %@ days.";
+"alert_singular" = "alert";
+"alert_plural" = "alerts";
+"no" = "No";
+
+"knowledge" = "Knowledge";
+
+
+"safe_trackers" = "Safe Trackers";
+"safe_trackers_header" = "What are Safe Trackers?";
+"safe_trackers_description" = "
+Safe trackers are devices which probably do not follow you.
+
+We consider two types of trackers as safe. Trackers which were ignored explicitly and trackers which are connected to their owners.
+
+The latter cannot be used to track your location. Please note that the connection status can currently only be determined for SmartTags.";
+
+
+"article_info" = "By %@ • %@ min read";
+"more_articles" = "More Articles";
+
+"map_unavailable_ignored" = "The map is unavailable because the tracker is ignored.";
+"map_unavailable_no_locations" = "The map is unavailable because no locations have been found for this tracker.";
+
+
+"survey_header" = "We’re Doing a Survey";
+"survey_subheader" = "Your help is required. We want to analyse various aspects of location tracking.";
+
+"article_howitworks_header" = "How Does AirGuard Work?";
+"article_howitworks_subheader" = "Learn more about how AirGuard protects you from malicious trackers.";
+"article_howitworks_text" = "Smart item trackers use Bluetooth to connect to foreign devices. These devices then send their location to the Internet. As a result of that, the owner of the smart item tracker can then see the location of the tracker even if it is miles away.\n\nThats's why these smart item trackers can be abused to stalk people. To protect you against such an attack, AirGuard uses Bluetooth to scan for nearby trackers. The app uses your location to detect if a tracker moves with you.\n\nIf AirGuard detects a suspicious tracker, you will receive a notification with more detailed information.";
+
+"article_notification_header" = "If You Received a Notification";
+"article_notification_subheader" = "Learn more about what you should do if you receive a notification.";
+"article_notification_text" = "If AirGuard detects a tracker in the background which follows you, you will receive a notification. You can tap on the notification to learn more about this tracker. For supported trackers, you can play a sound to locate the tracker. For all other trackers, you can use \"Locate Tracker\" to find it.\n\nIf you found the tracker and you are certain that it is malicious, try to remove the battery. Also make sure you don't move to another location until you disabled it. You can try to make a complaint to the police. Authorities might be able to determine the owner of the tracker using its serial number.";
+
+"article_limitations_header" = "Limitations of This App";
+"article_limitations_subheader" = "Learn more about what this app can and can't do.";
+"article_limitations_text" = "There are some limitations of this app due to technical restrictions. Most importantly, background scanning does only work with Samsung SmartTags and Tiles. The detection of AirTags and other Find My devices is handled by Apple's pre-installed \"Find My\" app which will alert you if any AirTag or Find My device follows you.\n\nThe manual scan supports devices of all types, including AirTags and Find My devices. If you are curious what's around you, you can use this feature. But please keep in mind that it is currently not possible to see if a tracker is connected to its owner or not. Thus, you might see your own or friends' trackers.\n\nAlso, it's important to know that some trackers randomly change their identity (Bluetooth MAC address) a couple of times a day. As a result, one tracker could be displayed multiple times in the app. That's because it's often not possible to match the different, randomized identities.";
+
+
+
+"article_supported_trackers_header" = "Known Trackers";
+"article_supported_trackers_subheader" = "Trackers AirGuard can detect";
+"article_supported_trackers_text" = "AirGuard can only find Bluetooth based trackers. Trackers that work with GPS and share the location with the owner via a cellular connection cannot be found.
+
+**Samsung SmartTags**
+These tags are made by Samsung and work almost the same as AirTags.
+
+*Background detection*: ✅
+*Automatic alert on tracking* ✅
+*Manual scanning* ✅
+
+**Tile Tracker**
+Tile is a company that exclusively makes Bluetooth trackers. These also have similar features to AirTags.
+
+*Background detection* ✅
+*Automatic alert on tracking* ✅
+*Manual scanning* ✅
+
+**Chipolo Tracker (without Find My)**
+Chipolo offers Find My trackers that only work with iPhones and trackers that also work with Android devices. Here we cover the trackers that are also compatible with Android phones.
+Chipolo trackers can be found in the background, but iOS cannot tell if they are following you or not. If you see one, it's worth doing a manual scan.
+
+*Detection in the background* ✅
+*Automatic warning when following* ✅
+*Manual scan* ✅
+
+**AirTags**
+AirTags are Apple's trackers. As a result, they are only detectable to a limited extent, as many signals are filtered by the system. In the manual scan we can find AirTags and you can locate them. Tracking detection in the background is already provided by the Apple Find My App.
+
+*Background detection* ❌
+*Automatic alert on tracking* ❌
+*Manual scanning* ✅
+
+**Find My Tracker**
+These are trackers that are compatible with Apple's Find My, but come from other manufacturers. There are a few manufacturers that make such trackers: Chipolo, Pebblebee, Atuvos, etc. As with AirTags, the tracker cannot be detected in the background. Again, the Find My app automatically warns you.
+
+*Detection in the background* ❌
+*Automatic warning when tracking* ❌
+*Manual scanning* ✅
+";
+
+
+"article_supported_get_help_header" = "Find Help";
+"article_supported_get_help_subheader" = "Get help by professionals if someone tracks you";
+"article_supported_get_help_text" = "In the unfortunate event that you found a tracker that was used against you, it is important to know where to get help.
+There are several networks and associations that can help you. We provide a short list by country.
+
+**United States of America**
+[Safety Net Project](https://www.techsafety.org/resources-survivors)
+
+National Sexual Assault Hotline: [1-800-656-4673](tel:18006564673)
+
+National Domestic Violence Hotline: [1-800-799-7233](tel:18007997233)
+
+[National Center for Victims of Crime](https://victimsofcrime.org/getting-help/)
+Phone: [+1 202 467 8700](tel:+12024678700)
+
+[RAINN](https://www.rainn.org)
+Phone: [800.656.HOPE (4673)](tel:18006564673)
+
+
+**United Kingdom**
+[Refuge UK](https://refuge.org.uk/i-need-help-now/)
+Phone: [0808 2000 247](tel:08082000247)
+
+**Australia**
+[WESNET Safety Net Australia](https://techsafety.org.au/resources/resources-women/)
+
+
+**Germany**
+[Handbook Germany](https://handbookgermany.de/en/domestic-violence)
+
+[Der weiße Ring](https://weisser-ring.de)
+Phone: [116 006](tel:116006)
+
+Call the police at [110](tel:110)
+
+
+**France**
+[SOS Help - emotional support in English in France](http://soshelpline.org)
+Phone: [01-46-21-46-46](tel:0146214646)
+
+[Violences Femmes Info](https://www.solidaritefemmes.org/)
+Phone: [3919](tel:3919)
+
+
+**Belgium**
+[Centre de Prévention des Violences Conjugales et Familiales](https://www.cpvcf.org)
+Phone: [025392744](tel:025392744)
+
+[1712 Flemish, French, English](https://1712.be)
+Phone: [1712](tel:1712)
+
+[Community Help Centre Helpline](https://www.chsbelgium.org/)
+Phone: [026484014](tel:026484014)
+
+
+**Other countries**
+Use [Find A Helpline](https://findahelpline.com) to find help in your country.
+
+If you know more numbers for different countries, please get into contact at [aheinrich@seemoo.tu-darmstadt.de](mailto:aheinrich@seemoo.tu-darmstadt.de)
+";
