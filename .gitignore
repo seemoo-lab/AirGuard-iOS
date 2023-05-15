@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/xcode,swift,objective-c,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=xcode,swift,objective-c,macos
 
+### API Keys ###
+*/API_KEYS.swift
+API_KEYS.swift
+
 ### macOS ###
 # General
 .DS_Store
