@@ -256,6 +256,7 @@ enum UserDefaultKeys: String {
     case appLaunchedBefore
     case securityLevel
     case studyParticipationRequested
+    case surveyNotificationSent
 }
 
 

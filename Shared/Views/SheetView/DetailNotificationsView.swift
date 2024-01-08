@@ -19,13 +19,16 @@ struct DetailNotificationsView: View {
         if(!notifications.isEmpty && !tracker.ignore) {
             CustomSection(header: "notifications", footer: "false_alarm_description") {
                 
+                NavigationLink(destination: ArticleView(article: helpArticle)) {
+                    NavigationLinkLabel(imageName: "questionmark.bubble.fill", text: "get_help", backgroundColor: .purple, isNavLink: true)
+                }
                 
                 ForEach(notifications, id: \.self) { notification in
                     
                     if let time = notification.time {
                         HStack {
                             Text(getSimpleSecondsText(seconds: Int(-time.timeIntervalSince(clock.currentDate)), longerDate: false))
-                       
+                                .foregroundColor(Color("MainColor"))
                                 .frame(height: Constants.SettingsLabelHeight)
                             
                             Spacer()
@@ -62,11 +65,11 @@ struct FalseAlarmButton: View {
                     notification.falseAlarm.toggle()
                 }
             }
-
+            
         } label: {
             if(notification.falseAlarm) {
                 Text("unmark_false_alarm")
-                    
+                
             }
             else {
                 Text("mark_false_alarm")

@@ -127,7 +127,7 @@ class NotificationManager: ObservableObject {
     
     
     /// Delivers a local notification.
-    func pushNotification(title: String, subtitle: String, identifier: String = UUID().uuidString, userInfo: [String : String?] = [:], delay: Double = 0.01, logging: Bool = true) {
+    func pushNotification(title: String, subtitle: String, identifier: String = UUID().uuidString, userInfo: [String : String?] = [:], delay: Double = 0.01, logging: Bool = true, urgent:Bool=true) {
         
         if(logging) {
             log("New Notification added: \(title) \(subtitle)")
@@ -150,7 +150,7 @@ class NotificationManager: ObservableObject {
             }
         }
         
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15.0, *), urgent {
             content.interruptionLevel = .timeSensitive
         }
         
@@ -162,6 +162,45 @@ class NotificationManager: ObservableObject {
         
         // add notification request
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    func scheduleNotificationForSurvey() {
+        guard Constants.SurveyIsActive,
+              UserDefaults.standard.bool(forKey: UserDefaultKeys.surveyNotificationSent.rawValue) == false
+        else {return}
+        
+        log("Sending survey notification")
+        
+        let content = UNMutableNotificationContent()
+        
+        content.title = "article_survey_header".localized()
+        
+        content.body = "survey_description_short".localized()
+        content.sound = nil
+        
+        content.userInfo["type"] = "study_info"
+        content.userInfo["url"] = "survey_link".localized()
+        
+        // show this notification at specified data
+        // Randomly send this notification in 1-5 days at noon
+        let days = arc4random() % 5 + 1
+        let dateToSend = Calendar.current.date(byAdding: .day, value: Int(days), to: Date()) ?? Date()
+        
+        var dateComponentsToSend = Calendar.current.dateComponents([.day, .month, .year, .hour, .minute], from: dateToSend)
+        
+        dateComponentsToSend.hour = 12
+        dateComponentsToSend.minute = 0
+        
+        // show this notification at specified data
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponentsToSend, repeats: false)
+        
+        
+        let request = UNNotificationRequest(identifier: "survey_notification", content: content, trigger: trigger)
+        
+        // add notification request
+        UNUserNotificationCenter.current().add(request)
+        
+        UserDefaults.standard.setValue(true, forKey: UserDefaultKeys.surveyNotificationSent.rawValue)
     }
 }
 

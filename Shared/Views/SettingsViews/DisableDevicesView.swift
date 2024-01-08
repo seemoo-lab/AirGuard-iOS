@@ -74,7 +74,7 @@ struct DisableDeviceTypeView: View {
             HStack {
                 deviceType.constants.iconView
                 Text("ignore_every".localized() + " " + deviceType.constants.name)
-                    .foregroundColor(Color("DarkBlue"))
+                    .foregroundColor(Color("MainColor"))
                 
                 Spacer()
             }.frame(height: Constants.SettingsLabelHeight)

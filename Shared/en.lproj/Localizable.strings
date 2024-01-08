@@ -8,11 +8,15 @@
 
 "unknown_device" = "Unknown";
 "find_my_device" = "Find My Device";
+"chipolo_without_findmy" = "Chipolo (w/o Find My)";
+"left" = "Left";
+"right" = "Right";
 
 "manual_scan" = "Manual Scan";
 "scan" = "Scan";
 "manual_scan_description" = "Scan for surrounding AirTags, SmartTags, Tiles and more!";
 "manual_scanning_wait" = "A full scan can still take %@.";
+"manual_scan_disclaimer" = "All trackers displayed are not necessarily dangerous.";
 
 "background_scan" = "Background Scan";
 "background_scan_description" = "Get a notification if a tracker might track you!";
@@ -68,16 +72,26 @@ Email: aheinrich@seemoo.tu-darmstadt.de";
 
 "age_confirmation" = "I am 18 years or older.";
 
+//MARK: - Settings
+
 "delete_study_data" = "Request Deletion of Study Data";
 "deletion_failed" = "Deletion failed";
 "deletion_failed_message" = "The request failed, please try again later.";
 
+"deletion_succeeded" = "User data deleted";
+"deletion_succeeded_message" = "Please note that we never collect any personal data. We only collect data relating to the trackers that have been found by the app. All data linked to your app identifier has been deleted.";
 
+
+/* Settings */
 "participate_study" = "Participate in Study";
-"dont_participate_study" = "Don’t Participate in Study";
+"participate" = "Participate";
+"dont_participate" = "Don’t Participate";
+
+"participate_in_survey" = "Take Our Survey";
+"survey_description_short" = "We're doing a survey on stalking with location trackers. Help us act against misuse by taking part.";
 
 "all_done" = "All done!";
-"all_done_description" = "Important: Background scanning only works with Samsung SmartTags and Tile trackers. AirTag protection is already handled by Apple's pre-installed \"Find My\" app.
+"all_done_description" = "Important: Background scanning does not work with AirTags and \"Find My\" devices. Protection from these trackers is already provided by Apple's pre-installed \"Find My\" app.
 
 For technical reasons, not all features are available for every tracker type. For example, the determination if trackers are separated from their owners is only available for SmartTags.";
 
@@ -182,26 +196,25 @@ For technical reasons, not all features are available for every tracker type. Fo
 "developer" = "Developer";
 "maintainer" = "Maintainer";
 "copyright" = "Copyright";
-"information" = "Information";
-"airguard_ios" = "AirGuard for iOS";
+"informationview_airguard_os" = "AirGuard for %@";
 "version" = "Version";
 "copyright_text" = "Image sources:
 
-\"How does AirGuard work\" header: https://www.freepik.com/vectors/archive - Archive vector created by pch.vector - www.freepik.com
+\"Survey\" header: [Image by pch.vector on Freepik](https://de.freepik.com/vektoren-kostenlos/experte-prueft-die-bestellung-des-geschaeftsfuehrers_11235382.htm?query=pch%20vector%20form#from_view=detail_alsolike)
 
-\"Find Help\" header: [Image by vectorjuice on Freepik](https://www.freepik.com/free-vector/website-faq-section-user-help-desk-customer-support-frequently-asked-questions-problem-solution-quiz-game-confused-man-cartoon-character_11667041.htm#page=2&query=question%20pct%20vector&position=29&from_view=search&track=ais)
+\"How does AirGuard work\" header: [Image by pch.vector on Freepik](https://www.freepik.com/free-vector/office-workers-organizing-data-storage-file-archive-server-computer-cartoon-illustration_12699172.htm#query=archive&position=17&from_view=keyword&track=sph)
 
-\"If you received a notification\" header: https://www.freepik.com/vectors/tracking - Tracking vector created by pch.vector - www.freepik.com
+\"If you received a notification\" header: [Image by pch.vector on Freepik](https://de.freepik.com/vektoren-kostenlos/winzige-leute-die-nahe-verbotener-geste-stehen-isolierten-flache-illustration_11235950.htm#query=alert%20pch%20vector&position=23&from_view=search&track=ais)
 
-\"Limitations of this app\" header: https://www.freepik.com/vectors/lazy - Lazy vector created by pch.vector - www.freepik.com
+\"Limitations of this app\" header: [Image by pch.vector on Freepik](https://www.freepik.com/free-vector/customer-using-online-app-taxi-order-car-rent_7732603.htm#page=2&query=Map&position=23&from_view=author)
 
-\"Known Trackers\" header: [Image by vectorjuice on Freepik](https://www.freepik.com/free-vector/internet-order-delivery-tracking-gps-navigator-service-website-flat-design-element-pointer-magnifier-map-route-online-planning-path-finding-concept-illustration_11667173.htm)
+\"FAQ\" header: [Image by pch.vector on Freepik](https://www.freepik.com/free-vector/tiny-people-sitting-standing-near-giant-faq_9650829.htm#page=3&query=Question&position=11&from_view=author)
 ";
 
 "tracker_history" = "Tracker History";
 "older_trackers" = "Older Trackers";
 
-"survey_link" = "https://survey.seemoo.tu-darmstadt.de/index.php/117478?G06Q39=AirGuardAppiOS&newtest=Y&lang=en";
+"survey_link" = "https://survey.seemoo.tu-darmstadt.de/index.php/317138?G06Q39=AirGuardAppiOS&lang=en&newtest=Y";
 
 "no_location_access" = "No Location Access";
 "no_location_access_description" = "AirGuard can't access your location in the background. Tap to allow location access.";
@@ -248,69 +261,58 @@ The latter cannot be used to track your location. Please note that the connectio
 "map_unavailable_ignored" = "The map is unavailable because the tracker is ignored.";
 "map_unavailable_no_locations" = "The map is unavailable because no locations have been found for this tracker.";
 
-
-"survey_header" = "We’re Doing a Survey";
-"survey_subheader" = "Your help is required. We want to analyse various aspects of location tracking.";
+/* Articles */
 
 "article_howitworks_header" = "How Does AirGuard Work?";
-"article_howitworks_subheader" = "Learn more about how AirGuard protects you from malicious trackers.";
+"article_howitworks_subheader" = "Learn more about how AirGuard protects you from malicious trackers";
 "article_howitworks_text" = "Smart item trackers use Bluetooth to connect to foreign devices. These devices then send their location to the Internet. As a result of that, the owner of the smart item tracker can then see the location of the tracker even if it is miles away.\n\nThats's why these smart item trackers can be abused to stalk people. To protect you against such an attack, AirGuard uses Bluetooth to scan for nearby trackers. The app uses your location to detect if a tracker moves with you.\n\nIf AirGuard detects a suspicious tracker, you will receive a notification with more detailed information.";
 
-"article_notification_header" = "If You Received a Notification";
-"article_notification_subheader" = "Learn more about what you should do if you receive a notification.";
-"article_notification_text" = "If AirGuard detects a tracker in the background which follows you, you will receive a notification. You can tap on the notification to learn more about this tracker. For supported trackers, you can play a sound to locate the tracker. For all other trackers, you can use \"Locate Tracker\" to find it.\n\nIf you found the tracker and you are certain that it is malicious, try to remove the battery. Also make sure you don't move to another location until you disabled it. You can try to make a complaint to the police. Authorities might be able to determine the owner of the tracker using its serial number.";
 
-"article_limitations_header" = "Limitations of This App";
-"article_limitations_subheader" = "Learn more about what this app can and can't do.";
-"article_limitations_text" = "There are some limitations of this app due to technical restrictions. Most importantly, background scanning does only work with Samsung SmartTags and Tiles. The detection of AirTags and other Find My devices is handled by Apple's pre-installed \"Find My\" app which will alert you if any AirTag or Find My device follows you.\n\nThe manual scan supports devices of all types, including AirTags and Find My devices. If you are curious what's around you, you can use this feature. But please keep in mind that it is currently not possible to see if a tracker is connected to its owner or not. Thus, you might see your own or friends' trackers.\n\nAlso, it's important to know that some trackers randomly change their identity (Bluetooth MAC address) a couple of times a day. As a result, one tracker could be displayed multiple times in the app. That's because it's often not possible to match the different, randomized identities.";
-
-
-
-"article_supported_trackers_header" = "Known Trackers";
+"article_supported_trackers_header" = "Limitations of This App";
 "article_supported_trackers_subheader" = "Trackers AirGuard can detect";
-"article_supported_trackers_text" = "AirGuard can only find Bluetooth based trackers. Trackers that work with GPS and share the location with the owner via a cellular connection cannot be found.
+"article_supported_trackers_text" = "AirGuard can only find Bluetooth-based trackers. Trackers that work with GPS and share the location with the owner via a cellular connection cannot be found.
+
+In the following, you will learn which trackers AirGuard can automatically detect in the background and which trackers are visible using the manual scan.
 
 **Samsung SmartTags**
 These tags are made by Samsung and work almost the same as AirTags.
 
-*Background detection*: ✅
-*Automatic alert on tracking* ✅
+*Automatic tracking alert* ✅
 *Manual scanning* ✅
 
 **Tile Tracker**
 Tile is a company that exclusively makes Bluetooth trackers. These also have similar features to AirTags.
 
-*Background detection* ✅
-*Automatic alert on tracking* ✅
+*Automatic tracking alert* ✅
 *Manual scanning* ✅
 
 **Chipolo Tracker (without Find My)**
 Chipolo offers Find My trackers that only work with iPhones and trackers that also work with Android devices. Here we cover the trackers that are also compatible with Android phones.
-Chipolo trackers can be found in the background, but iOS cannot tell if they are following you or not. If you see one, it's worth doing a manual scan.
 
-*Detection in the background* ✅
-*Automatic warning when following* ✅
+*Automatic tracking alert* ✅
 *Manual scan* ✅
 
 **AirTags**
 AirTags are Apple's trackers. As a result, they are only detectable to a limited extent, as many signals are filtered by the system. In the manual scan we can find AirTags and you can locate them. Tracking detection in the background is already provided by the Apple Find My App.
 
-*Background detection* ❌
-*Automatic alert on tracking* ❌
+*Automatic tracking alert* ❌
 *Manual scanning* ✅
 
 **Find My Tracker**
 These are trackers that are compatible with Apple's Find My, but come from other manufacturers. There are a few manufacturers that make such trackers: Chipolo, Pebblebee, Atuvos, etc. As with AirTags, the tracker cannot be detected in the background. Again, the Find My app automatically warns you.
 
-*Detection in the background* ❌
-*Automatic warning when tracking* ❌
+*Automatic tracking alert* ❌
 *Manual scanning* ✅
+
+Note that it is not currently possible for all tracker typed to determine whether they are connected to their owner. Thus, you might see your own or friends' trackers.\n\nAlso, it's important to know that some trackers randomly change their identity (Bluetooth MAC address) a couple of times a day. As a result, one tracker could be displayed multiple times in the app. That's because it's often not possible to match the different, randomized identities.
 ";
 
-
-"article_supported_get_help_header" = "Find Help";
+"get_help" = "Get Help";
+"article_supported_get_help_header" = "If You Received a Notification";
 "article_supported_get_help_subheader" = "Get help by professionals if someone tracks you";
-"article_supported_get_help_text" = "In the unfortunate event that you found a tracker that was used against you, it is important to know where to get help.
+"article_supported_get_help_text" = "If AirGuard detects a tracker in the background which follows you, you will receive a notification. You can tap on the notification to learn more about this tracker. For supported trackers, you can play a sound to locate the tracker. For all other trackers, you can use \"Locate Tracker\" to find it.\n\nIf you found the tracker and you are certain that it is malicious, try to remove the battery. Also make sure you don't move to another location until you disabled it.
+
+In the unfortunate event that you found a tracker that was used against you, it is important to know where to get help.
 There are several networks and associations that can help you. We provide a short list by country.
 
 **United States of America**
@@ -368,3 +370,48 @@ Use [Find A Helpline](https://findahelpline.com) to find help in your country.
 
 If you know more numbers for different countries, please get into contact at [aheinrich@seemoo.tu-darmstadt.de](mailto:aheinrich@seemoo.tu-darmstadt.de)
 ";
+
+"article_faq_header" = "FAQ";
+"article_faq_subheader" = "Frequently Asked Questions";
+"article_faq_text" = "In this article, we have compiled some of the frequently asked questions.
+
+**I found trackers via manual search, should I be worried?**
+*The trackers you see in manual scan are only the trackers which are around you. They are not necessarily tracking you. AirGuard will only notify you if those trackers travelled with you. If that is not the case, there usually is nothing to worry about.*
+
+**I get notifications for my own trackers. Can I ignore or name them?**
+*For technical reasons, ignoring trackers is only possible for Tile trackers. Trackers cannot be named.*
+
+**Why can AirTags only be found in the manual search?**
+*This is due to technical reasons. Unfortunately, this will not change in the foreseeable future. However, the pre-installed \"Find My\" app already protects against such devices.*
+
+**Why are devices that are connected to their owners harmless?**
+*If the devices are connected to their owners, they are in a state where they cannot send locations on their own. Thus, they cannot be used for stalking.*
+
+**Why are my own AirTags not displayed?**
+*Your own AirTags may sometimes not be displayed in the app. However, AirTags are always reliably displayed when linked to another Apple ID and not connected to an owner device.*
+
+**Why are some trackers displayed twice?**
+*Some trackers change their identity (Bluetooth address) at certain intervals. This means that they cannot always be correlated, which is why some trackers may be displayed twice.*
+
+**How much power does AirGuard consume?**
+*The app consumes very little power. With normal use of the device, no difference will be noticeable, power consumption is usually less than 1%.*
+
+**Will the app remain free forever?**
+*Yes, the app will be offered for free forever.*
+";
+
+"article_survey_header" = "We’re Doing a Survey";
+"article_survey_subheader" = "Research on stalking with trackers";
+"article_survey_text" = "The rise of personal trackers like Apple's AirTag and other trackers has led to growing concerns about their misuse in stalking. Our IT-Security research team at the Technical University of Darmstadt is conducting a study to quantify these incidents and improve protection measures.
+
+Key Points:
+
+* How prevalent is stalking via location tracking?
+* How can we better protect individuals from such threats?
+* What would help you the most?
+
+We ask everyone to participate, whether you've personally encountered such incidents or not. Your contribution will help us gain a broader understanding of the situation and devise more effective countermeasures.
+
+[Participate now!](https://survey.seemoo.tu-darmstadt.de/index.php/317138?G06Q39=AirGuardAppiOS&lang=en&newtest=Y)
+
+Thanks for your time and assistance in this crucial research.";

@@ -29,7 +29,7 @@ struct DeviceListEntryView: View {
                 .padding(.trailing, 3)
             
             Text(device.getName)
-                .foregroundColor(Color("DarkBlue"))
+                .foregroundColor(Color("MainColor"))
                 .padding(.vertical)
             
             Spacer()

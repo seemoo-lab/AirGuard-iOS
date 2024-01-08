@@ -64,6 +64,7 @@ struct ColoredButton: View {
     let action: () -> ()
     let label: String
     var colors: [Color] = Constants.defaultColors
+    var hasPadding = true
     
     @Environment(\.isEnabled) private var isEnabled: Bool
     
@@ -75,9 +76,11 @@ struct ColoredButton: View {
             
         }) {
             Text(label.localized())
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
                 .customButton(colors: colors)
         }
-        .padding(.horizontal)
+        .padding(hasPadding ? .horizontal : .horizontal, 0)
         .opacity(isEnabled ? 1 : 0.5)
     }
 }

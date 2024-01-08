@@ -128,7 +128,7 @@ struct BigSymbolView<V0: View>: View {
             Text(title.localized())
                 .largeTitle()
                 .centered()
-                .foregroundColor(Color("DarkBlue"))
+                .foregroundColor(Color("MainColor"))
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, topPadding)
                 .padding(.horizontal)

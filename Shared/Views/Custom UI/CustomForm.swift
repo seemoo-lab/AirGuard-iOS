@@ -11,7 +11,7 @@ struct CustomFormBackground: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
     func body(content: Content) -> some View {
         content
-            .background(colorScheme.isLight ? Color.white.ignoresSafeArea() : Color.formDeepGray.ignoresSafeArea())
+            .background(colorScheme.isLight ? Color("FormBackgroundLight").ignoresSafeArea() : Color.formDeepGray.ignoresSafeArea())
     }
 }
 
@@ -97,14 +97,8 @@ struct CustomSection: View {
             if(footer != ""){
                 HStack {
                     
-                    Group {
-                        Text(footer.localized())
-                            .fixedSize(horizontal: false, vertical: true)
-                            .font(.system(.footnote))
-                            .lineSpacing(2)
-                            .padding(.top, 5)
-                            .foregroundColor(Color.init(#colorLiteral(red: 0.4768142104, green: 0.4786779284, blue: 0.5020056367, alpha: 1)))
-                    }
+                    Footer(text: footer)
+                    
                     
                     Spacer()
                 }
@@ -113,6 +107,19 @@ struct CustomSection: View {
         }
         .padding(.horizontal)
         .padding(.top)
+    }
+}
+
+struct Footer: View {
+    let text: String
+    
+    var body: some View {
+        Text(text.localized())
+            .fixedSize(horizontal: false, vertical: true)
+            .font(.system(.footnote))
+            .lineSpacing(2)
+            .padding(.top, 5)
+            .foregroundColor(Color.init(#colorLiteral(red: 0.4768142104, green: 0.4786779284, blue: 0.5020056367, alpha: 1)).opacity(0.9))
     }
 }
 
@@ -149,7 +156,7 @@ struct FormModifierNoPadding: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(colorScheme.isLight ? Color.white : Color.formGray)
-            .cornerRadius(15)
+            .cornerRadius(25)
             .compositingGroup()
             .modifier(ShadowModifier(visible: showShadow))
     }
@@ -166,7 +173,7 @@ struct ShadowModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .shadow(color: Color.gray.opacity(colorScheme.isLight ? 0.15 : 0), radius: visible ? 7 : 0, x: 1, y: 1)
+            .shadow(color: Color.gray.opacity(colorScheme.isLight ? 0.15 : 0), radius: visible ? 4 : 0, x: 0, y: 1)
     }
 }
 

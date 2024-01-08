@@ -17,15 +17,16 @@ struct HomeView: View {
     @ObservedObject var settings = Settings.sharedInstance
     
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "DarkBlue")!]
-        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "DarkBlue")!]
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "MainColor")!]
+        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "MainColor")!]
     }
     
     var body: some View {
         
         NavigationView {
+            
             GeometryReader { geo in
-
+                
                 NavigationSubView {
                     
                     if(!bluetoothManager.turnedOn && settings.mayCheckBluetooth) {
@@ -49,7 +50,15 @@ struct HomeView: View {
                                         }))
                         .padding(.bottom, 10)
                         .onTapGesture {
-                            openAppSettings()
+                            LocationManager.sharedInstance.requestWhenInUse()
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                                LocationManager.sharedInstance.requestAlwaysUsage()
+                            })
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                                openAppSettings()
+                            })
                         }
                     }
                     else {

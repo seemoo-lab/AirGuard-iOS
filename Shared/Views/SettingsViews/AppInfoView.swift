@@ -25,27 +25,33 @@ struct InformationView: View {
                         .padding()
                 }
                 
-                Text("airguard_ios")
+                Text(String(format: "informationview_airguard_os".localized(), getOSName()))
                     .padding(.bottom, 3)
                 Text("version".localized() + " \(getAppVersion())")
                     .opacity(0.5)
             }
+            .padding(.top)
             
             
             CustomSection(){
                 
                 Button(action: {
-                    writeMail(to: "info@leonboettger.com")
+                    writeMail(to: "airguard@seemoo.tu-darmstadt.de")
                 }) {
                     NavigationLinkLabel(imageName: "envelope.fill", text: "contact_developer", backgroundColor: Color(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)), isNavLink: false)
+                }
+                
+                NavigationLink(destination: ArticleView(article: faqArticle)) {
+                    NavigationLinkLabel(imageName: "questionmark.bubble.fill", text: "FAQ", backgroundColor: .purple, isNavLink: true)
                 }
             }
             
             CustomSection(header: "credits") {
-                Button(action: {
-                    writeMail(to: "info@leonboettger.com")
-                }) {
-                    NavigationLinkLabel(imageName: "curlybraces", text: "developer", backgroundColor: .green, isNavLink: false, status: "Leon Böttger")
+                
+                if let url = URL(string: "https://www.leonboettger.com") {
+                    Link(destination: url, label: {
+                        NavigationLinkLabel(imageName: "curlybraces", text: "developer", backgroundColor: .green, isNavLink: false, status: "Leon Böttger")
+                    })
                 }
                 
                 Button(action: {
@@ -58,11 +64,13 @@ struct InformationView: View {
             
             CustomSection(header: "copyright") {
                 Text("copyright_text")
-                    .foregroundColor(Color("DarkBlue"))
+                    .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(Color("MainColor"))
                     .padding(.vertical)
             }
         }
-        .navigationBarTitle("information")
+        .navigationBarTitle("", displayMode: .inline)
     }
     
     func writeMail(to address: String) {

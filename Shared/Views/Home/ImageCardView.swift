@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let formHeaderColor = Color("DarkBlue").opacity(0.6)
+let formHeaderColor = Color("MainColor").opacity(0.6)
 
 
 struct ImageCardGroupHeader: View {
@@ -64,7 +64,6 @@ struct ImageCardView: View {
                 .cornerRadius(10)
                 .modifier(ShadowModifier())
             
-            
             VStack(spacing: 0) {
                 
                 HStack {
@@ -89,7 +88,7 @@ struct ImageCardView: View {
                     Spacer()
                 }.padding(.top, 1)
             }
-            .foregroundColor(Color("DarkBlue"))
+            .foregroundColor(Color("MainColor"))
             .padding(.horizontal, 5)
         }
     }
@@ -98,6 +97,7 @@ struct ImageCardView: View {
 
 struct ArticleImageView: View {
     
+    @Environment(\.colorScheme) var colorScheme
     let name: String
     
     var body: some View {
@@ -106,7 +106,7 @@ struct ArticleImageView: View {
             .scaledToFit()
             .background(ZStack {
                 Color.white
-                Color.accentColor.opacity(0.3)
+                Color.accentColor.opacity(colorScheme.isLight ? 0.3 : 0.35)
             })
     }
 }
@@ -131,7 +131,7 @@ struct NewImageCardView: View {
                         .bold()
                         .multilineTextAlignment(.leading)
                         .font(.system(.caption))
-                        .foregroundColor(Color("DarkBlue"))
+                        .foregroundColor(Color("MainColor"))
                         .opacity(0.7)
                     
                     Spacer()
@@ -144,7 +144,7 @@ struct NewImageCardView: View {
                         .bold()
                         .multilineTextAlignment(.leading)
                         .font(.system(.title3))
-                        .foregroundColor(Color("DarkBlue"))
+                        .foregroundColor(Color("MainColor"))
                     
                     Spacer()
                 }

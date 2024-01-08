@@ -19,7 +19,7 @@ struct SettingsLabel: View {
         HStack{
             SettingsIcon(imageName: imageName, backgroundColor: backgroundColor)
             Text(text.localized())
-                .foregroundColor(Color("DarkBlue"))
+                .foregroundColor(Color("MainColor"))
                 .multilineTextAlignment(.leading)
             Spacer()
             

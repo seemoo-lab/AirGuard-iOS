@@ -36,6 +36,18 @@ struct PlainLinkStyle: ButtonStyle {
 }
 
 
+/// Returns the OS name
+func getOSName() -> String {
+    #if targetEnvironment(macCatalyst)
+    return "macOS"
+    #elseif os(watchOS)
+    return WKInterfaceDevice.current().systemName
+    #else
+    return UIDevice.current.systemName
+    #endif
+}
+
+
 extension UIImage {
     
     /// Resizes an UIImage to a certain size

@@ -15,9 +15,6 @@ struct ArticleView : View {
         
         GeometryReader { geo in
             
-            let padding: CGFloat = 20
-            let width = min(Constants.maxWidth, geo.size.width) - padding
-            
             NavigationSubView() {
                 
                 Group {
@@ -26,24 +23,38 @@ struct ArticleView : View {
                         Text(article.card.header.localized())
                             .bold()
                             .font(.system(size: 25))
-                            .foregroundColor(Color("DarkBlue"))
+                            .foregroundColor(Color("MainColor"))
                         
                         Spacer()
-                    }.padding(.top)
+                    }
+                    .padding(.top)
                     
                     
                     HStack {
                         Text(String(format: "article_info".localized(), article.author, article.minRead.description))
                         
                         Spacer()
-                    }.opacity(0.5)
-                        .padding(.vertical, 8)
-                        .padding(.bottom, 6)
+                    }
+                    .opacity(0.5)
+                    .padding(.vertical, 8)
+                    .padding(.bottom, 6)
                     
                     
                     VStack(spacing: 0) {
                         
                         ArticleImageView(name: article.card.imageName)
+                        
+                        if article.id == "survey" {
+                            // Add a particpate button here
+                        
+                            ColoredButton(action: {
+                                guard let url = URL(string: "survey_link".localized()) else {return}
+                                UIApplication.shared.open(url)
+                            }, label: "participate_in_survey")
+                            .padding(.horizontal, 20)
+                            .padding(.top)
+                            .padding(.vertical, 8)
+                        }
                         
                         if #available(iOS 15.0, *) {
                             Text(article.usesMarkdown ? article.text.localizedMarkdown() : AttributedString(article.text.localized())  )
@@ -52,7 +63,8 @@ struct ArticleView : View {
                                 .lineSpacing(7)
                                 .padding(.vertical)
                                 .padding(.horizontal, 15)
-                        }else {
+                        }
+                        else {
                             Text(article.text.localized())
                                 .fixedSize(horizontal: false, vertical: true)
                                 .lowerOpacity(darkModeAsWell: true)
@@ -70,9 +82,17 @@ struct ArticleView : View {
                 }
                 .padding(.horizontal)
                 
-                
-                ArticlesCarusel(elems: articles.filter({$0.id != article.id}), width: width)
-                    .fixedSize(horizontal: false, vertical: true)
+                ForEach(articles.filter({$0.id != article.id})) { elem in
+                    NavigationLink {
+                        ArticleView(article: elem)
+                    } label: {
+                        NewImageCardView(card: elem.card)
+                    }
+                    .buttonStyle(PlainLinkStyle())
+                    .padding(.bottom, 20)
+                }
+                .padding(.horizontal)
+                .fixedSize(horizontal: false, vertical: true)
                 
                 Spacer()
                 

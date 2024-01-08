@@ -22,7 +22,8 @@ struct DetailTopView: View {
                     .bold()
                     .font(.largeTitle)
                     .lineLimit(1)
-                    .foregroundColor(Color("DarkBlue"))
+                    .foregroundColor(Color("MainColor"))
+                    .minimumScaleFactor(0.8)
 
                 Spacer()
                 

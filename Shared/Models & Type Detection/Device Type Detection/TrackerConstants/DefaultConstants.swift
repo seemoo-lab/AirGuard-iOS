@@ -49,6 +49,9 @@ class TrackerConstants {
     /// Specifies the minimum tracking time in seconds until a tracking notification is sent
     class var minTrackingTime: Double { TrackingDetection.minimumTrackingTime }
     
+    /// Specifies how many seconds backwards tracking events are considered. By default this is 14 days.
+    class var trackingEventsSince: TimeInterval {daysToSeconds(days: 14)}
+    
     /// A SwiftUI view representing the tracker as small glyph. Used for manual scanning view.
     class var iconView: AnyView {
         AnyView(Circle()

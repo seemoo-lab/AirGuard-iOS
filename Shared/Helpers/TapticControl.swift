@@ -79,8 +79,7 @@ func errorVibration() -> () {
 #if !os(watchOS)
         UINotificationFeedbackGenerator().notificationOccurred(.error)
 #else
-        WKInterfaceDevice.current().play(.success)
+        WKInterfaceDevice.current().play(.failure)
 #endif
     }
-    
 }

@@ -28,6 +28,11 @@ final class TileConstants: TrackerConstants {
             .modifier(TrackerIconView(text: "tile")))
     }
     
+    /// Since Tile trackers never change their MAC address we only consider tracking events for the last day
+    override class var trackingEventsSince: TimeInterval {
+        daysToSeconds(days: 1)
+    }
+    
     override class func detect(baseDevice: BaseDevice, context: NSManagedObjectContext) {
     
         detectTypeByNameOrAdvertisementData(baseDevice: baseDevice, deviceName: "Tile", searchForService: offeredService) {

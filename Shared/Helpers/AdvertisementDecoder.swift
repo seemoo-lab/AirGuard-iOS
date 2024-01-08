@@ -80,3 +80,9 @@ extension String {
     }
 }
 
+
+extension CharacterSet {
+    /// Removes any whitespaces or NULL characters from a string
+    static let whitespacesNewlinesAndNulls = CharacterSet.whitespacesAndNewlines.union(CharacterSet(["\0"]))
+}
+

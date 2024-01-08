@@ -34,7 +34,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         
         #if DEBUG
         evaluateDebugLaunchArguments()
-        #endif 
+        #endif
+        
+        notificationManager.scheduleNotificationForSurvey()
         
         return true
     }

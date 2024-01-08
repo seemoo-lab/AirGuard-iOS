@@ -65,6 +65,16 @@ struct DebugSettingsView: View {
                 }) {
                     SettingsLabel(imageName: "bell", text: "Fake Notification", backgroundColor: .green)
                 }
+                
+                Button(action: {
+                    let statsController = SendStatisticsController(lastDataDonation: Date.distantPast)
+                    Task{
+                        try? await statsController.sendStats()
+                    }
+                   
+                }) {
+                    SettingsLabel(imageName: "arrow.up.square.fill", text: "Send Statistics", backgroundColor: .orange)
+                }
             }
             
             CustomSection() {
@@ -97,6 +107,14 @@ struct DebugSettingsView: View {
                 } label:
                 {
                     SettingsLabel(imageName: "map.fill", text: "Show all locations", backgroundColor: .green)
+                }
+                
+                Button(action: {
+                    
+                    settings.tutorialCompleted = false
+                    
+                }) {
+                    SettingsLabel(imageName: "arrow.counterclockwise", text: "Reset To Tutorial", backgroundColor: .purple)
                 }
             }
             

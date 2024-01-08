@@ -67,24 +67,26 @@ class TrackingDetection: ObservableObject {
             else if isTrackingForEnoughTime(baseDevice: device), let detections = device.detectionEvents?.array as? [DetectionEvent], detections.last?.connectionStatus != ConnectionStatus.OwnerConnected.rawValue {
                 
                 // Only use non-owner connected detections of last 14 days to make computation more efficient and to reduce false notifications
-                var detectionsLast14Days = [DetectionEvent]()
+                var relevantDetectionEvents = [DetectionEvent]()
+                
+                let deviceConstants = device.getType.constants
                 
                 for detection in detections.reversed() {
                     
                     if let time = detection.time {
-                        if(time.isOlderThan(seconds: daysToSeconds(days: 14))) {
+                        if(time.isOlderThan(seconds: deviceConstants.trackingEventsSince)) {
                             break
                         }
                         else {
                             if detection.connectionStatus != ConnectionStatus.OwnerConnected.rawValue {
-                                detectionsLast14Days.insert(detection, at: 0) // preserve order
+                                relevantDetectionEvents.insert(detection, at: 0) // preserve order
                             }
                         }
                     }
                 }
                 
-                if hasEnoughDetectionEvents(baseDevice: device, detections: detectionsLast14Days),
-                   (!locationManager.hasAlwaysPermission() || hasMinDetectionDistance(baseDevice: device, detections: detectionsLast14Days)) {
+                if hasEnoughDetectionEvents(baseDevice: device, detections: relevantDetectionEvents),
+                   (!locationManager.hasAlwaysPermission() || hasMinDetectionDistance(baseDevice: device, detections: relevantDetectionEvents)) {
                     
                     tryToRequestTrackerNotification(forTracker: device, context: context)
                 }

@@ -10,7 +10,7 @@ import CoreData
 import SwiftUI
 
 final class ChipoloConstants: TrackerConstants {
-    override class var name: String { "Chipolo" }
+    override class var name: String { "chipolo_without_findmy".localized() }
     
     override class var offeredService: String { "FE33" }
     
@@ -30,6 +30,11 @@ final class ChipoloConstants: TrackerConstants {
                 .padding(1)
                 .modifier(TrackerIconView(text: "C"))
         )
+    }
+    
+    /// Since Chipolo trackers never change their MAC address we only consider tracking events for the last day
+    override class var trackingEventsSince: TimeInterval {
+        daysToSeconds(days: 1)
     }
     
     override class func detect(baseDevice: BaseDevice, context: NSManagedObjectContext) {

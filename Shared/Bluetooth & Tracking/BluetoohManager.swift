@@ -43,6 +43,12 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
     /// Shows if Bluetooth is turned on
     @Published var turnedOn = false
     
+    /// True if the app is using fast scan with duplicates for precision finding
+    @Published var isUsingFastScan = false
+    
+    /// Array of devices to which we can connect when using fast scan
+    @Published var allowedConnectionUUIDsFastScan = [UUID]()
+    
     /// The timer to turn on/off scanning periodically
     let timer = BluetoothManagerTimer.sharedInstance
     
@@ -141,6 +147,13 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
                     self.centralManager(centralManager, didConnect: peripheral)
                 }
                 else {
+                    if isUsingFastScan {
+                        // Check if the we are allowed to connect to this device
+                        if !allowedConnectionUUIDsFastScan.contains(peripheral.identifier) {
+                            request.callback(.Failure, nil)
+                            return
+                        }
+                    }
                     // connect to peripheral
                     centralManager?.connect(peripheral)
                 }
@@ -240,6 +253,10 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
                 }
                 else {
                     log("starting foreground scan...")
+                    if duplicates {
+                        // When using fast scan we don't want connections in the background
+                        cancelAllConnections()
+                    }
                     self.centralManager?.scanForPeripherals(withServices: services, options: [CBCentralManagerScanOptionAllowDuplicatesKey : duplicates])
                 }
                 
@@ -290,19 +307,20 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
     
     
     /// Enables the fast scan which allowed advertisement duplicates. For better performance, you need to specify a Bluetooth device UUID or a service to search for. The service needs to be included in all advertisement packets.
-    func enableFastScan(for device: RSSIScan) {
+    func enableFastScan(for device: RSSIScan, allowedUUIDs: [UUID]) {
         bluetoothQueue.async { [self] in
             
             DispatchQueue.main.async { [self] in
+                allowedConnectionUUIDsFastScan = allowedUUIDs
+                isUsingFastScan = true
+                rssiScanForDevice = device
+                
                 if let service = device.service {
                     log("Fast Scan active for service \(service)")
-                    rssiScanForDevice = device
                     startScan(duplicates: true, services: [CBUUID(string: service)])
                 }
                 if let id = device.bluetoothDevice {
                     log("Fast Scan active for device \(id)")
-                    
-                    rssiScanForDevice = RSSIScan(bluetoothDevice: id)
                     startScan(duplicates: true)
                 }
             }
@@ -317,6 +335,8 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
             
             DispatchQueue.main.async { [self] in
                 rssiScanForDevice = nil
+                isUsingFastScan = false
+                allowedConnectionUUIDsFastScan = []
                 startScan()
             }
         }

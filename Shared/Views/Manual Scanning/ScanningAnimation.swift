@@ -18,7 +18,7 @@ struct ScanAnimation: View {
         
         ZStack {
             
-            let altColor = Color.accentColor
+            let altColor = withBackground ? Color(#colorLiteral(red: 0.1862959564, green: 0.5486807823, blue: 0.8759589791, alpha: 1)) : Color.accentColor
             
             AngularGradient(gradient: Gradient(colors: withBackground ? [.white.opacity(0.1), .white] : [.white, altColor]), center: .center)
                 .mask(Circle())

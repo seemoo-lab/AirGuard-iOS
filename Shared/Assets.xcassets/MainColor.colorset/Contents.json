@@ -4,10 +4,10 @@
       "color" : {
         "color-space" : "display-p3",
         "components" : {
-          "alpha" : "0.901",
-          "blue" : "0.314",
-          "green" : "0.202",
-          "red" : "0.169"
+          "alpha" : "1.000",
+          "blue" : "0.300",
+          "green" : "0.300",
+          "red" : "0.300"
         }
       },
       "idiom" : "universal"
@@ -29,6 +29,18 @@
         }
       },
       "idiom" : "universal"
+    },
+    {
+      "color" : {
+        "color-space" : "display-p3",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "1.000",
+          "green" : "1.000",
+          "red" : "1.000"
+        }
+      },
+      "idiom" : "watch"
     }
   ],
   "info" : {

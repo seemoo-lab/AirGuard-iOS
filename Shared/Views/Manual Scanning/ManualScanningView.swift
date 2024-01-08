@@ -117,6 +117,12 @@ struct ManualScanningView: View {
                     if safeTrackers.count > 0 {
                         TrackerSection(trackers: safeTrackers, header: " ", showHelp: true)
                     }
+                    
+//                    if(trackers.count > 0) {
+//                        Footer(text: "manual_scan_disclaimer")
+//                            .padding(.horizontal, 10)
+//                            .padding(.horizontal)
+//                    }
                 }
                 
                 NavigationLink(destination: {

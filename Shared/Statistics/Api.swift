@@ -87,6 +87,30 @@ struct API {
         }
     }
     
+    static func deleteStudyData(token: String) async throws {
+        #if DEBUG
+        // Don't allow interactions with the production server in debug builds
+        guard !baseURL.absoluteString.lowercased().contains("tpe.seemoo.tu-darmstadt.de") else {
+            return
+        }
+        #endif
+
+        var request = URLRequest(url: baseURL.appendingPathComponent("delete_study_data"), cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10.0)
+        request.httpMethod = "DELETE"
+
+        request.setValue(token, forHTTPHeaderField: "token")
+        request = addAuthentication(request: request)
+
+
+        let (data, response) = try await URLSession.shared.asyncData(for: request)
+
+        // Check for errors
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode < 300 else {
+            throw API_Error.statusCode(code: (response as? HTTPURLResponse)?.statusCode ?? -1, body: data)
+        }
+    }
+    
     /// Adds authentication and a user-agent to the HTTP request
     /// - Parameter request: a url request that should get the necessary header fields
     /// - Returns: authenticated url request 

@@ -15,7 +15,20 @@ struct TrackerSection: View {
     
     var body: some View {
         
-        let helpView = showHelp ? AnyView(Button(action: { showAlert = true }, label: { Text("safe_trackers").offset(x: -10) })) : AnyView(EmptyView())
+        let helpView = showHelp ?
+        
+        AnyView(Button(action: { showAlert = true }, label: {
+            
+            HStack(spacing: 5) {
+                Text("safe_trackers")
+                Image(systemName: "questionmark.circle")
+            }
+            
+            .offset(x: -10)
+            
+        }))
+        
+        : AnyView(EmptyView())
         
         CustomSection(header: header, headerExtraView: helpView) {
             ForEach(trackers) { device in

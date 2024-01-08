@@ -30,6 +30,8 @@ struct TrackerDetailView: View {
             
             DetailMapView(tracker: tracker)
             
+            
+            
             DetailGeneralView(tracker: tracker, soundManager: soundManager)
             
             DetailNotificationsView(tracker: tracker)

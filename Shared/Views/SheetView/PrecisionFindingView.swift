@@ -29,7 +29,7 @@ struct PrecisionFindingView: View {
         
         let maxRSSI = Double(tracker.getType.constants.bestRSSI)
         
-        let notReachable = deviceNotCurrentlyReachable(device: tracker, currentDate: clock.currentDate, timeout: 15)
+        let notReachable = deviceNotCurrentlyReachable(device: tracker, currentDate: clock.currentDate, timeout: 45)
         
         let rssi = !isStarted || notReachable ? Constants.worstRSSI : Double(bluetoothData.rssi_publisher)
         
@@ -46,7 +46,7 @@ struct PrecisionFindingView: View {
                 VStack(spacing: 0) {
                     
                     ZStack {
-                        Color.accentColor.opacity(colorScheme.isLight ? 0.8 : 1)
+                        Color.accentColor.opacity(colorScheme.isLight ? 0.6 : 1)
                         
                         PrecisionOverlayElements(tracker: tracker, soundManager: soundManager, pct: pct, rssi: rssi, animationDelay: delay, textColor: .white, notReachable: notReachable)
                         
@@ -64,7 +64,7 @@ struct PrecisionFindingView: View {
                         
                         (colorScheme.isLight ? Color.white : Color.formDeepGray)
                         
-                        PrecisionOverlayElements(tracker: tracker, soundManager: soundManager, pct: pct, rssi: rssi, animationDelay: delay, textColor: Color("DarkBlue"), notReachable: notReachable)
+                        PrecisionOverlayElements(tracker: tracker, soundManager: soundManager, pct: pct, rssi: rssi, animationDelay: delay, textColor: Color("MainColor"), notReachable: notReachable)
                             .padding(safeAreaInsets)
                             .frame(height: fullHeight)
                         
@@ -95,11 +95,16 @@ struct PrecisionFindingView: View {
     }
     
     func startScan() {
+        var uuids = [UUID]()
+        if let trackerUUIDstring = tracker.currentBluetoothId, let trackerUUID = UUID(uuidString: trackerUUIDstring) {
+            uuids.append(trackerUUID)
+        }
+        
         if(tracker.getType.constants.supportsBackgroundScanning) {
-            BluetoothManager.sharedInstance.enableFastScan(for: RSSIScan(service: tracker.getType.constants.offeredService))
+            BluetoothManager.sharedInstance.enableFastScan(for: RSSIScan(service: tracker.getType.constants.offeredService), allowedUUIDs: uuids)
         }
         else {
-            BluetoothManager.sharedInstance.enableFastScan(for: RSSIScan(bluetoothDevice: tracker.currentBluetoothId))
+            BluetoothManager.sharedInstance.enableFastScan(for: RSSIScan(bluetoothDevice: tracker.currentBluetoothId), allowedUUIDs: uuids)
         }
     }
 }
@@ -110,6 +115,7 @@ struct PrecisionOverlayElements: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var tracker: BaseDevice
     @ObservedObject var soundManager: SoundManager
+    @State var lastVibration = Date.distantPast
     let pct: CGFloat
     let rssi: CGFloat
     let animationDelay: CGFloat
@@ -124,6 +130,7 @@ struct PrecisionOverlayElements: View {
                 .bold()
                 .font(.largeTitle)
                 .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .foregroundColor(textColor)
                 .padding()
                 .padding(.top)
@@ -131,16 +138,21 @@ struct PrecisionOverlayElements: View {
             Spacer()
             
             Indicator(pct: pct, color: textColor)
-            
-                .onChange(of: rssi) { val in
-                    
-                    if val == Constants.worstRSSI {
+                .onChange(of: pct, perform: {[pct] newPct in
+                    if newPct == 0 {
                         errorVibration()
+                    } else if abs(pct - newPct) > 0.05, self.lastVibration.isOlderThan(seconds: 5) {
+                        lastVibration = Date()
+                        if pct > newPct {
+                            // User is going away
+                            errorVibration()
+                        }else {
+                            // User is getting closer
+                            doubleVibration()
+                        }
                     }
-                    else {
-                        doubleVibration()
-                    }
-                }
+                })
+
             Group {
                 if(notReachable) {
                     

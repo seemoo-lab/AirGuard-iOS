@@ -32,14 +32,20 @@ final class FindMyDeviceConstants: TrackerConstants {
     
     override class func detect(baseDevice: BaseDevice, context: NSManagedObjectContext) {
         
-        if(baseDevice.bluetoothTempData().peripheral_background?.name == "Find My Accessory") {
+        if(baseDevice.bluetoothTempData().peripheral_background?.name?.lowercased().contains("find my") == true) {
             
             setType(device: baseDevice, type: .FindMyDevice, context: context)
             retrieveFindMyName(device: baseDevice, context: context)
         }
         
         else {
+            // Theoretically all Find My Devices should have the 0xFD43 service, but the Maginon (Aldi) Trackers do not, but they do support the general info service.
             detectAirTagsAndFindMyDevices(baseDevice: baseDevice, detectService: offeredService, context: context) { baseDevice, context in
+                setType(device: baseDevice, type: .FindMyDevice, context: context)
+                retrieveFindMyName(device: baseDevice, context: context)
+            }
+            // Also detect the info service
+            detectAirTagsAndFindMyDevices(baseDevice: baseDevice, detectService: infoService, context: context) { baseDevice, context in
                 setType(device: baseDevice, type: .FindMyDevice, context: context)
                 retrieveFindMyName(device: baseDevice, context: context)
             }
@@ -93,7 +99,13 @@ func retrieveFindMyName(device: BaseDevice, context: NSManagedObjectContext) {
                     // very important - we need to refetch device since we now are on a different context
                     modifyDeviceOnBackgroundThread(objectID: objID) { context, device in
                         
-                        device.setName(name: String(decoding: data, as: UTF8.self))
+                        var findMyName = String(decoding: data, as: UTF8.self).trimmingCharacters(in: .whitespacesNewlinesAndNulls)
+                        
+                        if(findMyName == "left" || findMyName == "right") {
+                            findMyName = "AirPods - " + findMyName.localized()
+                        }
+
+                        device.setName(name: findMyName)
                     }
                 }
             })

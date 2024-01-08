@@ -39,4 +39,6 @@ struct Constants {
     static let BigButtonHeight: CGFloat = 80
     
     static let StudyIsActive: Bool = true
+    
+    static let SurveyIsActive: Bool = true
 }

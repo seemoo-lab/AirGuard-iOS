@@ -13,7 +13,7 @@ struct StudyOptInView: View {
     
     var body: some View {
         
-        BigButtonView(buttonHeight: Constants.BigButtonHeight*2,
+        BigButtonView(buttonHeight: Constants.BigButtonHeight + 50,
                       mainView:
         BigSymbolView(title: "our_study", symbol: "person.3.fill", imageFontSize: 75) {
             
@@ -38,31 +38,41 @@ struct StudyOptInButtonView: View {
     
     var body: some View {
         
-        VStack(spacing: Constants.SettingsSectionSpacing) {
+        VStack() {
+            
+            Spacer()
+            Spacer()
             
             CheckboxButton(isSelected: $ageConfirmed , label: Text("age_confirmation"))
                 .frame(minWidth: 0, maxWidth: .infinity,alignment: .center)
-                .padding(.horizontal, 32)
-                .padding(.top)
             
-            ColoredButton(action: {
-                
-                settings.participateInStudy = true
-                linkActive = true
-                selectionAction?(true)
-                
-            }, label: "participate_study", colors: [.accentColor, .accentColor])
-            .disabled(!self.ageConfirmed)
+            Spacer()
+            Spacer()
             
-            
-            ColoredButton(action: {
+            HStack(spacing: 13) {
                 
-                settings.participateInStudy = false
-                linkActive = true
-                selectionAction?(false)
+                ColoredButton(action: {
+                    
+                    settings.participateInStudy = true
+                    linkActive = true
+                    selectionAction?(true)
+                    
+                }, label: "participate", colors: [.accentColor, .accentColor], hasPadding: false)
+                .disabled(!self.ageConfirmed)
+
                 
-            }, label: "dont_participate_study")
+                ColoredButton(action: {
+                    
+                    settings.participateInStudy = false
+                    linkActive = true
+                    selectionAction?(false)
+                    
+                }, label: "dont_participate", hasPadding: false)
+
+            }
+            .padding(.horizontal)
             
+            Spacer()
         }
         .modifier(LinkTo(content: IntroductionDoneView.init, isActive: $linkActive))
     }
@@ -85,7 +95,7 @@ struct CheckboxButton: View {
                     .foregroundColor(.accentColor)
                 
                 label
-                    .foregroundColor(Color("DarkBlue"))
+                    .foregroundColor(Color("MainColor"))
             }
             .contentShape(Rectangle())
         }
