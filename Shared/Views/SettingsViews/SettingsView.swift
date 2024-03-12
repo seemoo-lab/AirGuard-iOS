@@ -195,9 +195,9 @@ struct SettingsView: View {
             .alert(item: $dataDeletionState, content: { dataDeletionState in
                 switch dataDeletionState {
                 case .failed:
-                    Alert(title: Text("deletion_failed"), message: Text("deletion_failed_message"), dismissButton: Alert.Button.cancel())
+                    return Alert(title: Text("deletion_failed"), message: Text("deletion_failed_message"), dismissButton: Alert.Button.cancel())
                 case .succeeded:
-                    Alert(title: Text("deletion_succeeded"), message: Text("deletion_succeeded_message"), dismissButton: Alert.Button.cancel())
+                    return Alert(title: Text("deletion_succeeded"), message: Text("deletion_succeeded_message"), dismissButton: Alert.Button.cancel())
                 }
             })
 
