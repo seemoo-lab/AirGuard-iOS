@@ -29,16 +29,21 @@ struct Constants {
     /// Spacing of sections for CustomForm.
     static let SettingsSectionSpacing: CGFloat = 15
     
+    /// Horizontal padding for left/right space
+    static let FormHorizontalPadding: CGFloat = 15
+    
     /// Assumed worst RSSI. Used for signal indicator.
     static let worstRSSI: Double = -100
     
     /// Default colors for gradients
-    static let defaultColors: [Color] = [.accentColor, Color("LightBlue")]
+    static let defaultColors: [Color] = [.airGuardBlue]
     
     /// Default height of the button view of BigButtonView.
     static let BigButtonHeight: CGFloat = 80
     
+    /// True, if study is enabled and shown in-app
     static let StudyIsActive: Bool = true
     
+    /// True, if survey is enabled and shown in-app
     static let SurveyIsActive: Bool = true
 }

@@ -23,23 +23,38 @@ struct TrackerHistoryView: View {
         ScrollView {
             LazyVStack {
                 
-                ForEach(devices) { elem in
+                if(devices.count == 0) {
+                    BigSymbolViewWithText(title: "", symbol: "questionmark", subtitle: "no_device_detected_yet")
+                }
+                else {
+                    Text("tracker_history_hint")
+                        .foregroundColor(.white)
+                        .padding()
+                        .padding(.horizontal, 2)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            ZStack {
+                                Color.airGuardBlue
+                                LinearGradient(colors: [.clear, .white.opacity(0.2)], startPoint: .bottom, endPoint: .top)
+                            }
+                                .cornerRadius(25))
                     
-                    if let detectionEvents = elem.detectionEvents, let lastSeenSeconds = getLastSeenSeconds(device: elem, currentDate: clock.currentDate) {
+                        .padding(.horizontal, 15)
+                        .padding(.top)
+                    
+                    ForEach(devices) { elem in
                         
-                        let times = detectionEvents.count
-                        let timesText = String(format: "seen_x_times_last".localized(), times.description, getSimpleSecondsText(seconds: lastSeenSeconds, longerDate: false))
-                        
-                        CustomSection(header: timesText) {
-                            DeviceEntryButton(device: elem, showAlerts: true)
+                        if let detectionEvents = elem.detectionEvents, let lastSeenSeconds = getLastSeenSeconds(device: elem, currentDate: clock.currentDate) {
                             
+                            let times = detectionEvents.count
+                            let timesText = String(format: "seen_x_times_last".localized(), times.description, getSimpleSecondsText(seconds: lastSeenSeconds, longerDate: false))
+                            
+                            CustomSection(header: timesText) {
+                                DeviceEntryButton(device: elem, showAlerts: true, showSignal: false)
+                                
+                            }
                         }
                     }
-                }
-                 
-                if(devices.count == 0) {
-                    BigSymbolViewWithText(title: "", symbol: "questionmark.circle.fill", subtitle: "no_device_detected_yet")
-                    
                 }
                 
                 Spacer()

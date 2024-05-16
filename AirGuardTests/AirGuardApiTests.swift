@@ -42,7 +42,7 @@ final class AirGuardTests: XCTestCase {
             lastSeen: Date(),
             deviceType: "AIRTAG",
             beacons: [
-                API_Request.Beacon(receivedAt: Date(), rssi: 0, serviceUUIDs: [])
+                API_Request.Beacon(receivedAt: Date(), rssi: 0, serviceUUIDs: [], connectionState: ConnectionStatus.Unknown.rawValue)
             ],
             notifications: [
                 API_Request.Notification(falseAlarm: false, dismissed: false, clicked: true, createdAt: Date(), feedback: API_Request.Feedback(location: "House"))

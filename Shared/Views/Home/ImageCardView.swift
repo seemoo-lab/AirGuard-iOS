@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let formHeaderColor = Color("MainColor").opacity(0.6)
+let formHeaderColor = Color.mainColor.opacity(0.6)
 
 
 struct ImageCardGroupHeader: View {
@@ -17,37 +17,34 @@ struct ImageCardGroupHeader: View {
     var body: some View {
         
         PlainImageCardGroupHeader(name: name)
-            .padding(.horizontal)
+            .padding(.horizontal, Constants.FormHorizontalPadding)
             .padding(.top, 30)
             .padding(.bottom, 12)
     }
 }
 
 
-struct PlainImageCardGroupHeader: View {
+struct PlainImageCardGroupHeader<Content: View>: View {
     let name: String
-    let extraView: AnyView
+    let extraView: () -> Content
     
-    init(name: String, extraView: AnyView = AnyView(EmptyView())) {
+    init(name: String, extraView: @escaping () -> Content = {EmptyView()}) {
         self.name = name
         self.extraView = extraView
     }
     
     var body: some View {
-        HStack() {
             
-            Group {
-                
+            HStack {
                 Text(name.localized())
-                    .bold()
-                    .foregroundColor(formHeaderColor)
-                    .padding(.leading, 5)
+                    .font(.footnote.weight(.medium))
+                    .foregroundColor(.grayColor)
+                    
+                extraView()
                 
-                extraView
+                Spacer()
             }
-            
-            Spacer()
-        }
+            .padding(.horizontal, 5)
     }
 }
 
@@ -73,11 +70,13 @@ struct ImageCardView: View {
                         
                         Image(systemName: "chevron.right")
                             .opacity(0.7)
-                    }.font(.system(.headline))
+                    }
+                    .font(.system(.headline))
                     
                     
                     Spacer()
-                }.padding(.vertical, 5)
+                }
+                .padding(.vertical, 5)
                 
                 HStack {
                     Text(card.subHeader.localized())
@@ -86,9 +85,10 @@ struct ImageCardView: View {
                         .opacity(0.7)
                     
                     Spacer()
-                }.padding(.top, 1)
+                }
+                .padding(.top, 1)
             }
-            .foregroundColor(Color("MainColor"))
+            .foregroundColor(.mainColor)
             .padding(.horizontal, 5)
         }
     }
@@ -104,10 +104,19 @@ struct ArticleImageView: View {
         Image(name)
             .resizable()
             .scaledToFit()
+            .padding(.horizontal, 30)
+       
             .background(ZStack {
-                Color.white
-                Color.accentColor.opacity(colorScheme.isLight ? 0.3 : 0.35)
-            })
+                Image(name)
+                    .resizable()
+                    .blur(radius: 30)
+                    .scaledToFit()
+                    .scaleEffect(4)
+                    .clipped()
+                    .allowsHitTesting(false)
+            }.scaleEffect(x: 2)
+            )
+            .drawingGroup()
     }
 }
 
@@ -131,7 +140,7 @@ struct NewImageCardView: View {
                         .bold()
                         .multilineTextAlignment(.leading)
                         .font(.system(.caption))
-                        .foregroundColor(Color("MainColor"))
+                        .foregroundColor(.mainColor)
                         .opacity(0.7)
                     
                     Spacer()
@@ -144,7 +153,7 @@ struct NewImageCardView: View {
                         .bold()
                         .multilineTextAlignment(.leading)
                         .font(.system(.title3))
-                        .foregroundColor(Color("MainColor"))
+                        .foregroundColor(.mainColor)
                     
                     Spacer()
                 }

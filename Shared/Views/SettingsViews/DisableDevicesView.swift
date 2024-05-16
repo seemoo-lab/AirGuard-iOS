@@ -20,18 +20,13 @@ struct DisableDevicesView: View {
         
             NavigationSubView {
                 
-                CustomSection(header: "device_types", footer: "ignore_type_footer") {
-                    
+                CustomSection(footer: "ignore_type_footer") {
                     
                     let types = DeviceType.allCases.filter({$0 != .Unknown && $0.constants.supportsBackgroundScanning})
                     
                     ForEach(types) { type in
                         
                         DisableDeviceTypeView(deviceType: type)
-                        
-                        if(type != types.last) {
-                            CustomDivider()
-                        }
                     }
                 }
                 
@@ -40,14 +35,10 @@ struct DisableDevicesView: View {
                         
                         
                         ForEach(devices) { device in
-                            
                             DeviceEntryButton(device: device)
-                            
-                            if(device != devices.last) {
-                                CustomDivider()
-                            }
                         }
-                    }.padding(.top)
+                    }
+                    .padding(.top)
                 }
                  
                 Spacer()
@@ -74,7 +65,7 @@ struct DisableDeviceTypeView: View {
             HStack {
                 deviceType.constants.iconView
                 Text("ignore_every".localized() + " " + deviceType.constants.name)
-                    .foregroundColor(Color("MainColor"))
+                    .foregroundColor(.mainColor)
                 
                 Spacer()
             }.frame(height: Constants.SettingsLabelHeight)

@@ -22,21 +22,16 @@ class BluetoothManagerTimer: NSObject {
         
         super.init()
         
-        
-#if !BUILDING_FOR_APP_EXTENSION
-        
         // Start and stop scan every X seconds, but only if app is in foreground - required to refresh RSSI values without connecting to devices
         timer = Timer.scheduledTimer(withTimeInterval: Constants.scanInterval, repeats: true) { timer in
-                 
-                 if(!Settings.sharedInstance.isBackground && BluetoothManager.sharedInstance.turnedOn && BluetoothManager.sharedInstance.rssiScanForDevice == nil) {
-                     
-                     if(BluetoothManager.sharedInstance.scanning) {
-                         BluetoothManager.sharedInstance.stopScan()
-                         BluetoothManager.sharedInstance.startScan()
-                     }
-                 }
-             }
-
-#endif
+            
+            if(!Settings.sharedInstance.isBackground && BluetoothManager.sharedInstance.turnedOn && BluetoothManager.sharedInstance.rssiScanForDevice == nil) {
+                
+                if(BluetoothManager.sharedInstance.scanning) {
+                    BluetoothManager.sharedInstance.stopScan()
+                    BluetoothManager.sharedInstance.startScan()
+                }
+            }
+        }
     }
 }

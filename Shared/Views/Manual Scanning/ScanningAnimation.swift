@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ScanAnimation: View {
     
+    @Environment(\.colorScheme) var colorScheme
     @State var rotation = false
     let size: CGFloat
     
@@ -18,11 +19,11 @@ struct ScanAnimation: View {
         
         ZStack {
             
-            let altColor = withBackground ? Color(#colorLiteral(red: 0.1862959564, green: 0.5486807823, blue: 0.8759589791, alpha: 1)) : Color.accentColor
+            let altColor = withBackground ? Color(#colorLiteral(red: 0.1862959564, green: 0.5486807823, blue: 0.8759589791, alpha: 1)) : Color.blue
+            let altColor2 = colorScheme.isLight ? Color.clear : .white
             
-            AngularGradient(gradient: Gradient(colors: withBackground ? [.white.opacity(0.1), .white] : [.white, altColor]), center: .center)
+            AngularGradient(gradient: Gradient(colors: withBackground ? [.white.opacity(0.1), .white] : [altColor2, altColor]), center: .center)
                 .mask(Circle())
-            
                 .overlay(ZStack {
                     
                     let smallerSize = size * 0.15

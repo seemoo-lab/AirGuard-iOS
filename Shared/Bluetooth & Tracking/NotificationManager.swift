@@ -135,12 +135,7 @@ class NotificationManager: ObservableObject {
         
         let content = UNMutableNotificationContent()
         
-#if !BUILDING_FOR_APP_EXTENSION
         content.title = title
-#else
-        content.title = "[WIDGET]" + title
-#endif
-        
         content.body = subtitle
         content.sound = UNNotificationSound.default
         

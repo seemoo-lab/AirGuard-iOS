@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 /// Icon for tracker types
 struct TrackerIconView: ViewModifier {
     @State var imageName: String = ""
@@ -19,15 +18,19 @@ struct TrackerIconView: ViewModifier {
         let size = Constants.trackerIconViewSize
         
         content
-            .foregroundColor(.accentColor.opacity(colorScheme.isLight ? 0.8 : 1))
+            .foregroundColor(.airGuardBlue)
             .frame(width: size, height: size)
+            .overlay(
+                LinearGradient(colors: [.clear, .white.opacity(0.2)], startPoint: .bottom, endPoint: .top)
+                    .mask(content)
+            )
             .overlay(
                 
                 Group {
                     if(imageName != "") {
                         Image(systemName: imageName)
                             .font(.system(size: size * 0.6))
-                            .offset(y: -size * 0.02)
+                            .offset(x: -size * 0.01, y: -size * 0.02)
                     }
                     else {
                         Text(text)
@@ -35,8 +38,7 @@ struct TrackerIconView: ViewModifier {
                             .padding(size * 0.15)
                     }
                 }
-                    .foregroundColor(.white)
-                
+                .foregroundColor(.white)
             )
             .padding(.vertical)
             .compositingGroup()

@@ -29,6 +29,8 @@ final class SmartTagConstants: TrackerConstants {
     
     override class var supportURL: String? { "https://www.samsung.com/us/mobile/mobile-accessories/phones/samsung-galaxy-smart-tag-1-pack-black-ei-t5300bbegus/#benefits" }
     
+    override class var minMacAddressChangeTime: Int? { 24 }
+    
     override class var iconView: AnyView {
         AnyView(RoundedRectangle(cornerRadius: 5)
             .padding(2)
@@ -47,14 +49,14 @@ final class SmartTagConstants: TrackerConstants {
             let encryptionData = getEncryptionData(serviceData: servData ?? "")
             
             // get the current owner connection status
-            let connectionStatus: SmartTagConnectionStatus = connectionStatus(advertisementData: advertisementData)
+            let connectionStatus = connectionStatus(advertisementData: advertisementData)
             
             let time: Double
             
-            // in this case, the encyrption key changes every 24h. Thus, we search for SmartTags with the same encryption key in the last 24 hours
-            if connectionStatus == .DisconnectedMoreThan24h {
-                log("Detected SmartTag Disconnected More Than 24h.")
-                time = -daysToSeconds(days: 1)
+            // in this case, the encyrption key changes every 8h. Thus, we search for SmartTags with the same encryption key in the last 24 hours
+            if connectionStatus == .OvermatureOffline {
+                log("Detected SmartTag Disconnected More Than 8h.")
+                time = -hoursToSeconds(hours: 8)
             }
             // in this case, the encyrption key changes every 15m. Thus, we search for SmartTags with the same encryption key in the last 15m
             else {
@@ -84,7 +86,7 @@ final class SmartTagConstants: TrackerConstants {
             // we only take those SmartTags 15m/30m ago which have the same connection status - this is another identifier we can use to minimize the risk of merging two different SmartTags
             
             for value in [15, 30] {
-                if let existing = fetchSmartTagDiscoveredXMinAgo(x: value, connectionStatus: smartTagConnectionStatusToConnectionStatus(status: connectionStatus), context: context) {
+                if let existing = fetchSmartTagDiscoveredXMinAgo(x: value, connectionStatus: connectionStatus, context: context) {
                     
                     log("Refreshing MAC... - \(value)m - \(baseDevice.uniqueId?.description ?? "?")")
                     
@@ -97,7 +99,7 @@ final class SmartTagConstants: TrackerConstants {
             }
             
             // This actually is a new SmartTag, no data transfer needed
-            if connectionStatus == .ConnectedLast15m {
+            if connectionStatus == .PrematureOffline {
                 
                 // Due to the SmartTag architecture, we assume that the last MAC renewal happened the last quarter of the hour
                 baseDevice.lastMacRenewal = baseDevice.firstSeen?.lastFifteenMinutes()
@@ -109,15 +111,8 @@ final class SmartTagConstants: TrackerConstants {
     }
     
     
-    override class func connectionStatus(advertisementData: [String : Any]) -> ConnectionStatus {
-        
-        // get the specialized status and convert it to ConnectionStatus
-        return smartTagConnectionStatusToConnectionStatus(status: connectionStatus(advertisementData: advertisementData))
-    }
-    
-    
     /// Extracts the SmartTagConnectionStatus out of the advertisement data
-    class func connectionStatus(advertisementData: [String : Any]) -> SmartTagConnectionStatus {
+    override class func connectionStatus(advertisementData: [String : Any]) -> ConnectionStatus {
         
         let servData = getServiceData(advertisementData: advertisementData, key: SmartTagConstants.offeredService)
         
@@ -141,23 +136,23 @@ final class SmartTagConstants: TrackerConstants {
                     
                     if toBinary.indices.contains(3) {
                         
-                        // 4rd bit of second byte (=8th bit) determines if tracker was not connected to owner for more than 24 hours
-                        let disconnectedMoreThan24h = toBinary[3]
-                        // 3rd bit of second byte (=7th bit) determines if tracker was not connected to owner in last 15 minutes but less than 24 hours
-                        let disconnectedMoreThan15m = toBinary[2]
+                        /// Determines if SmartTag is paired to other device
+                        let bit5 = toBinary[1] == "1"
                         
-                        if disconnectedMoreThan15m == "0" {
-                            return .ConnectedLast15m
-                        }
+                        /// 3rd bit of second byte (=6th bit counting from 0) determines if tracker was not connected to owner in last 15 minutes but less than 24 hours
+                        let bit6 = toBinary[2] == "1"
                         
-                        else {
-                            
-                            if disconnectedMoreThan24h == "1" {
-                                return .DisconnectedMoreThan24h
-                            }
-                            
-                            return .DisconnectedMoreThan15m
-                            
+                        /// 4rd bit of second byte (=7th bit counting from 0) determines if tracker was not connected to owner for more than 24 hours
+                        let bit7 = toBinary[3] == "1"
+                        
+                        if (!bit5 && bit6 && bit7) {
+                            return .OvermatureOffline
+                        } else if (!bit5 && bit6 && !bit7) {
+                            return .Offline
+                        } else if (!bit5 && !bit6 && bit7) {
+                            return .PrematureOffline
+                        } else {
+                            return .Connected
                         }
                     }
                 }
@@ -167,43 +162,6 @@ final class SmartTagConstants: TrackerConstants {
         // No advertisement data
         return .Unknown
     }
-    
-    
-    /// Converts the specialized SmartTagConnectionStatus and converts it to ConnectionStatus
-    class func smartTagConnectionStatusToConnectionStatus(status: SmartTagConnectionStatus) -> ConnectionStatus {
-        
-        switch status {
-            
-        case .ConnectedLast15m:
-            return .OwnerConnected
-            
-        case .DisconnectedMoreThan15m:
-            return .OwnerDisconnected
-            
-        case .DisconnectedMoreThan24h:
-            return .OwnerDisconnected
-            
-        case .Unknown:
-            return .Unknown
-        }
-    }
-}
-
-
-/// Enum for the SmartTag connection status
-enum SmartTagConnectionStatus {
-    
-    /// The owner was connected to the SmartTag during the last 15 minutes
-    case ConnectedLast15m
-    
-    /// The owner was disconnected to the SmartTag for more than 15 minutes, but less than 24 hours
-    case DisconnectedMoreThan15m
-    
-    /// The owner was disconnected to the SmartTag for more than 24 hours
-    case DisconnectedMoreThan24h
-    
-    /// The owner connection status is unknown
-    case Unknown
 }
 
 

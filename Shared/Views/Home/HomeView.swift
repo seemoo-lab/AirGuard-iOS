@@ -17,8 +17,8 @@ struct HomeView: View {
     @ObservedObject var settings = Settings.sharedInstance
     
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "MainColor")!]
-        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "MainColor")!]
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(.mainColor)]
+        UINavigationBar.appearance().largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(.mainColor)]
     }
     
     var body: some View {
@@ -31,10 +31,11 @@ struct HomeView: View {
                     
                     if(!bluetoothManager.turnedOn && settings.mayCheckBluetooth) {
                         
-                        CardView(backgroundColor: .red, title: getBluetoothProblemHeader(), titleSymbol: "shield.slash.fill", subView:
-                                    AnyView(
-                                        HStack {CardSubView(symbol: "exclamationmark.triangle.fill", text: getBluetoothProblemSubHeader())
-                                        }))
+                        CardView(backgroundColor: .red, title: getBluetoothProblemHeader(), titleSymbol: "shield.slash.fill") {
+                            HStack {
+                                CardSubView(symbol: "exclamationmark.triangle.fill", text: getBluetoothProblemSubHeader())
+                            }
+                        }
                         .padding(.bottom, 10)
                         .onTapGesture {
                             openAppSettings()
@@ -42,23 +43,23 @@ struct HomeView: View {
                     }
                     else if(settings.backgroundScanning && !locationManager.hasAlwaysPermission()) {
                         
-                        CardView(backgroundColor: .red, title: "background_location_paused", titleSymbol: "location.slash.fill", subView:
-                                    AnyView(
-                                        HStack {CardSubView(symbol: "exclamationmark.triangle.fill", text: "background_location_paused_description")
-                                            
-                                            Image(systemName: "chevron.right")
-                                        }))
+                        CardView(backgroundColor: .red, title: "background_location_paused", titleSymbol: "location.slash.fill") {
+                            HStack {
+                                CardSubView(symbol: "exclamationmark.triangle.fill", text: "background_location_paused_description")
+                                Image(systemName: "chevron.right")
+                            }
+                        }
                         .padding(.bottom, 10)
                         .onTapGesture {
                             LocationManager.sharedInstance.requestWhenInUse()
                             
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            runAfter(seconds: 1) {
                                 LocationManager.sharedInstance.requestAlwaysUsage()
-                            })
+                            }
                             
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                            runAfter(seconds: 0.3) {
                                 openAppSettings()
-                            })
+                            }
                         }
                     }
                     else {
@@ -68,16 +69,15 @@ struct HomeView: View {
                     
                     ImageCardGroupHeader(name: "knowledge")
                     
-                    ForEach(articles) { elem in
-                        NavigationLink {
-                            ArticleView(article: elem)
-                        } label: {
-                            NewImageCardView(card: elem.card)
+                    LazyVStack {
+                        ForEach(articles) { elem in
+                            LUILink(style: .Plain, destination: ArticleView(article: elem), label: {
+                                NewImageCardView(card: elem.card)
+                            })
+                            .padding(.bottom, 20)
                         }
-                        .buttonStyle(PlainLinkStyle())
-                        .padding(.bottom, 20)
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, Constants.FormHorizontalPadding)
                 }
             }
             .navigationBarTitle("AirGuard")

@@ -8,6 +8,14 @@
 import SwiftUI
 
 
+/// Runs the closure after the specified seconds on the main thread.
+public func runAfter(seconds: Double, _ action: @escaping () -> ()) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        action()
+    }
+}
+
+
 extension ColorScheme {
     
     /// Returns if current color scheme is set to light.
@@ -33,6 +41,16 @@ struct PlainLinkStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
     }
+}
+
+
+/// Returns true if current device is simulator
+func isSimulator() -> Bool {
+    #if targetEnvironment(simulator)
+    return true
+    #else
+    return false
+    #endif
 }
 
 
@@ -108,13 +126,6 @@ extension String {
 }
 
 
-extension Color {
-    static var formLightGray = Color(#colorLiteral(red: 0.9490311742, green: 0.9487944245, blue: 0.9704338908, alpha: 1))
-    static var formDeepGray = Color(#colorLiteral(red: 0.1098039216, green: 0.1098039216, blue: 0.1098039216, alpha: 1))
-    static var formGray = Color(#colorLiteral(red: 0.1725719571, green: 0.1724473834, blue: 0.1811259687, alpha: 1))
-}
-
-
 /// Centers the text and reduces opacity
 struct TextCenterModifier: ViewModifier {
     
@@ -157,8 +168,8 @@ extension View {
 extension View {
     
     /// Transforms a view into a large, colored button
-    func customButton(colors: [Color]) -> ModifiedContent<Self, ButtonModifier> {
-        return modifier(ButtonModifier(colors: colors))
+    func customButton(colors: [Color], invert: Bool) -> ModifiedContent<Self, ButtonModifier> {
+        return modifier(ButtonModifier(colors: colors, invert: invert))
     }
 }
 
@@ -166,15 +177,23 @@ extension View {
 /// Transforms a view into a large, colored button
 struct ButtonModifier: ViewModifier {
     
-    var colors: [Color]
+    let colors: [Color]
+    let invert: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     func body(content: Content) -> some View {
         content
-            .foregroundColor(.white)
+            .foregroundColor(invert ? colors.first! : .white)
             .font(.headline)
             .padding()
             .frame(minWidth: 0, maxWidth: 320, alignment: .center)
-            .background(getGradient(colors: colors).cornerRadius(20))
+            .background(
+                ZStack {
+                    getGradient(colors: colors)
+                    LinearGradient(colors: [.clear, .white.opacity(0.2)], startPoint: .bottom, endPoint: .top)
+                }
+                .opacity(invert ? (colorScheme.isLight ? 0.2 : 0.25) : 1)
+                .cornerRadius(20))
     }
 }
 
@@ -234,4 +253,9 @@ private extension UIEdgeInsets {
     var insets: EdgeInsets {
         EdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
     }
+}
+
+
+#Preview {
+    ColoredButton(action: {}, label: "Hello", invertColors: true)
 }

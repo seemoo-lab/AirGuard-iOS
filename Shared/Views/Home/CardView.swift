@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct CardView: View {
+struct CardView<Content: View>: View {
     
     let backgroundColor: Color
     let title: String
     let titleSymbol: String
-    let subView: AnyView
+    let subView: () -> Content
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -33,14 +33,19 @@ struct CardView: View {
                 .padding(.bottom, 5)
      
             
-            subView
+            subView()
         }
         .padding()
         .foregroundColor(backgroundColor == .white ? .gray : .white)
-        .background(backgroundColor.cornerRadius(20))
+        .background(
+            ZStack {
+                backgroundColor
+                LinearGradient(colors: [.clear, .white.opacity(0.15)], startPoint: .bottom, endPoint: .top)
+            }
+                .cornerRadius(20))
         .compositingGroup()
         .shadow(color: Color.gray.opacity(colorScheme.isLight ? 0.05 : 0), radius: 7, x: 3, y: 3)
-        .padding(.horizontal)
+        .padding(.horizontal, Constants.FormHorizontalPadding)
         .padding(.top)
         
     }

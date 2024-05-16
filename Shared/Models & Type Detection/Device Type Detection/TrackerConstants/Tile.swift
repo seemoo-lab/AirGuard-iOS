@@ -20,6 +20,18 @@ final class TileConstants: TrackerConstants {
     
     override class var bestRSSI: Int { -39 }
     
+    override class var minDistinctLocations: Int {
+        
+        switch Settings.sharedInstance.securityLevel {
+        case .Low:
+            return 5
+        case .Normal:
+            return 4
+        case .High:
+            return 3
+        }
+    }
+    
     override class var supportURL: String? { "https://tileteam.zendesk.com/hc/en-us/articles/203954683-Return-a-Tile-to-Its-Owner" }
     
     override class var iconView: AnyView {

@@ -38,6 +38,10 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         
         notificationManager.scheduleNotificationForSurvey()
         
+        PersistenceController.sharedInstance.modifyDatabaseBackground { context in
+            removeAllDevicesWithNoNotificationOlderThan30Days(context: context)
+        }
+        
         return true
     }
     

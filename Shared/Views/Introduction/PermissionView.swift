@@ -57,7 +57,7 @@ struct NoBackgroundScanningButton: View {
     
     var body: some View {
         
-        Button(action: {
+        LUIButton(action: {
             
             settings.backgroundScanning = false
             
@@ -72,7 +72,7 @@ struct NoBackgroundScanningButton: View {
 
         }, label: {
             Text("skip_background_scanning")
-            
+                .foregroundColor(.airGuardBlue)
         })
         
         .modifier(LinkTo(content: {
@@ -128,18 +128,28 @@ struct BigSymbolView<V0: View>: View {
             Text(title.localized())
                 .largeTitle()
                 .centered()
-                .foregroundColor(Color("MainColor"))
+                .foregroundColor(.mainColor)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, topPadding)
-                .padding(.horizontal)
+                .padding(.horizontal, Constants.FormHorizontalPadding)
             
             Spacer()
             Spacer()
             
-            
-            Image(systemName: symbol)
-                .gradientForeground(gradient: LinearGradient(gradient: .init(colors: Constants.defaultColors), startPoint: .bottomLeading, endPoint: .topTrailing))
-                .font(.system(size: imageFontSize, weight: .heavy, design: .default))
+            ZStack {
+                LinearGradient(gradient: .init(colors: Constants.defaultColors), startPoint: .bottomLeading, endPoint: .topTrailing)
+                LinearGradient(colors: [.clear, .white.opacity(0.2)], startPoint: .bottom, endPoint: .top)
+            }
+                .mask(Circle())
+                .frame(width: imageFontSize, height: imageFontSize)
+                .overlay(
+                    
+                    Image(systemName: symbol)
+                       
+                        .font(.system(size: imageFontSize * 0.5, weight: .heavy))
+                        .foregroundColor(.white)
+                        .padding(symbolPadding)
+                )
                 .padding(symbolPadding)
             
             Spacer()

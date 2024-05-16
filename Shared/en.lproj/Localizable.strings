@@ -7,7 +7,7 @@
 */
 
 "unknown_device" = "Unknown";
-"find_my_device" = "Find My Device";
+"find_my_device" = "\"Find My\" Tracker";
 "chipolo_without_findmy" = "Chipolo (w/o Find My)";
 "left" = "Left";
 "right" = "Right";
@@ -30,7 +30,7 @@
 "bluetooth_access_description" = "Trackers use Bluetooth for communication. Please allow Bluetooth access so AirGuard can detect trackers around you.";
 
 "notification_access" = "Notification Access";
-"notification_access_description" = "To receive a notification if you might have been tracked, you need to enable notifications for AirGuard.";
+"notification_access_description" = "AirGuard searches for trackers when the app is closed. To be informed if you might have been tracked, you need to enable notifications for AirGuard.";
 
 "location_access" = "Location Access";
 "location_access_description" = "We use the location of your device to determine if a tracker is actually following you. All location data stay on your device. Please tap \"Continue\" and select \"Allow While Using App\". Make sure \"Precise\" is turned on.";
@@ -96,6 +96,8 @@ Email: aheinrich@seemoo.tu-darmstadt.de";
 For technical reasons, not all features are available for every tracker type. For example, the determination if trackers are separated from their owners is only available for SmartTags.";
 
 "we_detected_X_trackers_around_you" = "We detected %@ %@ around you so far.";
+"manual_scan_own_devices_hint" = "Own trackers may be hidden.";
+"manual_scan_dangerous_hint" = "All trackers, including non-dangerous ones, are displayed.";
 "tracker_singular" = "tracker";
 "tracker_plural" = "trackers";
 
@@ -122,13 +124,12 @@ For technical reasons, not all features are available for every tracker type. Fo
 
 "manage_ignored_devices" = "Manage Ignored Devices";
 "ignored_devices" = "Ignored Devices";
-"device_types" = "Device Types";
 "ignore_type_footer" = "If you disable a device type above, you will no longer receive notifications for any device of this type.";
 "devices" = "Devices";
 
 "seen_x_times_last" = "Seen %@x, last: %@";
 
-"no_trackers_detected_yet" = "We did not detect any trackers following you yet. You are safe.";
+"no_trackers_detected_yet" = "We did not detect any trackers following you yet.";
 "no_device_detected_yet" = "We did not discover any trackers in the past. Check back later.";
 
 "info" = "Info";
@@ -151,7 +152,7 @@ For technical reasons, not all features are available for every tracker type. Fo
 "background_scanning_paused_description" = "Enable Bluetooth and tap here to resume background scanning.";
 
 "background_location_paused" = "No Location Access";
-"background_location_paused_description" = "You need to set location access to \"Always\" and \"Precise\" for background scanning to work correctly.";
+"background_location_paused_description" = "For background scanning, you need to set location access to \"Always\" and \"Precise\".";
 
 "tracker_follows_you" = "A tracker might follow you!";
 "update_tracker_observing" = "Observed Tracker Update";
@@ -166,11 +167,31 @@ For technical reasons, not all features are available for every tracker type. Fo
 "feature_unavailable" = "Feature Unavailable";
 "observing_unavailable_description" = "Enable background scanning and disable 'Ignore This Tracker' to observe this tracker.";
 
-"mark_false_alarm" = "Mark as False Alarm";
-"unmark_false_alarm" = "Unmark as False Alarm";
+"tracker_detail_notifications_tracker_hideout" = "Tracker Hideout";
+"tracker_detail_notifications_tracker_marked_as_threat" = "Marked as Threat";
+"tracker_detail_notifications_tracker_marked_as_false_alarm" = "Marked as False Alarm";
+"tracker_detail_notifications_tracker_no_feedback_saved" = "No feedback saved";
+
+"feedback_banner_description" = "You received a notification. Tell us if you think that the tracker is following you.";
+
+"feedback_view_false_alarm_header" = "Feedback";
+"feedback_view_false_alarm_subtitle" = "Please let us know if you think that the tracker is following you or that this notification was a false alarm. This will help us to further improve the app.";
+"feedback_view_false_alarm_mark_as_false_alarm" = "Mark as False Alarm";
+"feedback_view_false_alarm_mark_as_threat" = "Mark as a Threat";
+"feedback_view_thanks_header" = "Thank you!";
+"feedback_view_thanks_subtitle" = "Your feedback has been successfully saved. If you want to edit it again later, tap the feedback button next to the notification.";
+"feedback_view_thanks_done_button" = "Done";
+"feedback_view_additional_feedback_header" = "Tracker Hideout";
+"feedback_view_additional_feedback_subtitle" = "Where was the tracker hidden?";
+"feedback_view_additional_feedback_bag" = "Bag";
+"feedback_view_additional_feedback_clothes" = "Clothes";
+"feedback_view_additional_feedback_car" = "Car";
+"feedback_view_additional_feedback_bicycle" = "Bicycle";
+"feedback_view_additional_feedback_other" = "Other";
+"feedback_view_additional_feedback_not_found" = "Not Found";
 "false_alarm_description" = "By marking notifications as false alarms, you help improving AirGuard.";
 
-"nfc_description" = "Hold the %@ to the top back of your iPhone.";
+"nfc_description" = "Hold the white side of the %@ to the top back of your iPhone.";
 
 "now" = "just now";
 
@@ -192,12 +213,19 @@ For technical reasons, not all features are available for every tracker type. Fo
 
 "information_and_contact" = "Information & Contact";
 "contact_developer" = "Contact Us";
+"informationview_contact_alert_title" = "Please note";
+"informationview_contact_alert_description" = "We are a development team, and therefore cannot offer personal advice. If you think you are being tracked, please tap on \"Help with tracking\".
+
+For all other questions and suggestions, we are happy to help. However, please also refer to our FAQ, where we have already answered many frequently asked questions.";
+"informationview_contact_alert_help_with_tracking" = "Help with tracking";
+"informationview_contact_alert_read_faq" = "Read FAQ";
 "credits" = "Credits";
-"developer" = "Developer";
+"developer_maintainer" = "Developer & Maintainer";
 "maintainer" = "Maintainer";
 "copyright" = "Copyright";
 "informationview_airguard_os" = "AirGuard for %@";
 "version" = "Version";
+"informationview_used_content" = "Used Content";
 "copyright_text" = "Image sources:
 
 \"Survey\" header: [Image by pch.vector on Freepik](https://de.freepik.com/vektoren-kostenlos/experte-prueft-die-bestellung-des-geschaeftsfuehrers_11235382.htm?query=pch%20vector%20form#from_view=detail_alsolike)
@@ -212,7 +240,8 @@ For technical reasons, not all features are available for every tracker type. Fo
 ";
 
 "tracker_history" = "Tracker History";
-"older_trackers" = "Older Trackers";
+"tracker_history_hint" = "Non-connected trackers that were detected in the last 30 days are displayed here. Harmless trackers are also displayed.";
+"previously_found" = "Previously found";
 
 "survey_link" = "https://survey.seemoo.tu-darmstadt.de/index.php/317138?G06Q39=AirGuardAppiOS&lang=en&newtest=Y";
 
@@ -222,9 +251,16 @@ For technical reasons, not all features are available for every tracker type. Fo
 
 "nearby" = "Nearby";
 "no_connection" = "Currently Not in Range";
-"owner_connected" = "Connected to Owner in Last 15m";
+"owner_connected" = "Connected to Owner";
+"owner_premature_offline" = "Connected to Owner in Last 15m";
 "owner_disconnected" = "Separated From Owner";
 "unknown_connection_status" = "Unknown Connection Status";
+"forget_tracker" = "Forget Tracker";
+"forget_tracker_alert_header" = "Are you sure?";
+"forget_tracker_alert_description" = "This operation will delete all information about this tracker.";
+
+"min_mac_address_change_time_changes_never_info" = "%@ devices do not change their identity over time. This can lead to more false warnings. If you are warned, check that the tracker is carried by from someone around you.";
+"min_mac_address_change_time_info" = "Attention: %@ devices change their identity at least every %@ hours. These devices are therefore recognized as a new device periodically and can be displayed multiple times.";
 
 "locate_tracker" = "Locate Tracker";
 "trying_connection" = "No signal. Connecting...";
@@ -261,7 +297,7 @@ The latter cannot be used to track your location. Please note that the connectio
 "map_unavailable_ignored" = "The map is unavailable because the tracker is ignored.";
 "map_unavailable_no_locations" = "The map is unavailable because no locations have been found for this tracker.";
 
-/* Articles */
+//MARK: - Articles 
 
 "article_howitworks_header" = "How Does AirGuard Work?";
 "article_howitworks_subheader" = "Learn more about how AirGuard protects you from malicious trackers";
@@ -400,7 +436,7 @@ If you know more numbers for different countries, please get into contact at [ah
 *Yes, the app will be offered for free forever.*
 ";
 
-"article_survey_header" = "We’re Doing a Survey";
+"article_survey_header" = "Our Survey";
 "article_survey_subheader" = "Research on stalking with trackers";
 "article_survey_text" = "The rise of personal trackers like Apple's AirTag and other trackers has led to growing concerns about their misuse in stalking. Our IT-Security research team at the Technical University of Darmstadt is conducting a study to quantify these incidents and improve protection measures.
 

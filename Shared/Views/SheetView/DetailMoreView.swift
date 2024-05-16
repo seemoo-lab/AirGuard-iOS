@@ -21,31 +21,25 @@ struct DetailMoreView: View {
         if(nfcSupport || constants.supportURL != nil) {
             
             CustomSection(header: "more", footer: "more_trackerdetailview_description") {
-
+                
                 let color = Color(#colorLiteral(red: 1, green: 0.6991065145, blue: 0.003071677405, alpha: 1))
                 
-                Group {
-                    if nfcSupport {
-                        Button {
-                            nfcReader.scan(infoMessage: String(format: "nfc_description".localized(), tracker.getName) )
-                        } label: {
-                            NavigationLinkLabel(imageName: "person.fill", text: "scan_nfc", backgroundColor: color, isNavLink: true)
-                        }
-                        
-                        if constants.supportURL != nil {
-                            CustomDivider()
-                        }
+                if nfcSupport {
+                    LUIButton {
+                        nfcReader.scan(infoMessage: String(format: "nfc_description".localized(), tracker.getName) )
+                    } label: {
+                        NavigationLinkLabel(imageName: "person.fill", text: "scan_nfc", backgroundColor: color, isNavLink: true)
                     }
-                    
-                    
-                    if constants.supportURL != nil {
-                        Button {
-                            if let urlString = constants.supportURL, let url = URL(string: urlString) {
-                                openURL(url: url)
-                            }
-                        } label: {
-                            NavigationLinkLabel(imageName: "info", text: "website_manufacturer", backgroundColor: .green, isNavLink: false)
+                }
+                
+                
+                if constants.supportURL != nil {
+                    LUIButton {
+                        if let urlString = constants.supportURL, let url = URL(string: urlString) {
+                            openURL(url: url)
                         }
+                    } label: {
+                        NavigationLinkLabel(imageName: "info", text: "website_manufacturer", backgroundColor: .green, isNavLink: false)
                     }
                 }
             }

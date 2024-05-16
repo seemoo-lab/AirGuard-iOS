@@ -1,5 +1,5 @@
 //
-//  BluetoohManager.swift
+//  BluetoothManager.swift
 //  AirGuard
 //
 //  Created by Leon Böttger on 15.04.22.
@@ -75,12 +75,7 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
             
             if(centralManager == nil) {
                 
-#if !BUILDING_FOR_APP_EXTENSION
                 let manager = CBCentralManager(delegate: self, queue: bluetoothQueue, options: [CBCentralManagerOptionRestoreIdentifierKey: restoreID])
-#else
-                let manager = CBCentralManager(delegate: self, queue: bluetoothQueue)
-#endif
-                
                 self.centralManager = manager
                 self.centralManagerDidUpdateState(manager)
             }
@@ -178,7 +173,7 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         
         // Bluetooth is turned off
-        if(central.state != CBManagerState.poweredOn) {
+        if(!isSimulator() && central.state != CBManagerState.poweredOn) {
             notificationManager.sendManagerStoppedNotification()
             
             DispatchQueue.main.async {
@@ -350,7 +345,6 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
     
     
     /// Called if state of central manager is restored.
-#if !BUILDING_FOR_APP_EXTENSION
     public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
         
         if let devices = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral] {
@@ -374,7 +368,6 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
             centralManagerDidUpdateState(central)
         }
     }
-    #endif
 
 
     /// Found new device via scan

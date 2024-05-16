@@ -60,6 +60,20 @@ func cleanDatabase(context: NSManagedObjectContext) {
 }
 
 
+/// Removes all devices not seen for the last 30 days.
+func removeAllDevicesWithNoNotificationOlderThan30Days(context: NSManagedObjectContext) {
+    
+    if let threshold = Calendar.current.date(byAdding: .day, value: -30, to: Date()) {
+        
+        // avoid removing ignored devices, to not reset the ignore flag on those
+        let oldDevices = fetchDevices(withPredicate: NSPredicate(format: "ignore == FALSE && lastSeen < %@", threshold as CVarArg), context: context)
+        let neverSentNotification = oldDevices.filter({ ($0.notifications?.count ?? 0) == 0 })
+        
+        delete(entries: neverSentNotification, context: context)
+    }
+}
+
+
 /// Fetches all devices meeting the predicate. Limit of array can be specified in `withLimit`.
 func fetchDevices(withPredicate: NSPredicate? = nil, withLimit: Int? = nil, context: NSManagedObjectContext) -> [BaseDevice] {
     
@@ -114,6 +128,8 @@ func delete<T: NSManagedObject>(entries: [T], context: NSManagedObjectContext) {
 /// Triggers a fake tracking notification.
 func addFakeNotification(context: NSManagedObjectContext) {
     
+    Settings.sharedInstance.securityLevel = .High
+    
     let device = BaseDevice(context: context)
     device.setType(type: .Tile)
     device.firstSeen = Date().addingTimeInterval(-3600)
@@ -123,13 +139,11 @@ func addFakeNotification(context: NSManagedObjectContext) {
     
     let latitudes = [51.188777831702524, 51.18463543547539, 51.189239879202825]
     let longtitudes = [8.920169427825071, 8.939138009645319, 8.962054803066161]
-    //let latitudes = [50.09502384859174, 50.096992266828, 50.09528883268004]
-    //let longtitudes = [8.452077769558873, 8.453215026096474, 8.455248140378318]
     
     
     let detectionEvent = DetectionEvent(context: context)
     
-    detectionEvent.connectionStatus = ConnectionStatus.OwnerDisconnected.rawValue
+    detectionEvent.connectionStatus = ConnectionStatus.Offline.rawValue
     detectionEvent.time = Date.distantPast
     detectionEvent.baseDevice = device
     
@@ -137,7 +151,7 @@ func addFakeNotification(context: NSManagedObjectContext) {
     for index in 0..<latitudes.count{
         let detectionEvent = DetectionEvent(context: context)
         
-        detectionEvent.connectionStatus = ConnectionStatus.OwnerDisconnected.rawValue
+        detectionEvent.connectionStatus = ConnectionStatus.Offline.rawValue
         detectionEvent.time = device.lastSeen?.addingTimeInterval(TimeInterval(-60 * 15 * (latitudes.count - index)))
         detectionEvent.baseDevice = device
         

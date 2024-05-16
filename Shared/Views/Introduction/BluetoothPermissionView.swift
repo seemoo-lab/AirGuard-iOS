@@ -16,7 +16,7 @@ struct BluetoothPermissionView: View {
         
         let canProceed = bluetoothManager.centralManager?.state == .poweredOn || bluetoothManager.centralManager?.state == .poweredOff
         
-        PermissionView(title: "bluetooth_access", symbol: "magnifyingglass.circle.fill", subtitle: "bluetooth_access_description", action: {
+        PermissionView(title: "bluetooth_access", symbol: "magnifyingglass", subtitle: "bluetooth_access_description", action: {
             
             bluetoothManager.startCentralManager()
             
@@ -24,7 +24,7 @@ struct BluetoothPermissionView: View {
                 openAppSettings()
             }
             
-            if canProceed {
+            if isSimulator() || canProceed {
                 IntroducationViewController.sharedInstance.canProceed = true
             }
             

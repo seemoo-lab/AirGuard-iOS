@@ -28,6 +28,8 @@ final class AirTagConstants: TrackerConstants {
     
     override class var supportURL: String? { "https://support.apple.com/en-us/HT212227" }
     
+    override class var minMacAddressChangeTime: Int? { 24 }
+    
     override class var iconView: AnyView {
         AnyView(Circle()
             .modifier(TrackerIconView(imageName: "applelogo")))
@@ -72,4 +74,9 @@ func detectAirTagsAndFindMyDevices(baseDevice: BaseDevice, detectService: String
         
         BluetoothManager.sharedInstance.addRequest(request: request)
     }
+}
+
+
+#Preview {
+    AirTagConstants.iconView
 }

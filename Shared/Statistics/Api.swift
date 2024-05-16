@@ -158,6 +158,7 @@ struct API_Request {
         let receivedAt: Date
         let rssi: Int
         let serviceUUIDs: [String]
+        let connectionState: String
     }
     
     struct Notification: Codable {

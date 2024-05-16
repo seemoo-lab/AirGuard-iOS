@@ -16,9 +16,9 @@ struct DebugSettingsView: View {
         
         NavigationSubView {
             
-            CustomSection() {
+            CustomSection {
                 
-                Button(action: {
+                LUIButton(action: {
                     
                     guard let fileURL = LogManager.sharedInstance.logFileURL else  {return}
                     
@@ -48,7 +48,7 @@ struct DebugSettingsView: View {
                 }
                 
                 
-                Button(action: {
+                LUIButton(action: {
                     
                     BluetoothManager.sharedInstance.reset()
                     
@@ -57,7 +57,7 @@ struct DebugSettingsView: View {
                 }
                 
                 
-                Button(action: {
+                LUIButton(action: {
                     PersistenceController.sharedInstance.modifyDatabase { context in
                         addFakeNotification(context: context)
                     }
@@ -66,7 +66,7 @@ struct DebugSettingsView: View {
                     SettingsLabel(imageName: "bell", text: "Fake Notification", backgroundColor: .green)
                 }
                 
-                Button(action: {
+                LUIButton(action: {
                     let statsController = SendStatisticsController(lastDataDonation: Date.distantPast)
                     Task{
                         try? await statsController.sendStats()
@@ -77,15 +77,15 @@ struct DebugSettingsView: View {
                 }
             }
             
-            CustomSection() {
+            CustomSection {
                 
-                Button(action: {
+                LUIButton(action: {
                     addDummyData()
                 }) {
                     SettingsLabel(imageName: "plus", text: "Simulate Database Overload", backgroundColor: .gray)
                 }
                 
-                Button(action: {
+                LUIButton(action: {
                     PersistenceController.sharedInstance.modifyDatabase { context in
                         cleanDatabase(context: context)
                     }
@@ -93,23 +93,20 @@ struct DebugSettingsView: View {
                 }) {
                     SettingsLabel(imageName: "minus", text: "Clean Old Tracker Data", backgroundColor: .gray)
                 }
-                
             }
             
-            CustomSection() {
+            CustomSection {
                 
-                NavigationLink {
+                LUILink(destination:
                     DebugMapView()
                         .ignoresSafeArea(.all, edges: [.horizontal, .bottom])
                         .navigationBarTitleDisplayMode(.inline)
-                        .background(ProgressView())
-                    
-                } label:
+                        .background(ProgressView()), label:
                 {
                     SettingsLabel(imageName: "map.fill", text: "Show all locations", backgroundColor: .green)
-                }
+                })
                 
-                Button(action: {
+                LUIButton(action: {
                     
                     settings.tutorialCompleted = false
                     
@@ -118,7 +115,7 @@ struct DebugSettingsView: View {
                 }
             }
             
-            CustomSection() {
+            CustomSection {
 
                 DeleteElemView(name: "BaseDevices", type: BaseDevice.self)
                 DeleteElemView(name: "DetectionEvents", type: DetectionEvent.self)
@@ -145,7 +142,7 @@ struct DeleteElemView<T: NSManagedObject>: View {
     
     var body: some View {
         
-        Button {
+        LUIButton {
             PersistenceController.sharedInstance.modifyDatabase { context in
                 delete(entries: Array(elems), context: context)
             }

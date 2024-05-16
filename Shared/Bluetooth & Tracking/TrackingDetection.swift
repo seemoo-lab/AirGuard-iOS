@@ -30,11 +30,8 @@ class TrackingDetection: ObservableObject {
     
     /// specifies the minimum distance in meters any two of the three locations need to be away from each other before a notification can be sent
     static let minTrackingDist: Double = minLocationDist*2
-
-    /// specifies how often a detection event has to be occurred before a notification can be sent
-    static let minimumDetectionEvents = 3
     
-    /// specifies in seconds how often notification to the same tracker are allowed to be sent
+    /// specifies in seconds how often notifications to the same tracker are allowed to be sent
     static let secondsUntilAnotherNotification: Double = hoursToSeconds(hours: 8)
     
     /// Subtract x seconds from every 'minimum tracking time'. The reason for this is that Tiles and SmartTags we get CoreBluetooth updates for already seen trackers every 15 minutes. If we would not subtract the buffer Value from ex. 30min, it could happen that we could send a notification at 45m, since the 15 minutes are not always exact -> if delivered early, 30mins might not be reached
@@ -57,37 +54,58 @@ class TrackingDetection: ObservableObject {
     func checkIfTracked(device: BaseDevice, context: NSManagedObjectContext) {
         if device.isTracker, !device.ignore, !device.getType.getIgnore() {
             
-            /// Already sent a notification -> we do not check for locations, time etc.
-            if alreadyReceivedNotification(forDevice: device) {
-                
-                tryToRequestTrackerNotification(forTracker: device, context: context)
-            }
+            var lastNotificationDate = Date.distantPast
             
-            /// Not received notification yet
-            else if isTrackingForEnoughTime(baseDevice: device), let detections = device.detectionEvents?.array as? [DetectionEvent], detections.last?.connectionStatus != ConnectionStatus.OwnerConnected.rawValue {
+            /// Check when last notification was sent
+            if let notifications = device.notifications?.array as? [TrackerNotification], 
+                let lastNotification = notifications.last,
+                let date = lastNotification.time {
                 
-                // Only use non-owner connected detections of last 14 days to make computation more efficient and to reduce false notifications
+                lastNotificationDate = date
+            }
+
+            if let detections = device.detectionEvents?.array as? [DetectionEvent],
+               
+                /// Early abortion - if not tracking for enough time or tracker is not in tracking mode, we dont send any notification
+               isTrackingForEnoughTime(baseDevice: device, detections: detections),
+               isTrackerInTrackingMode(for: detections.last) {
+                
+                /// Only use non-owner connected detections of last `trackingEventsSince` seconds
+                /// Also only consider detections after last notification
+                /// To make computation more efficient and to reduce false notifications
                 var relevantDetectionEvents = [DetectionEvent]()
                 
-                let deviceConstants = device.getType.constants
-                
+                /// Check most recent detections first
                 for detection in detections.reversed() {
                     
                     if let time = detection.time {
-                        if(time.isOlderThan(seconds: deviceConstants.trackingEventsSince)) {
+                        
+                        /// If the detection event is older than X hours, we do not conisder it anymore
+                        if(time.isOlderThan(seconds: device.getType.constants.trackingEventsSince)
+                           
+                           /// We only consider detection events which are sent after the last notification (new events)
+                           || time <= lastNotificationDate) {
+                            
+                            /// Quit the for loop (break because we transverse the detections in reverse)
                             break
                         }
                         else {
-                            if detection.connectionStatus != ConnectionStatus.OwnerConnected.rawValue {
-                                relevantDetectionEvents.insert(detection, at: 0) // preserve order
+                            if isTrackerInTrackingMode(for: detection) {
+                                relevantDetectionEvents.insert(detection, at: 0) // preserve order (oldest first)
                             }
                         }
                     }
                 }
                 
-                if hasEnoughDetectionEvents(baseDevice: device, detections: relevantDetectionEvents),
+                /// Check `isTrackingForEnoughTime` with the filtered detections again. That's because when a notification has been sent, we only want to check the new detections, after this notification. We check `isTrackingForEnoughTime` twice. The first call is to filter out a lot of devices already, to avoid the expensive for loop.
+                if isTrackingForEnoughTime(baseDevice: device, detections: relevantDetectionEvents),
+                   
+                    /// Only relevant if location access is denied
+                     hasEnoughDetectionEvents(baseDevice: device, detections: relevantDetectionEvents),
+                   
+                    /// Check if minimum locations are reached
                    (!locationManager.hasAlwaysPermission() || hasMinDetectionDistance(baseDevice: device, detections: relevantDetectionEvents)) {
-                    
+
                     tryToRequestTrackerNotification(forTracker: device, context: context)
                 }
             }
@@ -102,22 +120,44 @@ class TrackingDetection: ObservableObject {
     
     /// Checks if the tracker has been detected multiple times
     func hasEnoughDetectionEvents(baseDevice: BaseDevice, detections: [DetectionEvent]) -> Bool {
-        return detections.count >= TrackingDetection.minimumDetectionEvents
+        
+        // This is only relevant if location access was turned off
+        return detections.count >= baseDevice.getType.constants.minDistinctLocations
     }
     
     
     /// Gets a list of detection events and checks if the user is being tracked for the minimum amount of time before a notification is sent.
-    func isTrackingForEnoughTime(baseDevice: BaseDevice) -> Bool {
+    func isTrackingForEnoughTime(baseDevice: BaseDevice, detections: [DetectionEvent]) -> Bool {
         
-        if let detections = baseDevice.detectionEvents?.array as? [DetectionEvent] {
+        if let first = detections.first, let last = detections.last, let firstDate = first.time, let lastDate = last.time,
+           firstDate.distance(to: lastDate) >= (baseDevice.getType.constants.minTrackingTime - TrackingDetection.trackingTimeBuffer) {
             
-            if let first = detections.first, let last = detections.last, let firstDate = first.time, let lastDate = last.time,
-               firstDate.distance(to: lastDate) >= (baseDevice.getType.constants.minTrackingTime - TrackingDetection.trackingTimeBuffer) {
-                
-                return true
-            }
+            return true
         }
         
+        return false
+    }
+    
+    
+    /// Checks if the event is a tracking event
+    func isTrackerInTrackingMode(for detectionEvent: DetectionEvent?) -> Bool {
+        if let detectionEvent = detectionEvent {
+            
+            // In travel mode, we assume that the tracker is not malicious and the owner is nearby
+            if detectionEvent.isTraveling {
+                return false
+            }
+            
+            // We can successfully read out the connection status from the DB
+            if let connectionStatus = ConnectionStatus(rawValue: detectionEvent.connectionStatus ?? "") {
+                return connectionStatus.isInTrackingMode()
+            }
+            
+            // Some error occured (this might happen on version upgrade), we need to assume that event is tracking event
+            return true
+        }
+        
+        // No detection found
         return false
     }
     
@@ -128,71 +168,8 @@ class TrackingDetection: ObservableObject {
         // Removes duplicate locations
         let withoutDuplicates = Set(detections.compactMap({$0.location}))
         
-        // If fewer than three locations, the minimum requirement is not reached
-        if withoutDuplicates.count < 3 {
-            return false
-        }
-        
-        // generate array with CLLocation for easier distance comparison
-        let locations = Array(withoutDuplicates).map({CLLocation(latitude: $0.latitude, longitude: $0.longitude)})
-        
-        
-        // ----- check if there are 3 locations which are all different from each other and all locations have the minimum distance -----
-        
-        
-        // Check all locations
-        for a in 0..<locations.count {
-            
-            for b in a+1..<locations.count {
-                
-                for c in b+1..<locations.count {
-                    
-                    let loc1 = locations[a]
-                    let loc2 = locations[b]
-                    let loc3 = locations[c]
-                    
-                    let dist12 = loc1.distance(from: loc2)
-                    let dist23 = loc2.distance(from: loc3)
-                    let dist31 = loc3.distance(from: loc1)
-                    
-                    // check for minimum distance requirement
-                    let fulfillsRequirement = dist12 >= TrackingDetection.minLocationDist &&
-                    dist23 >= TrackingDetection.minLocationDist &&
-                    dist31 >= TrackingDetection.minLocationDist &&
-                    
-                    (dist12 >= TrackingDetection.minTrackingDist ||
-                     dist23 >= TrackingDetection.minTrackingDist ||
-                     dist31 >= TrackingDetection.minTrackingDist)
-                    
-                    // if requirement is true, return true. Otherwise we continue iterating.
-                    if fulfillsRequirement {
-                        return true
-                    }
-                }
-            }
-        }
-        
-        // 3 locations with requirement not found
-        return false
-    }
-    
-    
-    /// Returns the date of the last notification for a given device
-    func getDateOfLastNotification(device: BaseDevice) -> Date? {
-        if let notifications = device.notifications?.array as? [TrackerNotification] {
-            return notifications.last?.time
-        }
-        return nil
-    }
-    
-
-    /// Returns `true` if a notification was sent for the tracker already, else `false`
-    func alreadyReceivedNotification(forDevice: BaseDevice) -> Bool {
-        
-        if let notifications = forDevice.notifications?.array as? [TrackerNotification] {
-            return notifications.count > 0
-        }
-        return false
+        // Since we cluster locations, just check how many distinct ones were collected
+        return withoutDuplicates.count >= baseDevice.getType.constants.minDistinctLocations
     }
     
     
@@ -203,7 +180,7 @@ class TrackingDetection: ObservableObject {
             
             if(notifications.last?.time?.timeIntervalSinceNow ?? -.infinity < -TrackingDetection.secondsUntilAnotherNotification) {
                 
-                // crete new notification ID
+                // create new notification ID
                 let notificationID = UUID()
                 
                 // create notification in database
@@ -234,84 +211,16 @@ class TrackingDetection: ObservableObject {
     }
     
     
-    /// Sends the a notification, if the user observed the tracker and it was seen
-    func tryToRequestObservingTrackerNotification(forTracker: BaseDevice, context: NSManagedObjectContext) {
-        
-        // User wanted to observe tracker
-        if(forTracker.observingStartDate ?? Date.distantFuture < Date()) {
-            
-            stopObservingTracker(tracker: forTracker, context: context)
-            
-            let name = forTracker.getName
-            let uniqueID = forTracker.uniqueId
-            
-            DispatchQueue.global(qos: .utility).async {
-                self.notificationManager.pushNotification(title: "update_tracker_observing".localized(),
-                                                          subtitle: String(format: "tracker_still_follows_you_description".localized(), arguments: [name]),
-                                                          userInfo:
-                                                            [UserInfoKeys.TrackerIdentifier.rawValue: uniqueID])
-            }
-        }
-    }
-    
-    
-    /// User started to observe tracker manually. The argument context is only required to signalize that this method must be called from withing `PersistenceController.sharedInstance.modifyDatabase`
-    func startObservingTracker(tracker: BaseDevice, context: NSManagedObjectContext) {
-        
-        // after one hour, we look if the tracker is still nearby
-        let delayUntilObserving: Double = hoursToSeconds(hours: 1)
-        
-        tracker.observingStartDate = Date().advanced(by: delayUntilObserving)
-        
-        let name = tracker.getName
-        let notificationID = self.getObservingNotificationIdentifier(tracker: tracker)
-        let uniqueID = tracker.uniqueId
-        
-        DispatchQueue.global(qos: .utility).async {
-            
-            // after 1h 20min, we send a notification to indicate that the tracker is no longer nearby. Notification gets cancelled if detected within 20min.
-            let delayUntilNotification: Double = delayUntilObserving + minutesToSeconds(minutes: 20)
-            
-            NotificationManager.sharedInstance.pushNotification(title: "update_tracker_observing".localized(),
-                                                                subtitle: String(format: "observed_tracker_not_found".localized(), name),
-                                                                identifier: notificationID,
-                                                                userInfo:
-                                                                    [UserInfoKeys.TrackerIdentifier.rawValue: uniqueID],
-                                                                delay: delayUntilNotification)
-        }
-    }
-    
-    
-    /// User stopped to observe tracker manually or tracker was detected. The argument context is only required to signalize that this method must be called from withing `PersistenceController.sharedInstance.modifyDatabase`
-    func stopObservingTracker(tracker: BaseDevice, context: NSManagedObjectContext) {
-        
-        tracker.observingStartDate = nil
-        
-        let identifier = self.getObservingNotificationIdentifier(tracker: tracker)
-        
-        DispatchQueue.global(qos: .utility).async {
-            NotificationManager.sharedInstance.removeNotification(withIdentifier: identifier)
-        }
-    }
-    
-    
-    /// Gets the Identifier for the `Not Found Anymore` notification
-    func getObservingNotificationIdentifier(tracker: BaseDevice) -> String {
-        if let uniqueID = tracker.uniqueId {
-            return uniqueID + "Observation"
-        }
-        return ""
-    }
-    
-    
     /// Adds a detection event for the given device and stores it in the database. Important: the BaseDevice needs to be saved already!
     func addDetectionEvent(toDevice: BaseDevice, bluetoothData: BluetoothTempData, context: NSManagedObjectContext) {
         
         if let lastDetectionEvent = toDevice.detectionEvents?.array.last as? DetectionEvent {
             if let previousSeen = lastDetectionEvent.time {
                 
+                let cooldown = Settings.sharedInstance.isBackground ? 7 : 3
+                
                 // do not record too many detection events
-                if(!previousSeen.isOlderThan(seconds: minutesToSeconds(minutes: 3))) {
+                if(!previousSeen.isOlderThan(seconds: minutesToSeconds(minutes: cooldown))) {
                     return
                 }
             }
@@ -324,7 +233,7 @@ class TrackingDetection: ObservableObject {
         let time = toDevice.lastSeen
         let rssi = (bluetoothData.rssi_background) as NSNumber
         
-        self.locationManager.getNewLocation() { [self] location, context in // location may be nil
+        self.locationManager.getNewLocation() { [self] location, altitude, context in // location may be nil
             
             if let toDevice = context.object(with: deviceID) as? BaseDevice {
                 
@@ -338,8 +247,12 @@ class TrackingDetection: ObservableObject {
                 detectionEvent.time = time
                 detectionEvent.rssi = rssi
                 detectionEvent.baseDevice = toDevice
-
                 detectionEvent.location = location
+                
+                // If the user is currently higher than 3000m, we enable the traveling mode
+                // In traveling mode, the detection mode is not considered for the tracking detection
+                // As of now, we only support airplanes
+                detectionEvent.isTraveling = altitude >= 3000
                 
                 self.checkIfTracked(device: toDevice, context: context)
             }

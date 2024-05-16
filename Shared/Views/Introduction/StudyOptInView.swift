@@ -15,7 +15,7 @@ struct StudyOptInView: View {
         
         BigButtonView(buttonHeight: Constants.BigButtonHeight + 50,
                       mainView:
-        BigSymbolView(title: "our_study", symbol: "person.3.fill", imageFontSize: 75) {
+        BigSymbolView(title: "our_study", symbol: "waveform.path.ecg", imageFontSize: 75) {
             
             Text("our_study_description")
                 .multilineTextAlignment(.leading)
@@ -57,7 +57,7 @@ struct StudyOptInButtonView: View {
                     linkActive = true
                     selectionAction?(true)
                     
-                }, label: "participate", colors: [.accentColor, .accentColor], hasPadding: false)
+                }, label: "participate", colors: [.airGuardBlue, .airGuardBlue], hasPadding: false)
                 .disabled(!self.ageConfirmed)
 
                 
@@ -92,10 +92,10 @@ struct CheckboxButton: View {
             HStack {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 20))
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.airGuardBlue)
                 
                 label
-                    .foregroundColor(Color("MainColor"))
+                    .foregroundColor(.mainColor)
             }
             .contentShape(Rectangle())
         }

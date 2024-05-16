@@ -52,11 +52,12 @@ class Settings: ObservableObject {
     @Published var appLaunchedBefore = userDefaults.bool(forKey: UserDefaultKeys.appLaunchedBefore.rawValue) {
         didSet {userDefaults.set(appLaunchedBefore, forKey: UserDefaultKeys.appLaunchedBefore.rawValue)}}
     
+    
     /// Shows that the app launched before AND the tutorial was completed.
     @Published var askedForStudyParticipation = userDefaults.bool(forKey: UserDefaultKeys.studyParticipationRequested.rawValue) {
         didSet {userDefaults.set(askedForStudyParticipation, forKey: UserDefaultKeys.studyParticipationRequested.rawValue)}}
     
-    #if !targetEnvironment(simulator)
+    
     /// False if the app tutorial is active.
     @Published var tutorialCompleted = userDefaults.bool(forKey: UserDefaultKeys.tutorialCompleted.rawValue) {
         didSet {
@@ -68,10 +69,6 @@ class Settings: ObservableObject {
                 startBluetooth()
             }
         }}
-    #else
-    /// False if the app tutorial is active.
-    @Published var tutorialCompleted = true
-    #endif
     
     
     /// Shows if the user agreed that the app can scan in the background.
@@ -79,7 +76,6 @@ class Settings: ObservableObject {
         didSet {userDefaults.set(backgroundScanning, forKey: UserDefaultKeys.backgroundScanning.rawValue)}}
 
     
-#if !BUILDING_FOR_APP_EXTENSION
     /// Shows if the app is in background or inactive.
     @Published var isBackground = true {
         didSet {
@@ -88,7 +84,7 @@ class Settings: ObservableObject {
                 
                 if(isBackground) {
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    runAfter(seconds: 0.5) {
                         withAnimation {
                             self.mayCheckBluetooth = false
                         }
@@ -100,30 +96,30 @@ class Settings: ObservableObject {
                     
                     lastAppStart = Date()
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    runAfter(seconds: 0.5, {
                         withAnimation {
                             self.mayCheckBluetooth = true
                         }
-                    }
+                    })
                 }
                 
                 startBluetooth()
             }
         }
     }
-#else
-    /// Shows if the app is in background or inactive.
-    @Published var isBackground = false // for the widget, we do not care
-#endif
+    
     
     /// The last time the app was launched in the foreground
     @Published var lastAppStart = Date()
     
+    
     /// Shows if the app is currently in foreground and the bluetooth manager had enough time to start up. Then the status of the bluetooth manager can be checked and a notification can be shown if Bluetooth if off.
     @Published var mayCheckBluetooth = false
     
+    
     /// The selected tracker for the sheet view. Needs to be fetched from MAIN CONTEXT!
     @Published var selectedTracker: BaseDevice? = nil
+    
     
     /// Shows if sheet view is active.
     @Published var showSheet = false {
@@ -136,11 +132,10 @@ class Settings: ObservableObject {
         }
     }
     
+    
     /// The selected tab.
     @Published var selectedTab = Tabs.HomeView {
         didSet {
-            
-            lightVibration()
             
             // Tapped twice on the same tab
             if(oldValue == selectedTab) {
@@ -154,8 +149,10 @@ class Settings: ObservableObject {
         }
     }
     
+    
     /// Changes its value if the same tab is tapped twice.
     @Published var goToRoot = false
+    
     
     /// If goToRoot changes, this variable shows which tab should go back to its root page.
     @Published var goToRootTab: Tabs? = nil
@@ -169,8 +166,7 @@ func startBluetooth() {
     // only start if app launched before, to delay permission popup
     if(Settings.sharedInstance.tutorialCompleted) {
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            
+        runAfter(seconds: 0.5) {
             // create a new central manager if no one exists
             BluetoothManager.sharedInstance.startCentralManager()
             

@@ -7,7 +7,7 @@
 */
 
 "unknown_device" = "Unbekannt";
-"find_my_device" = "„Wo ist?“-Gerät";
+"find_my_device" = "„Wo ist?“-Tracker";
 "chipolo_without_findmy" = "Chipolo (ohne „Wo ist?“)";
 "left" = "Links";
 "right" = "Rechts";
@@ -24,13 +24,13 @@
 "respect_data" = "Wir respektieren deine Daten";
 "respect_data_description" = "Entwickelt von Forschern an der Technischen Universität Darmstadt ohne kommerzielle Interessen.";
 
-"skip_background_scanning" = "Überspringen und Hintergrund-Suche deaktivieren";
+"skip_background_scanning" = "Überspringen & Hintergrund-Suche deaktivieren";
 
 "bluetooth_access" = "Bluetooth-Zugriff";
 "bluetooth_access_description" = "Tracker verwenden Bluetooth für die Kommunikation. Bitte erlaube den Zugriff auf Bluetooth, damit AirGuard Tracker in der Nähe erkennen kann.";
 
-"notification_access" = "Benachrichtigungs-Zugriff";
-"notification_access_description" = "Um eine Benachrichtigung zu bekommen, falls du von einem Tracker verfolgt wirst, musst du Benachrichtigungen für AirGuard aktivieren.";
+"notification_access" = "Benachr.-Zugriff";
+"notification_access_description" = "AirGuard sucht bei geschlossener App nach Trackern. Um informiert zu werden, falls du von einem Tracker verfolgt wirst, musst du Benachrichtigungen für AirGuard aktivieren.";
 
 "location_access" = "Standort-Zugriff";
 "location_access_description" = "Wir nutzen den Standort deines Gerätes, um zu bestimmen, ob ein Tracker dir wirklich folgt. Alle Standortdaten bleiben auf deinem Gerät. Bitte tippe auf „Fortfahren“ und wähle „Beim Verwenden der App erlauben“ aus. Stelle sicher, dass „Genau“ eingeschaltet ist.";
@@ -93,7 +93,11 @@ Email: aheinrich@seemoo.tu-darmstadt.de";
 
 Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen verfügbar. So kann beispielsweise nur bei SmartTags festgestellt werden, ob die Tracker von ihren Besitzern getrennt sind.";
 
+
+//MARK: -- Manual Scan
 "we_detected_X_trackers_around_you" = "Wir haben bisher %@ %@ in der Nähe gefunden.";
+"manual_scan_own_devices_hint" = "Eigene Tracker werden ggf. ausgeblendet.";
+"manual_scan_dangerous_hint" = "Alle Tracker, auch ungefährliche, werden angezeigt.";
 "tracker_singular" = "Tracker";
 "tracker_plural" = "Tracker";
 
@@ -121,13 +125,12 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 
 "manage_ignored_devices" = "Ignorierte Geräte verwalten";
 "ignored_devices" = "Ignorierte Geräte";
-"device_types" = "Geräte-Typen";
 "ignore_type_footer" = "Wenn du einen Geräte-Typ oben deaktivierst, bekommst du keine Benachrichtigungen mehr für jeden Tracker dieses Typs.";
 "devices" = "Geräte";
 
 "seen_x_times_last" = "%@x gesehen, zuletzt: %@";
 
-"no_trackers_detected_yet" = "Wir haben bisher keine Tracker gefunden, die dir folgen. Du bist sicher.";
+"no_trackers_detected_yet" = "Wir haben bisher keine Tracker gefunden, die dir folgen.";
 "no_device_detected_yet" = "Wir haben in der Vergangenheit noch keine Tracker erkannt. Schaue später noch einmal vorbei.";
 
 "info" = "Info";
@@ -150,7 +153,7 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "background_scanning_paused_description" = "Aktiviere Bluetooth und tippe hier, um die Hintergrund-Suche fortzusetzen.";
 
 "background_location_paused" = "Kein Standort-Zugriff";
-"background_location_paused_description" = "Du musst den Standortzugriff zu „Immer erlauben“ und „Genauer Standort“ ändern, damit die Hintergrund-Suche ordnungsgemäß funktioniert.";
+"background_location_paused_description" = "Du musst für die Hintergrund-Suche den Standortzugriff zu „Immer erlauben“ und „Genauer Standort“ ändern.";
 
 "tracker_follows_you" = "Ein Tracker könnte dir folgen!";
 "update_tracker_observing" = "Aktualisierung zur Tracker-Beobachtung";
@@ -165,11 +168,31 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "feature_unavailable" = "Funktion nicht verfügbar";
 "observing_unavailable_description" = "Aktiviere die Hintergrund-Suche und deaktiviere „Diesen Tracker ignorieren“, um den Tracker zu beobachten.";
 
-"mark_false_alarm" = "Als falschen Alarm markieren";
-"unmark_false_alarm" = "Falschen Alarm entfernen";
+"tracker_detail_notifications_tracker_hideout" = "Tracker-Versteck";
+"tracker_detail_notifications_tracker_marked_as_threat" = "Als Bedrohung markiert";
+"tracker_detail_notifications_tracker_marked_as_false_alarm" = "Als Fehlalarm markiert";
+"tracker_detail_notifications_tracker_no_feedback_saved" = "Kein Feedback gespeichert";
+
+"feedback_banner_description" = "Du hast eine Benachrichtigung erhalten. Teile uns mit, ob du denkst, dass der Tracker dich verfolgt.";
+
+"feedback_view_false_alarm_header" = "Feedback";
+"feedback_view_false_alarm_subtitle" = "Bitte teile uns mit, ob du glaubst, ob dich der Tracker verfolgt oder oder dass diese Benachrichtigung ein Fehlalarm war. Du hilfst damit, die App weiter zu verbessern.";
+"feedback_view_false_alarm_mark_as_false_alarm" = "Als Fehlalarm markieren";
+"feedback_view_false_alarm_mark_as_threat" = "Als Bedrohung markieren";
+"feedback_view_thanks_header" = "Vielen Dank!";
+"feedback_view_thanks_subtitle" = "Dein Feedback wurde erfolgreich gespeichert. Falls du es später noch einmal bearbeiten möchtest, tippe auf den Feedback-Button neben der Benachrichtigung.";
+"feedback_view_thanks_done_button" = "Fertig";
+"feedback_view_additional_feedback_header" = "Tracker-Versteck";
+"feedback_view_additional_feedback_subtitle" = "Wo wurde der Tracker versteckt?";
+"feedback_view_additional_feedback_bag" = "Tasche";
+"feedback_view_additional_feedback_clothes" = "Kleidung";
+"feedback_view_additional_feedback_car" = "Auto";
+"feedback_view_additional_feedback_bicycle" = "Fahrrad";
+"feedback_view_additional_feedback_other" = "Andere";
+"feedback_view_additional_feedback_not_found" = "Nicht gefunden";
 "false_alarm_description" = "Wenn du Benachrichtigungen als falschen Alarm markierst, hilfst du bei der Verbesserung von AirGuard.";
 
-"nfc_description" = "Halte den %@ oben an die Rückseite deines iPhone.";
+"nfc_description" = "Halte den %@ mit der weißen Seite oben an die Rückseite deines iPhone.";
 
 "now" = "jetzt gerade";
 
@@ -191,12 +214,19 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 
 "information_and_contact" = "Informationen & Kontakt";
 "contact_developer" = "Kontaktiere uns";
+"informationview_contact_alert_title" = "Bitte beachten";
+"informationview_contact_alert_description" = "Wir sind ein Entwicklerteam, und können daher keine persönliche Beratung anbieten. Wenn du glaubst, verfolgt zu werden, tippe bitte auf „Hilfe bei Verfolgung“.
+
+Für alle anderen Fragen und Anregungen stehen wir gerne zur Verfügung. Bitte beachte jedoch auch unser FAQ, wo wir viele häufig gestellte Fragen bereits beantwortet haben.";
+"informationview_contact_alert_help_with_tracking" = "Hilfe bei Verfolgung";
+"informationview_contact_alert_read_faq" = "FAQ lesen";
 "credits" = "Danksagungen";
-"developer" = "Entwickler";
+"developer_maintainer" = "Entwickler & Maintainer";
 "maintainer" = "Maintainer";
-"copyright" = "Copyright";
+"copyright" = "Urheberrecht";
 "informationview_airguard_os" = "AirGuard für %@";
 "version" = "Version";
+"informationview_used_content" = "Verwendete Inhalte";
 "copyright_text" = "Bildquellen:
 
 \"Umfrage\"-Bild: [Bild von pch.vector auf Freepik](https://de.freepik.com/vektoren-kostenlos/experte-prueft-die-bestellung-des-geschaeftsfuehrers_11235382.htm?query=pch%20vector%20form#from_view=detail_alsolike)
@@ -212,7 +242,8 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 
 
 "tracker_history" = "Tracker-Verlauf";
-"older_trackers" = "Ältere Tracker";
+"tracker_history_hint" = "Hier werden nicht verbundene Tracker angezeigt, welche in den letzten 30 Tagen erkannt wurden. Es werden auch ungefährliche Tracker angezeigt.";
+"previously_found" = "Zuvor gefunden";
 
 "survey_link" = "https://survey.seemoo.tu-darmstadt.de/index.php/317138?G06Q39=AirGuardAppiOS&lang=de&newtest=Y";
 
@@ -220,9 +251,16 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 
 "nearby" = "In der Nähe";
 "no_connection" = "Aktuell nicht in Reichweite";
-"owner_connected" = "Mit Besitzer:in verbunden in letzten 15m";
+"owner_connected" = "Mit Besitzer:in verbunden";
+"owner_premature_offline" = "Mit Besitzer:in verbunden in letzten 15m";
 "owner_disconnected" = "Von Besitzer:in getrennt";
 "unknown_connection_status" = "Unbekannter Verbindungsstatus";
+"forget_tracker" = "Tracker vergessen";
+"forget_tracker_alert_header" = "Bist du sicher?";
+"forget_tracker_alert_description" = "Hiermit werden alle Informationen über diesen Tracker unwiderruflich gelöscht.";
+
+"min_mac_address_change_time_changes_never_info" = "%@-Geräte ändern ihre Identität im Laufe der Zeit nicht. Dies kann zu mehr falschen Warnungen führen. Falls du gewarnt wirst, überprüfe, ob der Tracker nicht von jemanden aus der Umgebung stammt.";
+"min_mac_address_change_time_info" = "Achtung: %@-Geräte ändern ihre Identität mindestens alle %@ Stunden. Diese Geräte werden daher periodisch als ein neues Gerät erkannt und können mehrfach angezeigt werden.";
 
 "locate_tracker" = "Tracker orten";
 "trying_connection" = "Kein Signal. Verbinde...";
@@ -251,6 +289,8 @@ Wir betrachten zwei Typen von Trackern als sicher. Tracker, die explizit ignorie
 
 Letztere können nicht verwendet werden, um deinen Standort zu verfolgen. Bitte beachte, dass der Verbindungs-Status aktuell nur für SmartTags ausgelesen werden kann.";
 
+
+//MARK: - Articles
 "article_info" = "Von %@ • Lesedauer %@ Min.";
 "more_articles" = "Weitere Artikel";
 
@@ -397,7 +437,7 @@ Wenn du weitere Nummern für andere Länder kennst, wende dich bitte an [aheinri
 ";
 
 
-"article_survey_header" = "Umfrage";
+"article_survey_header" = "Unsere Umfrage";
 "article_survey_subheader" = "Forschung über Stalking mit Trackern";
 "article_survey_text" = "Der Aufstieg persönlicher Tracker wie Apples AirTag und anderen Trackern hat zu wachsenden Bedenken bezüglich deren Missbrauch zum Stalking geführt. Unser IT-Sicherheitsforschungsteam an der Technischen Universität Darmstadt führt eine Studie durch, um diese Vorfälle zu quantifizieren und Schutzmaßnahmen zu verbessern.
 

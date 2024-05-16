@@ -14,7 +14,7 @@ struct ContentView: View {
     @StateObject var bluetoothManager = BluetoothManager.sharedInstance
     @StateObject var locationManager = LocationManager.sharedInstance
     @StateObject var reader = NFCReader.sharedInstance
-
+    
     var body: some View {
         
         let showIntroduction = Binding(get: {return !settings.tutorialCompleted}, set: {val in
@@ -43,7 +43,7 @@ struct ContentView: View {
                     }
                     .tag(Tabs.Settings)
             }
-            .sheet(isPresented: $settings.showSheet) {
+            .luiSheet(isPresented: $settings.showSheet) {
                 
                 if let tracker = settings.selectedTracker {
 

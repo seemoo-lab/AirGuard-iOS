@@ -18,30 +18,95 @@ struct TrackerDetailView: View {
     @ObservedObject var clock = Clock.sharedInstance
     
     let persistenceController = PersistenceController.sharedInstance
+    @State var showFeedbackSheet = false
     
     var body: some View {
         
         // Calculated here for animation
         let notCurrentlyReachable = deviceNotCurrentlyReachable(device: tracker, currentDate: clock.currentDate)
+
+        let showingBanner = !tracker.ignore && !((tracker.notifications?.array as? [TrackerNotification] ?? []).last?.providedFeedback ?? true)
         
         NavigationSubView(spacing: Constants.SettingsSectionSpacing) {
-            
+
             DetailTopView(tracker: tracker, bluetoothData: bluetoothData, notCurrentlyReachable: notCurrentlyReachable)
-            
+
             DetailMapView(tracker: tracker)
             
-            
-            
+            if showingBanner {
+                FeedbackBannerView(showSheet: $showFeedbackSheet, tracker: tracker)
+                    .padding(.top, -65)
+            }
+
             DetailGeneralView(tracker: tracker, soundManager: soundManager)
-            
             DetailNotificationsView(tracker: tracker)
             
             DetailMoreView(tracker: tracker)
             DetailDebugView(tracker: tracker, bluetoothData: bluetoothData)
+            
+            TrackerForgetView(tracker: tracker)
         }
         .animation(.spring(), value: tracker.ignore)
         .animation(.spring(), value: notCurrentlyReachable)
-        .navigationBarTitleDisplayMode(.inline)
+        .animation(.spring(), value: showingBanner)
+        .navigationBarTitle("‏‏‎ ‎‎", displayMode: .inline)
+        .luiSheet(isPresented: $showFeedbackSheet, content: {
+            if let last = (tracker.notifications?.array as? [TrackerNotification] ?? []).last {
+                NavigationView {
+                    FalseAlarmFeedbackView(notification: last, showSheet: $showFeedbackSheet)
+                }
+            }
+        })
+    }
+}
+
+
+struct FeedbackBannerView: View {
+    
+    @Binding var showSheet: Bool
+    let tracker: BaseDevice
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            VStack(alignment: .leading) {
+                Text("feedback_banner_description")
+            }
+            Image(systemName: "chevron.right")
+                .padding(.leading, 5)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal)
+        .padding(.vertical, 13)
+        .foregroundColor(.white)
+        .background(
+            ZStack {
+                Color.red
+                Color.white.opacity(0.1)
+                LinearGradient(colors: [.clear, .white.opacity(0.15)], startPoint: .bottom, endPoint: .top)
+            }
+                .cornerRadius(20, corners: [.bottomLeft, .bottomRight])
+        )
+        .padding(.horizontal, Constants.FormHorizontalPadding)
+        .onTapGesture {
+            showSheet = true
+        }
+    }
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
+struct RoundedCorner: Shape {
+
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
     }
 }
 

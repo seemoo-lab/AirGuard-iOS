@@ -10,71 +10,78 @@ import SwiftUI
 struct DetailNotificationsView: View {
     
     @ObservedObject var tracker: BaseDevice
-    @ObservedObject var clock = Clock.sharedInstance
     
     var body: some View {
         
         let notifications = (tracker.notifications?.array as? [TrackerNotification] ?? []).reversed()
         
         if(!notifications.isEmpty && !tracker.ignore) {
-            CustomSection(header: "notifications", footer: "false_alarm_description") {
+            CustomSection(header: "notifications") {
                 
-                NavigationLink(destination: ArticleView(article: helpArticle)) {
-                    NavigationLinkLabel(imageName: "questionmark.bubble.fill", text: "get_help", backgroundColor: .purple, isNavLink: true)
+                LUILink(destination: ArticleView(article: helpArticle)) {
+                    NavigationLinkLabel(imageName: getFAQIcon(), text: "get_help", backgroundColor: .purple, isNavLink: true)
                 }
                 
                 ForEach(notifications, id: \.self) { notification in
-                    
-                    if let time = notification.time {
-                        HStack {
-                            Text(getSimpleSecondsText(seconds: Int(-time.timeIntervalSince(clock.currentDate)), longerDate: false))
-                                .foregroundColor(Color("MainColor"))
-                                .frame(height: Constants.SettingsLabelHeight)
-                            
-                            Spacer()
-                            
-                            FalseAlarmButton(notification: notification)
-                        }
-                    }
-                    
-                    if(notification != notifications.last) {
-                        CustomDivider()
-                    }
+                    NotificationInfoView(notification: notification)
                 }
             }
         }
     }
 }
 
-
-struct FalseAlarmButton: View {
+struct NotificationInfoView: View {
     
+    @ObservedObject var clock = Clock.sharedInstance
     @ObservedObject var notification: TrackerNotification
-    
-    let persistenceController = PersistenceController.sharedInstance
+    @State var showFeedbackSheet = false
     
     var body: some View {
         
-        Button {
-            mediumVibration()
-            
-            let id = notification.objectID
-            
-            persistenceController.modifyDatabaseBackground { context in
-                if let notification = context.object(with: id) as? TrackerNotification {
-                    notification.falseAlarm.toggle()
+        if let time = notification.time {
+            HStack {
+                VStack {
+                    Text(getSimpleSecondsText(seconds: Int(-time.timeIntervalSince(clock.currentDate)), longerDate: false))
+                        .foregroundColor(.mainColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    
+                        Text(getFeedbackString(notification: notification))
+                            .foregroundColor(.mainColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .opacity(0.6)
                 }
-            }
-            
-        } label: {
-            if(notification.falseAlarm) {
-                Text("unmark_false_alarm")
+                .frame(height: Constants.SettingsLabelHeight)
+                .padding(.vertical, 5)
+                .frame(maxWidth: .infinity)
                 
-            }
-            else {
-                Text("mark_false_alarm")
+                Spacer()
+                
+                LUIButton {
+                    showFeedbackSheet = true
+                } label: {
+                    Text("Feedback ›")
+                        .foregroundColor(.airGuardBlue)
+                }
+                .luiSheet(isPresented: $showFeedbackSheet, content: {
+                    NavigationView {
+                        FalseAlarmFeedbackView(notification: notification, showSheet: $showFeedbackSheet)
+                    }
+                })
             }
         }
-        .lineLimit(1)
+    }
+    
+    func getFeedbackString(notification: TrackerNotification) -> String {
+        if notification.providedFeedback {
+            if let hideoutString = notification.hideout, let hideout = TrackerHideout(rawValue: hideoutString){
+                return "tracker_detail_notifications_tracker_hideout".localized() + ": " + hideout.label().localized()
+            }
+            if !notification.falseAlarm {
+                return "tracker_detail_notifications_tracker_marked_as_threat".localized()
+            }
+            return "tracker_detail_notifications_tracker_marked_as_false_alarm".localized()
+        }
+        return "tracker_detail_notifications_tracker_no_feedback_saved".localized()
     }
 }

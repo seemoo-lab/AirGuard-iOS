@@ -15,7 +15,7 @@ struct LocationPermissionView: View {
         
         let canProceed = locationManager.permissionSet
         
-        PermissionView(title: "location_access", symbol: "mappin.circle.fill", subtitle: "location_access_description", action: {
+        PermissionView(title: "location_access", symbol: "mappin", subtitle: "location_access_description", action: {
             
             let authorizationStatus = locationManager.locationManager?.authorizationStatus ?? .notDetermined
             let authorizationAccuracy = locationManager.locationManager?.accuracyAuthorization ?? .none

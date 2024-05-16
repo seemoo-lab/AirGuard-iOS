@@ -26,13 +26,13 @@ actor SendStatisticsController {
         
         if let lastDataDonation {
             self.lastDataDonation = lastDataDonation
-        }else {
+        } else {
             self.lastDataDonation = UserDefaults.standard.date(forKey: "lastDataDonation") ?? .distantPast
         }
         
         if let donorToken {
             self.donorToken = donorToken
-        }else {
+        } else {
             self.donorToken = UserDefaults.standard.string(forKey: "dataDonatorToken")
         }
     }
@@ -66,7 +66,7 @@ actor SendStatisticsController {
                       let rssi = detectionEvent.rssi?.intValue
                 else {return nil}
                 
-                return API_Request.Beacon(receivedAt: time, rssi: rssi, serviceUUIDs: [])
+                return API_Request.Beacon(receivedAt: time, rssi: rssi, serviceUUIDs: [], connectionState: detectionEvent.connectionStatus ?? ConnectionStatus.Unknown.rawValue)
             })
             
             //Get the notifications
@@ -78,7 +78,13 @@ actor SendStatisticsController {
                     return nil
                 }
                 
-                return API_Request.Notification(falseAlarm: notification.falseAlarm, dismissed: false, clicked: notification.tapped, createdAt: time, feedback: nil)
+                var feedback: API_Request.Feedback? = nil
+                
+                if let location = notification.hideout, location != "" {
+                    feedback = API_Request.Feedback(location: location)
+                }
+                
+                return API_Request.Notification(falseAlarm: notification.falseAlarm, dismissed: false, clicked: notification.tapped, createdAt: time, feedback: feedback)
             })
             
             let apiDevice = API_Request.Device(uniqueId: id, ignore: device.ignore, connectable: false, firstDiscovery: firstDiscovery, lastSeen: lastDiscovery, deviceType: deviceType, beacons: beacons ?? [], notifications: notifications ?? [])
@@ -155,7 +161,7 @@ actor SendStatisticsController {
         let donateDataTask = Task(priority: .high) {
             do {
                 try await sendStats()
-            }catch {
+            } catch {
                 log("Failed donating data \(error.localizedDescription)")
             }
         }

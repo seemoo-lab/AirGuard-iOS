@@ -22,7 +22,7 @@ struct LocationRequest: Identifiable, Equatable {
     let id = UUID()
     
     /// The callback after the location was retrieved
-    let callback: (Location?, NSManagedObjectContext) -> Void
+    let callback: (Location?, Double, NSManagedObjectContext) -> Void
     
     /// The start date of the request
     let date = Date()
@@ -191,7 +191,7 @@ open class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObjec
                 
                 // Store location in database or retrieve old one
                 getCoreDataLocation(forLocation: location) { [self] coreDataLocation, context in
-                    finishCallback(withLocation: coreDataLocation, context: context)
+                    finishCallback(withLocation: coreDataLocation, altitude: location.altitude, context: context)
                 }
             }
         }
@@ -199,16 +199,16 @@ open class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObjec
 
     
     /// provides new location to all interested clients
-    func finishCallback(withLocation: Location, context: NSManagedObjectContext) {
+    func finishCallback(withLocation: Location, altitude: Double, context: NSManagedObjectContext) {
             
             for callback in callbacks {
                 
                 // discard entries which are older than X minutes
                 if(!callback.date.isOlderThan(seconds: minutesToSeconds(minutes: 1))) {
-                    callback.callback(withLocation, context)
+                    callback.callback(withLocation, altitude, context)
                 }
                 else {
-                    callback.callback(nil, context)
+                    callback.callback(nil, altitude, context)
                 }
             }
             
@@ -217,13 +217,14 @@ open class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObjec
     
     
     /// requests new location if necessary and calls client back
-    func getNewLocation(callback: @escaping (Location?, NSManagedObjectContext) -> Void) {
+    func getNewLocation(callback: @escaping (Location?, Double, NSManagedObjectContext) -> Void) {
         
         if(permissionSet &&
            (!Settings.sharedInstance.isBackground || locationManager?.authorizationStatus == .authorizedAlways)) {
             
             locationManagerQueue.async { [self] in
                 
+                /// Last location update was long time ago
                 if(lastUpdate.isOlderThan(seconds: secondsUntilNewLocation)) {
                     
                     log("Waiting for new location update. Last refresh: \(lastUpdate.timeIntervalSinceNow)s ago")
@@ -248,17 +249,19 @@ open class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObjec
                         }
                     })
                 }
+                
+                /// Last location update was recent
                 else {
                     if let lastLocation = lastLocation {
                         log("Provided location in 0s")
                         getCoreDataLocation(forLocation: lastLocation) { coreDataLocation, context in
-                            callback(coreDataLocation, context)
+                            callback(coreDataLocation, lastLocation.altitude, context)
                         }
                     }
                     else {
                         log("Can't provide location!")
                         PersistenceController.sharedInstance.modifyDatabaseBackground { context in
-                            callback(nil, context)
+                            callback(nil, 0, context)
                         }
                     }
                 }
@@ -267,7 +270,7 @@ open class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObjec
         else {
             log("Can't provide location!")
             PersistenceController.sharedInstance.modifyDatabaseBackground { context in
-                callback(nil, context)
+                callback(nil, 0, context)
             }
         }
     }

@@ -19,7 +19,7 @@ struct SettingsLabel: View {
         HStack{
             SettingsIcon(imageName: imageName, backgroundColor: backgroundColor)
             Text(text.localized())
-                .foregroundColor(Color("MainColor"))
+                .foregroundColor(.mainColor)
                 .multilineTextAlignment(.leading)
             Spacer()
             
@@ -92,27 +92,56 @@ struct NavigationLinkLabel: View {
                     .opacity(isEnabled ? 1 : 0.5)
             }
         }
+        .frame(height: Constants.SettingsLabelHeight)
     }
 }
 
 
-struct SettingsIcon: View {
-    let imageName: String
-    let backgroundColor: Color
-    let size: CGFloat = 30
+public struct SettingsIcon: View {
     
-    var body: some View {
+    public init(imageName: String?, imageText: String? = nil, backgroundColor: Color) {
+        self.imageName = imageName
+        self.imageText = imageText
+        self.backgroundColor = backgroundColor
+    }
+    
+    let imageName: String?
+    let imageText: String?
+    let backgroundColor: Color
+    
+#if os(watchOS)
+    let size: CGFloat = 25
+#else
+    let size: CGFloat = 30
+#endif
+    
+    @Environment(\.colorScheme) private var colorScheme
+    
+    public var body: some View {
         
-        ZStack{
-            Circle()
-                .foregroundColor(backgroundColor)
+        ZStack {
             
-            Image(systemName: imageName)
-                .font(.system(size: size / 2, weight: .bold))
-                .foregroundColor(.white)
-                .clipped()
+            ZStack {
+                backgroundColor
+                LinearGradient(colors: [.clear, .white.opacity(0.2)], startPoint: .bottom, endPoint: .top)
+            }
+            .mask(Circle())
             
-        }.frame(width: size, height: size)
+            ZStack {
+                if let imageName = imageName {
+                    Image(systemName: imageName)
+                        .font(.system(size: size / 2, weight: .bold))
+                }
+                else {
+                    Text(imageText ?? "")
+                        .font(.system(size: size * 0.6, weight: .bold))
+                }
+            }
+            .foregroundColor(.white)
+            .clipped()
+            
+        }
+        .frame(width: size, height: size)
         .padding(.trailing, 5)
         .compositingGroup()
     }

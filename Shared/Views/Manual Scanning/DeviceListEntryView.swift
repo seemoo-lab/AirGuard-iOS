@@ -17,51 +17,48 @@ struct DeviceListEntryView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @State var showAlerts: Bool = false
+    @State var showSignal: Bool = true
     let showLoading: Bool
     
     var body: some View {
         
-        let debug = settings.debugMode
-        
         HStack {
+            
+            let color = Color.airGuardBlue.opacity(colorScheme.isLight ? 0.8 : 1)
             
             device.getType.constants.iconView
                 .padding(.trailing, 3)
             
             Text(device.getName)
-                .foregroundColor(Color("MainColor"))
+                .foregroundColor(.mainColor)
                 .padding(.vertical)
             
             Spacer()
             
-            if(debug) {
-                if let firstSeenSeconds = getFirstSeenSeconds(device: device, currentDate: clock.currentDate),
-                   let lastSeenSeconds = getLastSeenSeconds(device: device, currentDate: clock.currentDate) {
-                    
-                    Text("\(firstSeenSeconds)")
-                    
-                    + Text(" • ")
-                    
-                    + Text("\(lastSeenSeconds)")
-                }
-            }
-            
-            if showAlerts {
-                if let count = device.notifications?.count, count > 0, !device.ignore {
-                    Image(systemName: "bell.fill")
-                        .frame(width: 23)
-                        .foregroundColor(Color.accentColor.opacity(colorScheme.isLight ? 0.8 : 1))
-                }
+            if showAlerts && showSignal {
+                BellIcon(device: device)
+                    .foregroundColor(color)
             }
             
             ZStack {
                 
-                SmallRSSIIndicator(rssi: deviceNotCurrentlyReachable(device: device, currentDate: clock.currentDate) ? Constants.worstRSSI : Double(bluetoothData.rssi_publisher), bestRSSI: Double(device.getType.constants.bestRSSI))
-                    .opacity(showLoading ? 0 : 1)
+                ZStack {
+                    if showSignal {
+                        SmallRSSIIndicator(
+                            rssi: deviceNotCurrentlyReachable(device: device, currentDate: clock.currentDate) ? Constants.worstRSSI : Double(bluetoothData.rssi_publisher),
+                            bestRSSI: Double(device.getType.constants.bestRSSI),
+                            color: color)
+                    }
+                    else {
+                        BellIcon(device: device)
+                            .foregroundColor(color)
+                    }
+                }
+                .opacity(showLoading ? 0 : 1)
                 
                 ProgressView()
                     .opacity(showLoading ? 1 : 0)
-            
+                
             }
             .frame(width: 20)
             
@@ -71,6 +68,19 @@ struct DeviceListEntryView: View {
             
         }
         .contentShape(Rectangle())
+    }
+}
+
+
+struct BellIcon: View {
+    
+    @ObservedObject var device: BaseDevice
+    
+    var body: some View {
+        if let count = device.notifications?.count, count > 0, !device.ignore {
+            Image(systemName: "bell.fill")
+                .frame(width: 23)
+        }
     }
 }
 

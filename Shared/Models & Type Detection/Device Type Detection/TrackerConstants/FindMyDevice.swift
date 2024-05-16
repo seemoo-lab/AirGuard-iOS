@@ -26,8 +26,11 @@ final class FindMyDeviceConstants: TrackerConstants {
     
     override class var supportURL: String? { "https://support.apple.com/en-us/HT212227" }
     
+    override class var minMacAddressChangeTime: Int? { 24 }
+    
     override class var iconView: AnyView {
-        AnyView(FindMyIcon())
+        name.contains("AirPods") ? AnyView(Circle()
+            .modifier(TrackerIconView(imageName: "airpods"))) : AnyView(FindMyIcon())
     }
     
     override class func detect(baseDevice: BaseDevice, context: NSManagedObjectContext) {
@@ -132,7 +135,7 @@ struct FindMyIcon: View {
                     
                     Circle()
                         .frame(width: geo.size.width*0.2)
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(.airGuardBlue)
                 }
             })
             .modifier(TrackerIconView(text: ""))

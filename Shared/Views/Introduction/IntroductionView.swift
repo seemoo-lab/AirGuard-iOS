@@ -52,7 +52,7 @@ struct LinkTo<V0: View>: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .background(NavigationLink("", isActive: $isActive, destination: destination)
+            .background(LUILink(destination: destination(), isActive: $isActive)
                 .disabled(true)
                 .hidden())
     }

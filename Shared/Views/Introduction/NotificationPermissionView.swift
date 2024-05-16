@@ -14,7 +14,7 @@ struct NotificationPermissionView: View {
     
     var body: some View {
         
-        PermissionView(title: "notification_access", symbol: "app.badge.fill", subtitle: "notification_access_description", action: {
+        PermissionView(title: "notification_access", symbol: "bell.fill", subtitle: "notification_access_description", action: {
             
             notificationManager.requestNotificationPermission() { success in
                 if(success) {

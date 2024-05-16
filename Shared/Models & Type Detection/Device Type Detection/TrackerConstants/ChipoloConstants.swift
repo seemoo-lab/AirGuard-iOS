@@ -44,7 +44,6 @@ final class ChipoloConstants: TrackerConstants {
     }
     
     override class func connectionStatus(advertisementData: [String : Any]) -> ConnectionStatus {
-        // Chipolo trackers advertise only when the owner is disconnected 
-        return .OwnerDisconnected
+        return .Unknown
     }
 }

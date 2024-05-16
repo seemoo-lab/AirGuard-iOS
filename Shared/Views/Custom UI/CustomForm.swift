@@ -7,108 +7,99 @@
 
 import SwiftUI
 
+public extension Color {
+    static let indigo = Color(#colorLiteral(red: 0.3667442501, green: 0.422971189, blue: 0.9019283652, alpha: 1))
+    
+    static let mainColor = Color("MainColor")
+    static let grayColor = Color.mainColor.opacity(0.6)
+}
+
+
 struct CustomFormBackground: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
+    
     func body(content: Content) -> some View {
         content
-            .background(colorScheme.isLight ? Color("FormBackgroundLight").ignoresSafeArea() : Color.formDeepGray.ignoresSafeArea())
+            .background(BackgroundColorView().ignoresSafeArea())
     }
 }
 
 
-struct CustomSection: View {
-    @Environment(\.colorScheme) var colorScheme
-    let inputViews: [AnyView]
-    var header = ""
-    var footer = ""
+struct BackgroundColorView: View {
     
-    let headerExtraView: AnyView
-    
-    init<V0: View>(header: String = "", footer: String = "", headerExtraView: AnyView = AnyView(EmptyView()),
-                   @ViewBuilder content: @escaping () -> V0
-    ) {
-        let cv = content()
-        inputViews = [AnyView(cv)]
-        self.header = header
-        self.footer = footer
-        self.headerExtraView = headerExtraView
-    }
-    
-    init<V0: View, V1: View>(header: String = "", footer: String = "", headerExtraView: AnyView = AnyView(EmptyView()),
-                             @ViewBuilder content: @escaping () -> TupleView<(V0, V1)>
-    ) {
-        let cv = content().value
-        
-        inputViews = [AnyView(cv.0), AnyView(cv.1)]
-        
-        self.header = header
-        self.footer = footer
-        self.headerExtraView = headerExtraView
-    }
-    
-    init<V0: View, V1: View, V2: View>(header: String = "", footer: String = "", headerExtraView: AnyView = AnyView(EmptyView()),
-                                       @ViewBuilder content: @escaping () -> TupleView<(V0, V1, V2)>) {
-        let cv = content().value
-        inputViews = [AnyView(cv.0), AnyView(cv.1), AnyView(cv.2)]
-        self.header = header
-        self.footer = footer
-        self.headerExtraView = headerExtraView
-    }
-    
-    init<V0: View, V1: View, V2: View, V3: View>(header: String = "", footer: String = "", headerExtraView: AnyView = AnyView(EmptyView()),
-                                                 @ViewBuilder content: @escaping () -> TupleView<(V0, V1, V2, V3)>) {
-        let cv = content().value
-        inputViews = [AnyView(cv.0), AnyView(cv.1), AnyView(cv.2), AnyView(cv.3)]
-        self.header = header
-        self.footer = footer
-        self.headerExtraView = headerExtraView
-    }
-    
-    init<V0: View, V1: View, V2: View, V3: View, V4: View>(header: String = "", footer: String = "", headerExtraView: AnyView = AnyView(EmptyView()),
-                                                           @ViewBuilder content: @escaping () -> TupleView<(V0, V1, V2, V3, V4)>) {
-        let cv = content().value
-        inputViews = [AnyView(cv.0), AnyView(cv.1), AnyView(cv.2), AnyView(cv.3), AnyView(cv.4)]
-        self.header = header
-        self.footer = footer
-        self.headerExtraView = headerExtraView
-    }
-    
+    @Environment(\.sheetActive) var sheetActive
     
     var body: some View {
-        VStack{
+        (sheetActive ? Color.sheetBackground : Color.defaultBackground)
+    }
+}
+
+
+public extension EnvironmentValues {
+    var sheetActive: Bool {
+        get { self[SheetActiveKey.self] }
+        set { self[SheetActiveKey.self] = newValue }
+    }
+}
+
+
+struct SheetActiveKey: EnvironmentKey {
+    static let defaultValue = false
+}
+
+
+public struct CustomSection<Content: View, Content2: View>: View {
+    @Environment(\.colorScheme) var colorScheme
+    let content: Content
+    let headerExtraView: () -> Content2
+    let header: String
+    let footer: String
+    let backgroundColor: Color?
+    
+    public init(header: String = "",
+                footer: String = "",
+                backgroundColor: Color? = nil,
+                headerExtraView: @escaping () -> Content2 = {EmptyView()},
+                @ViewBuilder content: @escaping () -> Content) {
+        
+        self.content = content()
+        self.headerExtraView = headerExtraView
+        self.header = header
+        self.footer = footer
+        self.backgroundColor = backgroundColor
+    }
+    
+    
+    public var body: some View {
+        
+        VStack {
             if(header != "") {
-                
-                PlainImageCardGroupHeader(name: header.localized(), extraView: headerExtraView)
+                PlainImageCardGroupHeader(name: header.localized()) {
+                    headerExtraView()
+                }
             }
             
             VStack(spacing: 0) {
-                ForEach(0 ..< inputViews.count, id: \.self) { index in
-                    self.inputViews[index]
-                    
-                    if(index != inputViews.count - 1) {
-                        CustomDivider()
-                    }
-                }
                 
+                DividerView {
+                    content
+                }
             }
-            .modifier(FormModifier())
-            
+            .modifier(FormModifier(backgroundColor: backgroundColor))
             
             if(footer != ""){
-                HStack {
-                    
-                    Footer(text: footer)
-                    
-                    
-                    Spacer()
-                }
-                .padding(.horizontal, 10)
+                FooterView(text: footer)
             }
         }
-        .padding(.horizontal)
-        .padding(.top)
+#if !os(watchOS)
+        .padding(.horizontal, Constants.FormHorizontalPadding)
+        .padding(.top, 15)
+#endif
     }
 }
+
+
+
 
 struct Footer: View {
     let text: String
@@ -124,41 +115,49 @@ struct Footer: View {
 }
 
 
-struct CustomDivider: View {
-    
-    var body: some View {
-        Rectangle()
-            .frame(height: 1)
-            .foregroundColor(.gray)
-            .opacity(0.2)
-    }
-}
-
-
 struct FormModifier: ViewModifier {
+    
+    let backgroundColor: Color?
+    
+    init(backgroundColor: Color? = nil) {
+        self.backgroundColor = backgroundColor
+    }
     
     func body(content: Content) -> some View {
         content
             .padding(.horizontal)
-            .modifier(FormModifierNoPadding())
+            .modifier(FormModifierNoPadding(backgroundColor: backgroundColor))
     }
 }
 
 
 struct FormModifierNoPadding: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.sheetActive) var sheetActive
     let showShadow: Bool
+    let backgroundColor: Color?
     
-    init(showShadow: Bool = true) {
+    init(showShadow: Bool = false, backgroundColor: Color? = nil) {
         self.showShadow = showShadow
+        self.backgroundColor = backgroundColor
     }
     
     func body(content: Content) -> some View {
         content
-            .background(colorScheme.isLight ? Color.white : Color.formGray)
-            .cornerRadius(25)
+            .background(getColor())
+            .cornerRadius(20)
             .compositingGroup()
             .modifier(ShadowModifier(visible: showShadow))
+    }
+    
+    func getColor() -> Color {
+        if let backgroundColor = backgroundColor {
+            return backgroundColor
+        }
+        if sheetActive {
+            return Color.sheetForeground
+        }
+        return Color.defaultForeground
     }
 }
 
@@ -172,8 +171,71 @@ struct ShadowModifier: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        content
-            .shadow(color: Color.gray.opacity(colorScheme.isLight ? 0.15 : 0), radius: visible ? 4 : 0, x: 0, y: 1)
+        if visible && colorScheme.isLight {
+            content
+                .shadow(color: Color.gray.opacity(0.25), radius: 2, x: 0, y: 1)
+        }
+        else {
+            content
+        }
+    }
+}
+
+
+public struct FooterView: View {
+    
+    public init(text: String) {
+        self.text = text
+    }
+    
+    let text: String
+    
+    public var body: some View {
+        
+        HStack {
+            Text(text.localized())
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(.grayColor)
+                .font(.system(.footnote))
+                .lineSpacing(2)
+                .padding(.top, 5)
+            
+            Spacer()
+        }
+        .padding(.horizontal)
+    }
+}
+
+
+struct DividerView<Content: View>: View {
+    var content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    var body: some View {
+        _VariadicView.Tree(DividerLayout()) {
+            content
+        }
+    }
+    
+    struct DividerLayout: _VariadicView_MultiViewRoot {
+        
+        @ViewBuilder
+        func body(children: _VariadicView.Children) -> some View {
+            
+            let last = children.last?.id
+            
+            ForEach(children) { child in
+                
+                child
+                
+                if child.id != last {
+                    Divider()
+                }
+            }
+        }
     }
 }
 

@@ -26,6 +26,7 @@ struct ManualScanningView: View {
     let timer = Timer.publish(every: 6, on: .main, in: .common).autoconnect()
     
     @State var showStillSearchingHint = false
+    @State var showDangerousTrackersHint = false
     
     /// Width and height of the scanning animation.
     private let scanAnimationSize: CGFloat = 72
@@ -54,7 +55,7 @@ struct ManualScanningView: View {
                     if !bluetoothManager.turnedOn {
                         
                         ExclamationmarkView()
-                            .foregroundColor(.accentColor)
+                            .foregroundColor(.airGuardBlue)
                             .padding(.bottom)
                         
                         VStack(spacing: 10) {
@@ -67,33 +68,25 @@ struct ManualScanningView: View {
                     }
                     
                     else {
-                        let timeRemaining = Int(-clock.currentDate.timeIntervalSince(settings.lastAppStart.addingTimeInterval(60)))
                         
                         ZStack {
                             
-                            let showWaitTime = timeRemaining > 0 && showStillSearchingHint
-                            
                             Text(.init(String(format: "we_detected_X_trackers_around_you".localized(), "\(getBoldString())\(count)", (count == 1 ? "tracker_singular".localized() : "tracker_plural".localized())+getBoldString())))
-                                .opacity(showWaitTime ? 0 : 1)
+                                .opacity(showStillSearchingHint ? 0 : 1)
                             
-                            
-                            Text(.init(String(format: "manual_scanning_wait".localized(), getBoldString()+timeRemaining.description+"s"+getBoldString())))
-                                .opacity(showWaitTime ? 1 : 0)
+                            Text(.init(getSecondaryHint()))
+                                .opacity(showStillSearchingHint ? 1 : 0)
                             
                         }
                         
                         .opacity(0.9)
                         .padding(.horizontal)
                         .onReceive(timer) { input in
-                            
-                            if !(timeRemaining > 0 && !settings.isBackground) {
-                                withAnimation {
-                                    showStillSearchingHint = false
-                                }
-                            }
-                            else {
-                                withAnimation {
-                                    showStillSearchingHint.toggle()
+                            withAnimation {
+                                showStillSearchingHint.toggle()
+                                
+                                if !showStillSearchingHint && !trackers.isEmpty {
+                                    showDangerousTrackersHint.toggle()
                                 }
                             }
                         }
@@ -117,20 +110,14 @@ struct ManualScanningView: View {
                     if safeTrackers.count > 0 {
                         TrackerSection(trackers: safeTrackers, header: " ", showHelp: true)
                     }
-                    
-//                    if(trackers.count > 0) {
-//                        Footer(text: "manual_scan_disclaimer")
-//                            .padding(.horizontal, 10)
-//                            .padding(.horizontal)
-//                    }
                 }
                 
-                NavigationLink(destination: {
-                    TrackerHistoryView()
-                }, label: {
-                    Text("older_trackers".localized() + "...")
+                LUILink(destination: TrackerHistoryView(), label: {
+                    Text("previously_found".localized() + "...")
+                        .font(.system(size: 13))
+                        .foregroundColor(.grayColor)
+                        .underline(true)
                         .centered()
-                        .lowerOpacity(darkModeAsWell: true)
                         .padding()
                 })
                 .padding(.top, trackers.count == 0 ? 0 : 10)
@@ -141,12 +128,27 @@ struct ManualScanningView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
+    
+    func getSecondaryHint() -> String {
+        
+        let timeRemaining = Int(-clock.currentDate.timeIntervalSince(settings.lastAppStart.addingTimeInterval(60)))
+        
+        if showDangerousTrackersHint {
+            return "manual_scan_dangerous_hint".localized()
+        }
+        
+        if timeRemaining > 0 {
+            return String(format: "manual_scanning_wait".localized(), getBoldString()+timeRemaining.description+"s"+getBoldString())
+        }
+        
+        return "manual_scan_own_devices_hint".localized()
+    }
 }
 
 
 /// Returns true if we consider the tracker to be safe.
 func trackerIsSafe(tracker: BaseDevice) -> Bool {
-    return tracker.ignore || tracker.getType.constants.connectionStatus(advertisementData: tracker.bluetoothTempData().advertisementData_publisher) == .OwnerConnected
+    return tracker.ignore || !tracker.getType.constants.connectionStatus(advertisementData: tracker.bluetoothTempData().advertisementData_publisher).isInTrackingMode()
 }
 
 

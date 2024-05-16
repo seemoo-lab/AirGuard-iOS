@@ -23,7 +23,7 @@ struct ArticleView : View {
                         Text(article.card.header.localized())
                             .bold()
                             .font(.system(size: 25))
-                            .foregroundColor(Color("MainColor"))
+                            .foregroundColor(.mainColor)
                         
                         Spacer()
                     }
@@ -80,18 +80,15 @@ struct ArticleView : View {
                         .padding(.bottom, 12)
                     
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, Constants.FormHorizontalPadding)
                 
                 ForEach(articles.filter({$0.id != article.id})) { elem in
-                    NavigationLink {
-                        ArticleView(article: elem)
-                    } label: {
+                    LUILink(style: .Plain, destination: ArticleView(article: elem), label: {
                         NewImageCardView(card: elem.card)
-                    }
-                    .buttonStyle(PlainLinkStyle())
+                    })
                     .padding(.bottom, 20)
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, Constants.FormHorizontalPadding)
                 .fixedSize(horizontal: false, vertical: true)
                 
                 Spacer()

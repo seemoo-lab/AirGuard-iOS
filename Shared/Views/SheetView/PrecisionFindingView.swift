@@ -46,7 +46,8 @@ struct PrecisionFindingView: View {
                 VStack(spacing: 0) {
                     
                     ZStack {
-                        Color.accentColor.opacity(colorScheme.isLight ? 0.6 : 1)
+                        Color.airGuardBlue.opacity(colorScheme.isLight ? 0.9 : 1)
+                        LinearGradient(colors: [.clear, .white.opacity(0.3)], startPoint: .bottom, endPoint: .top)
                         
                         PrecisionOverlayElements(tracker: tracker, soundManager: soundManager, pct: pct, rssi: rssi, animationDelay: delay, textColor: .white, notReachable: notReachable)
                         
@@ -62,9 +63,9 @@ struct PrecisionFindingView: View {
                     
                     ZStack {
                         
-                        (colorScheme.isLight ? Color.white : Color.formDeepGray)
+                        Color.sheetBackground
                         
-                        PrecisionOverlayElements(tracker: tracker, soundManager: soundManager, pct: pct, rssi: rssi, animationDelay: delay, textColor: Color("MainColor"), notReachable: notReachable)
+                        PrecisionOverlayElements(tracker: tracker, soundManager: soundManager, pct: pct, rssi: rssi, animationDelay: delay, textColor: .mainColor, notReachable: notReachable)
                             .padding(safeAreaInsets)
                             .frame(height: fullHeight)
                         
@@ -87,9 +88,9 @@ struct PrecisionFindingView: View {
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                runAfter(seconds: 1) {
                     startScan()
-                })
+                }
             }
         }
     }
@@ -152,7 +153,7 @@ struct PrecisionOverlayElements: View {
                         }
                     }
                 })
-
+            
             Group {
                 if(notReachable) {
                     
@@ -189,73 +190,73 @@ struct SoundAndCloseView: View {
     @ObservedObject var tracker: BaseDevice
     @State private var showSoundErrorInfo = false
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
-        CustomSection() {
-            VStack(spacing: 0) {
-                if(tracker.getType.constants.canPlaySound) {
-                    Button {
-                        mediumVibration()
-                        soundManager.playSound(constants: tracker.getType.constants, bluetoothUUID: tracker.currentBluetoothId)
-                    } label: {
-                        HStack {
-                            SettingsLabel(imageName: "speaker.wave.2.fill", text: "play_sound", backgroundColor: .orange)
-                                .fixedSize(horizontal: true, vertical: false)
-                            
-                            ZStack {
-                                HStack {
-                                    
-                                    Spacer()
-                                    
-                                    Text("connecting_in_progress")
-                                        .lineLimit(1)
-                                        .foregroundColor(.gray)
-                                        .padding(.trailing, 7)
-                                    ProgressView()
-                                }
-                                .opacity(soundManager.soundRequest ? 1 : 0)
+        let rightLabelColor = Color.mainColor.opacity(0.5)
+        
+        CustomSection(backgroundColor: Color.white.opacity(colorScheme.isLight ? 0.8 : 0.1)) {
+            if(tracker.getType.constants.canPlaySound) {
+                LUIButton {
+                    lightVibration()
+                    soundManager.playSound(constants: tracker.getType.constants, bluetoothUUID: tracker.currentBluetoothId)
+                } label: {
+                    HStack {
+                        SettingsLabel(imageName: "speaker.wave.2.fill", text: "play_sound", backgroundColor: .orange)
+                            .fixedSize(horizontal: true, vertical: false)
+                        
+                        ZStack {
+                            HStack {
                                 
-                                HStack {
-                                    Spacer()
-                                    Text("playing_in_progress")
-                                        .lineLimit(1)
-                                        .foregroundColor(.gray)
-                                    
-                                }.opacity(soundManager.playingSound ? 1 : 0)
+                                Spacer()
                                 
-                                if let error = soundManager.error {
-                                    
-                                    HStack {
-                                        Spacer()
-                                        Text(error.title)
-                                            .lineLimit(1)
-                                            .foregroundColor(.gray)
-                                        
-                                    }
-                                }
+                                Text("connecting_in_progress")
+                                    .lineLimit(1)
+                                    .foregroundColor(rightLabelColor)
+                                    .padding(.trailing, 7)
+                                ProgressView()
                             }
-                            .alert(isPresented: $showSoundErrorInfo, content: {
-                                Alert(title: Text(soundManager.error?.title ?? ""), message: Text(soundManager.error?.description ?? ""))
-                            })
+                            .opacity(soundManager.soundRequest ? 1 : 0)
                             
-                            .onChange(of: soundManager.error) { val in
-                                if(val != nil) {
-                                    showSoundErrorInfo = true
+                            HStack {
+                                Spacer()
+                                Text("playing_in_progress")
+                                    .lineLimit(1)
+                                    .foregroundColor(rightLabelColor)
+                                
+                            }.opacity(soundManager.playingSound ? 1 : 0)
+                            
+                            if let error = soundManager.error {
+                                
+                                HStack {
+                                    Spacer()
+                                    Text(error.title)
+                                        .lineLimit(1)
+                                        .foregroundColor(rightLabelColor)
+                                    
                                 }
                             }
                         }
+                        .alert(isPresented: $showSoundErrorInfo, content: {
+                            Alert(title: Text(soundManager.error?.title ?? ""), message: Text(soundManager.error?.description ?? ""))
+                        })
+                        
+                        .onChange(of: soundManager.error) { val in
+                            if(val != nil) {
+                                showSoundErrorInfo = true
+                            }
+                        }
                     }
-                    
-                    CustomDivider()
+                    .contentShape(Rectangle())
                 }
-                Button {
-                    DispatchQueue.main.async {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                } label: {
-                    SettingsLabel(imageName: "xmark", text: "close_stop_searching", backgroundColor: .red)
+            }
+            LUIButton {
+                DispatchQueue.main.async {
+                    presentationMode.wrappedValue.dismiss()
                 }
+            } label: {
+                SettingsLabel(imageName: "xmark", text: "close_stop_searching", backgroundColor: .red)
             }
         }
         .frame(maxWidth: Constants.maxWidth)
@@ -334,7 +335,7 @@ struct Previews_PrecisionFindingView_Previews: PreviewProvider {
         device.setType(type: .AirTag)
         
         let tempdata = BluetoothTempData(identifier: "XY")
-        tempdata.rssi_background = -50
+        tempdata.rssi_background = -80
         
         try? vc.save()
         

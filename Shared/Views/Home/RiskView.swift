@@ -23,11 +23,9 @@ struct RiskView: View {
         
         let arr = Array(notifications)
         
-        NavigationLink {
-            RiskDetailView(notifications: arr)
-        } label: {
+        LUILink(style: .Plain, destination: RiskDetailView(notifications: arr), label: {
             RiskCardView(notifications: arr)
-        }
+        })
     }
 }
 
@@ -45,11 +43,15 @@ struct RiskCardView: View {
         let text = status == .Unknown ? "background_scanning_disabled" :
         String(format: "x_potential_trackers_detected".localized(), trackerCount, (notifications.count == 1 ? "alert_singular" : "alert_plural").localized(), days.description)
         
-        CardView(backgroundColor: status.color, title: status.title, titleSymbol: status.symbol, subView:
-                    AnyView(
-                        HStack {CardSubView(symbol: "magnifyingglass", text: text)
-                                Image(systemName: "chevron.right")
-                        }))     
+        CardView(backgroundColor: status.color, title: status.title, titleSymbol: status.symbol) {
+            HStack {
+                CardSubView(symbol: "magnifyingglass", text: text)
+                
+                if(status != .Unknown) {
+                    Image(systemName: "chevron.right")
+                }
+            }
+        }
     }
     
     func getRiskStatus() -> RiskStatus {

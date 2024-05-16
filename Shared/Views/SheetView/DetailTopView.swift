@@ -22,13 +22,13 @@ struct DetailTopView: View {
                     .bold()
                     .font(.largeTitle)
                     .lineLimit(1)
-                    .foregroundColor(Color("MainColor"))
+                    .foregroundColor(.mainColor)
                     .minimumScaleFactor(0.8)
 
                 Spacer()
                 
             }
-            .padding(.horizontal)
+            .padding(.horizontal, Constants.FormHorizontalPadding)
             .padding(.horizontal, 5)
             .padding(.bottom, 2)
             
@@ -41,14 +41,14 @@ struct DetailTopView: View {
                     if notCurrentlyReachable {
                         Text("no_connection".localized())
                             .bold()
-                            .foregroundColor(.accentColor)
+                            .foregroundColor(.airGuardBlue)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     else {
                         if connectionStatus != .Unknown {
                             Text(connectionStatus.description.localized())
                                 .bold()
-                                .foregroundColor(connectionStatus == .OwnerDisconnected ? .red : connectionStatus == .OwnerConnected ? .green : formHeaderColor)
+                                .foregroundColor(connectionStatus == .Unknown ? formHeaderColor : connectionStatus.isInTrackingMode() ? .red : .green)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
@@ -60,7 +60,7 @@ struct DetailTopView: View {
                 }
 
                 .padding(.horizontal, 5)
-                .padding(.horizontal)
+                .padding(.horizontal, Constants.FormHorizontalPadding)
             }
         }
     }

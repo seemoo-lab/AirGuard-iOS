@@ -49,8 +49,24 @@ class TrackerConstants {
     /// Specifies the minimum tracking time in seconds until a tracking notification is sent
     class var minTrackingTime: Double { TrackingDetection.minimumTrackingTime }
     
-    /// Specifies how many seconds backwards tracking events are considered. By default this is 14 days.
-    class var trackingEventsSince: TimeInterval {daysToSeconds(days: 14)}
+    /// Specifies the  interval at which the MAC address is at least changed for this tracker. Specified in hours. Nil for never. Is currently only used to display this to the user in the UI.
+    class var minMacAddressChangeTime: Int? { nil }
+    
+    /// Specifies the minimum distinct/clustered locations where a tracker should be found until a tracking notification is sent
+    class var minDistinctLocations: Int {
+        
+        switch Settings.sharedInstance.securityLevel {
+        case .Low:
+            return 4
+        case .Normal:
+            return 3
+        case .High:
+            return 2
+        }
+    }
+    
+    /// Specifies how many seconds backwards tracking events are considered. By default this is 1 day.
+    class var trackingEventsSince: TimeInterval {daysToSeconds(days: 1)}
     
     /// A SwiftUI view representing the tracker as small glyph. Used for manual scanning view.
     class var iconView: AnyView {
@@ -73,33 +89,6 @@ class TrackerConstants {
     /// Function used to determine if the tracker is connected to its owner. If it is, it can be ignored for background notifications.
     class func connectionStatus(advertisementData: [String : Any]) -> ConnectionStatus {
         return .Unknown
-    }
-}
-
-
-/// Determines if the device is currently connected to its owner.
-enum ConnectionStatus: String {
-    
-    /// Connected to owner
-    case OwnerConnected = "OwnerConnected" // For database - DO NOT CHANGE
-    
-    /// Disconnected from owner
-    case OwnerDisconnected = "OwnerDisconnected"
-    
-    /// Owner connection status is unknown
-    case Unknown = "Unknown"
-    
-    /// Textual description of the owner status.
-    var description: String {
-        
-        switch self {
-        case .OwnerConnected:
-            return "owner_connected"
-        case .OwnerDisconnected:
-            return "owner_disconnected"
-        case .Unknown:
-            return "unknown_connection_status"
-        }
     }
 }
 

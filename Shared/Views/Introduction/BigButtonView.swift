@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct BigButtonView<T1: View, T2: View>: View {
-    @Environment(\.colorScheme) private var colorScheme
     @State private var blurOpacity: Double = 0
     let buttonHeight: CGFloat
     let mainView: T1
@@ -41,7 +40,7 @@ struct BigButtonView<T1: View, T2: View>: View {
                 buttonView
                     .frame(maxWidth: .infinity)
                     .frame(height: buttonHeight)
-                    .background(Blur().brightness(getBrightness()).edgesIgnoringSafeArea(.all))
+                    .background(TintedBlur().edgesIgnoringSafeArea(.all))
             }
             
             .ignoresSafeArea(.keyboard)
@@ -50,11 +49,33 @@ struct BigButtonView<T1: View, T2: View>: View {
         .modifier(CustomFormBackground())
         .navigationViewStyle(.stack)
         .navigationBarHidden(hideNavigationBar)
+        .overlay(
+            GeometryReader { geo in
+                VStack {
+                    TintedBlur()
+                        .frame(height: geo.safeAreaInsets.top)
+                    Spacer()
+                }
+                .offset(y: -geo.safeAreaInsets.top)
+            }
+        )
+    }
+}
+
+struct TintedBlur: View {
+    
+    @Environment(\.sheetActive) private var sheetActive
+    @Environment(\.colorScheme) private var colorScheme
+    
+    var body: some View {
+        Blur().brightness(getBrightness())
     }
     
     func getBrightness() -> Double {
-        return colorScheme == .light ? 0.04 : -0.065
-        
+        if sheetActive {
+            return colorScheme == .light ? 0.02 : -0.075
+        }
+        return colorScheme == .light ? 0.01 : -0.2
     }
 }
 
@@ -65,22 +86,40 @@ struct ColoredButton: View {
     let label: String
     var colors: [Color] = Constants.defaultColors
     var hasPadding = true
+    var invertColors = false
     
     @Environment(\.isEnabled) private var isEnabled: Bool
     
     var body: some View {
-        Button(action: {
-            
-            mediumVibration()
+        LUIButton(action: {
+            lightVibration()
             action()
-            
         }) {
             Text(label.localized())
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
-                .customButton(colors: colors)
+                .customButton(colors: colors, invert: invertColors)
         }
         .padding(hasPadding ? .horizontal : .horizontal, 0)
         .opacity(isEnabled ? 1 : 0.5)
+    }
+}
+
+
+#Preview {
+    Group {
+//        IntroductionView()
+  //          .navigationViewStyle(StackNavigationViewStyle())
+        
+        
+        Color.clear
+            .luiSheet(isPresented: .constant(true), content: {
+                NavigationView {
+                    IntroductionView()
+                        .navigationTitle("Test")
+                        .navigationViewStyle(StackNavigationViewStyle())
+                }
+                   
+            })
     }
 }

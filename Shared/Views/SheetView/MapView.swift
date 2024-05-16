@@ -130,7 +130,7 @@ struct MapView: UIViewRepresentable {
     class Coordinator: NSObject, MKMapViewDelegate {
         
         /// The color for the annotations and overlays
-        let primaryColor = UIColor(Color.accentColor)
+        let primaryColor = UIColor(Color.airGuardBlue)
         
         /// Reference to the MapView.
         var parent: MapView

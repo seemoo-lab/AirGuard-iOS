@@ -12,6 +12,7 @@ struct SmallRSSIIndicator: View {
     @Environment(\.colorScheme) var colorScheme
     let rssi: Double
     let bestRSSI: Double
+    let color: Color
     
     var body: some View {
         
@@ -36,7 +37,7 @@ struct SmallRSSIIndicator: View {
         }
         .offset(y: -size * 0.1)
         .frame(height: size)
-        .foregroundColor(Color.accentColor.opacity(colorScheme.isLight ? 0.8 : 1))  
+        .foregroundColor(color)
     }
 }
 
@@ -56,6 +57,6 @@ struct SmallRSSIIndicatorLine: View {
 
 struct Previews_RSSIIndicator_Previews: PreviewProvider {
     static var previews: some View {
-        SmallRSSIIndicator(rssi: -100, bestRSSI: -30)
+        SmallRSSIIndicator(rssi: -100, bestRSSI: -30, color: .blue)
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BaseDevice" representedClassName="BaseDevice" syncable="YES">
         <attribute name="additionalData" optional="YES" attributeType="String"/>
         <attribute name="currentBluetoothId" optional="YES" attributeType="String"/>
@@ -16,6 +16,7 @@
     </entity>
     <entity name="DetectionEvent" representedClassName="DetectionEvent" syncable="YES" codeGenerationType="class">
         <attribute name="connectionStatus" optional="YES" attributeType="String"/>
+        <attribute name="isTraveling" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="rssi" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
         <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="baseDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BaseDevice" inverseName="detectionEvents" inverseEntity="BaseDevice"/>
@@ -29,7 +30,9 @@
     </entity>
     <entity name="TrackerNotification" representedClassName="TrackerNotification" syncable="YES" codeGenerationType="class">
         <attribute name="falseAlarm" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="hideout" optional="YES" attributeType="String"/>
         <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="providedFeedback" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="tapped" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="baseDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BaseDevice" inverseName="notifications" inverseEntity="BaseDevice"/>

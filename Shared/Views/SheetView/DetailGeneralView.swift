@@ -23,18 +23,16 @@ struct DetailGeneralView: View {
         
         let notCurrentlyReachable = deviceNotCurrentlyReachable(device: tracker, currentDate: clock.currentDate)
         
-        CustomSection(header: "general", footer: tracker.getType.constants.supportsIgnore ? "ignore_trackers_footer" : "") {
-            
-            VStack(spacing: 0) {
+        let type = tracker.getType
+        let macAddessResetTime = type.constants.minMacAddressChangeTime
+        let infoString = macAddessResetTime != nil ? String(format: "min_mac_address_change_time_info".localized(), type.constants.name, macAddessResetTime!.description) : String(format: "min_mac_address_change_time_changes_never_info".localized(), type.constants.name)
+        
+        CustomSection(header: "general", footer: infoString) {
                 
-                Button {
+            LUIButton {
                     showPrecisionFinding = true
                 } label: {
-                    NavigationLinkLabel(imageName: "smallcircle.fill.circle.fill", text: "locate_tracker", backgroundColor: .accentColor, status: notCurrentlyReachable ? "" : "nearby")
-                }
-                
-                if tracker.getType.constants.supportsIgnore || tracker.getType.constants.supportsBackgroundScanning {
-                    CustomDivider()
+                    NavigationLinkLabel(imageName: "smallcircle.fill.circle.fill", text: "locate_tracker", backgroundColor: .airGuardBlue, status: notCurrentlyReachable ? "" : "nearby")
                 }
                 
                 
@@ -50,13 +48,14 @@ struct DetailGeneralView: View {
                         if newValue {
                             observingWasTurnedOn = true
                             
-                            modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, tracker in
-                                
+                            // Do this on main thread to avoid lag
+                            PersistenceController.sharedInstance.modifyDatabase { context in
                                 TrackingDetection.sharedInstance.startObservingTracker(tracker: tracker, context: context)
                             }
                         }
                         else {
-                            modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, tracker in
+                            // Do this on main thread to avoid lag
+                            PersistenceController.sharedInstance.modifyDatabase { context in
                                 
                                 TrackingDetection.sharedInstance.stopObservingTracker(tracker: tracker, context: context)
                             }
@@ -74,16 +73,9 @@ struct DetailGeneralView: View {
                         }
                     }
                     else {
-                        NavigationLink {
-                            EnableObservationView(observationEnabled: binding, tracker: tracker)
-                        } label: {
+                        LUILink(destination: EnableObservationView(observationEnabled: binding, tracker: tracker), label: {
                             NavigationLinkLabel(imageName: "clock.fill", text: "observe_tracker", backgroundColor: color, status: "off")
-                        }
-                    }
-                    
-                    
-                    if tracker.getType.constants.supportsIgnore {
-                        CustomDivider()
+                        })
                     }
                 }
                 
@@ -91,7 +83,8 @@ struct DetailGeneralView: View {
                     
                     let binding = Binding(get: {return tracker.ignore}, set: { newValue in
                         
-                        modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, tracker in
+                        // Do this on main thread to avoid lag
+                        PersistenceController.sharedInstance.modifyDatabase { context in
                             
                             tracker.ignore = newValue
                             TrackingDetection.sharedInstance.stopObservingTracker(tracker: tracker, context: context)
@@ -103,7 +96,7 @@ struct DetailGeneralView: View {
                         SettingsLabel(imageName: "nosign", text: "ignore_this_tracker", backgroundColor: .red)
                     }
                 }
-            }
+            
         }
         .fullScreenCover(isPresented: $showPrecisionFinding, content: {PrecisionFindingView(tracker: tracker, bluetoothData: tracker.bluetoothTempData(), soundManager: soundManager, isShown: $showPrecisionFinding)})
     }

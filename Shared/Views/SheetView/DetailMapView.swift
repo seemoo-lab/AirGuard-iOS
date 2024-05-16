@@ -26,14 +26,14 @@ struct DetailMapView: View {
                 
                 if(annotations.count > 0) {
                     
-                    NavigationLink {
+                    LUILink(style: .Plain, destination:
                         MapView(annotations: annotations, connections: connections, mapFinishedLoading: .constant(true))
                             .ignoresSafeArea(.all, edges: [.horizontal, .bottom])
                             .navigationTitle("tracker_locations")
                             .navigationBarTitleDisplayMode(.inline)
                             .background(ProgressView())
                         
-                    } label: {
+                    , label: {
                         MapView(annotations: annotations, connections: connections, mapFinishedLoading: $smallMapFinishedLoading)
                             .overlay(
                                 ZStack {
@@ -60,10 +60,13 @@ struct DetailMapView: View {
                             .allowsHitTesting(false)
                             .compositingGroup()
                             .frame(height: 200)
+                            .contentShape(Rectangle())
+                            .cornerRadius(20)
                         
-                    }
-                        .modifier(FormModifierNoPadding(showShadow: !smallMapFinishedLoading))
-                        .animation(.easeInOut, value: !smallMapFinishedLoading)
+                    })
+                    .padding(1)
+                    .modifier(FormModifierNoPadding())
+                    .animation(.easeInOut, value: !smallMapFinishedLoading)
                 }
                 
                 else {
@@ -74,8 +77,7 @@ struct DetailMapView: View {
                 MapPlaceholderView(isTrackerIgnored: tracker.ignore)
             }
         }
-        .padding(.horizontal)
-        
+        .padding(.horizontal, Constants.FormHorizontalPadding)
     }
 }
 
@@ -91,7 +93,7 @@ struct MapPlaceholderView: View {
                 .font(.largeTitle)
                 .centered()
                 .lowerOpacity(darkModeAsWell: true)
-                .foregroundColor(.accentColor)
+                .foregroundColor(.airGuardBlue)
                 .padding(.bottom, 5)
             
             HStack {
@@ -171,7 +173,7 @@ struct Previews_DetailMapView_Previews: PreviewProvider {
         
         let location = Location(context: vc)
         
-        location.latitude = 52
+        location.latitude = 52.41
         location.longitude = 8
         location.accuracy = 1
         
@@ -179,7 +181,8 @@ struct Previews_DetailMapView_Previews: PreviewProvider {
         
         try? vc.save()
         
-        return VStack {
+        return ZStack {
+            Color.defaultBackground.ignoresSafeArea()
             DetailMapView(tracker: device)
                 .environment(\.managedObjectContext, vc)
         }

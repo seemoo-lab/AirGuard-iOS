@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var settings = Settings.sharedInstance
     
     @ObservedObject var notificationManager = NotificationManager.sharedInstance
@@ -49,17 +50,16 @@ struct SettingsView: View {
                 
                 if(showDebugOptions) {
                     CustomSection(header: "Debug") {
-                        NavigationLink {
-                            DebugSettingsView()
-                                .modifier(GoToRootModifier(view: .Settings))
-                        } label: {
-                            NavigationLinkLabel(imageName: "curlybraces", text: "Debug Settings")
-                        }
+                        LUILink(destination: DebugSettingsView()
+                            .modifier(GoToRootModifier(view: .Settings)), label: {
+                                NavigationLinkLabel(imageName: "curlybraces", text: "Debug Settings")
+                            })
                     }
                 }
                 
             }
             .navigationBarTitle("settings")
+            .animation(.spring, value: settings.backgroundScanning)
             
         } .navigationViewStyle(StackNavigationViewStyle())
     }
@@ -67,11 +67,15 @@ struct SettingsView: View {
     
     var backgroundScanningSection: some View {
         
-        CustomSection(header: "background_scanning", footer: settings.securityLevel.description.localized()) {
+        CustomSection(footer: settings.backgroundScanning ? settings.securityLevel.description.localized() : "") {
+            
             Toggle(isOn: $settings.backgroundScanning) {
-                SettingsLabel(imageName: "text.magnifyingglass", text: "background_scanning", backgroundColor: .green)
+                SettingsLabel(imageName: "text.magnifyingglass", text: "background_scanning", backgroundColor: settings.backgroundScanning ? .blue : .gray)
+                
+                // to access debug options in release mode
                     .simultaneousGesture(LongPressGesture(minimumDuration: 0.5).onEnded({_ in showDebugOptions = true}))
             }
+            
             .onChange(of: settings.backgroundScanning, perform: { newValue in
                 
                 // enabled background scanning
@@ -101,124 +105,122 @@ struct SettingsView: View {
             })
             
             
-            
-            NavigationLink {
-                DisableDevicesView()
-                    .modifier(GoToRootModifier(view: .Settings))
-            } label: {
-                NavigationLinkLabel(imageName: "nosign", text: "manage_ignored_devices", backgroundColor: .orange)
-            }     .disabled(!settings.backgroundScanning)
-            
-            
-            CustomPickerLabel(selection: settings.securityLevel.name.localized(), backgroundColor: .yellow, description: "security_level", imageName: settings.securityLevel.image)
-                .disabled(!settings.backgroundScanning)
-            
-            
-            Picker("", selection: $settings.securityLevel) {
-                ForEach(SecurityLevel.allCases, id: \.self) { level in
-                    
-                    Text(level.name.localized())
-                    
-                        .id(level.rawValue)
+            if(settings.backgroundScanning) {
+                
+                LUILink(destination:
+                    DisableDevicesView()
+                        .modifier(GoToRootModifier(view: .Settings))
+                , label: {
+                    NavigationLinkLabel(imageName: "nosign", text: "manage_ignored_devices", backgroundColor: .green)
+                })
+                
+                
+                CustomPickerLabel(selection: settings.securityLevel.name.localized(), backgroundColor: .orange, description: "security_level", imageName: settings.securityLevel.image)
+                
+                
+                Picker("", selection: $settings.securityLevel) {
+                    ForEach(SecurityLevel.allCases, id: \.self) { level in
+                        
+                        Text(level.name.localized())
+                        
+                            .id(level.rawValue)
+                    }
                 }
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(height: Constants.SettingsLabelHeight)
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .frame(height: Constants.SettingsLabelHeight)
-            .disabled(!settings.backgroundScanning)
         }
     }
     
     var studySection: some View {
         CustomSection(header: "study_settings", footer: "survey_description_short") {
             
-            VStack(spacing: 0) {
-                
-                ZStack {
-                    Toggle(isOn: $settings.participateInStudy.animation()) {
-                        SettingsLabel(imageName: "waveform.path.ecg", text: "participate_study")
-                    }
-                    .opacity(settings.participateInStudy ? 1 : 0)
-                    
-                    
-                    Button {
-                        showStudyConsentDeclaration = true
-                    } label: {
-                        NavigationLinkLabel(imageName: "waveform.path.ecg", text: "participate_study")
-                    }
-                    .opacity(settings.participateInStudy ? 0 : 1)
-                    
+            
+            ZStack {
+                Toggle(isOn: $settings.participateInStudy.animation(.smooth)) {
+                    SettingsLabel(imageName: "waveform.path.ecg", text: "participate_study")
                 }
+                .opacity(settings.participateInStudy ? 1 : 0)
                 
                 
-                if settings.participateInStudy {
-                    
-                    CustomDivider()
-                    
-                    Button {
-                        requestDataDeletion()
-                    } label: {
-                        if !isDeletingStudyData {
-                            NavigationLinkLabel(imageName: "trash.fill", text: "delete_study_data", backgroundColor: .red, isNavLink: false)
-                        }else {
-                            HStack{
-                                Spacer()
-                                ProgressView()
-                                Spacer()
-                            }
-                            .padding()
-                        }
-                    }
-                    .buttonStyle(.plain)
+                LUIButton {
+                    showStudyConsentDeclaration = true
+                } label: {
+                    NavigationLinkLabel(imageName: "waveform.path.ecg", text: "participate_study")
                 }
-                
-                // Survey
-                if Constants.SurveyIsActive {
-                    
-                    CustomDivider()
-                    
-                    Button {
-                        guard let url = URL(string: "survey_link".localized()) else {return}
-                        UIApplication.shared.open(url)
-                    } label: {
-                        VStack {
-                            NavigationLinkLabel(imageName: "doc.fill", text: "participate_in_survey", backgroundColor: .green, isNavLink: false)
-                        }
-                    }
-                }
+                .opacity(settings.participateInStudy ? 0 : 1)
             }
-            .fullScreenCover(isPresented: $showStudyConsentDeclaration) {
-                StudyOptInView { participate in
-                    settings.participateInStudy = participate
-                    showStudyConsentDeclaration = false
+            .frame(height: Constants.SettingsLabelHeight)
+            
+            
+            if settings.participateInStudy {
+                
+                LUIButton {
+                    requestDataDeletion()
+                } label: {
+                    if !isDeletingStudyData {
+                        NavigationLinkLabel(imageName: "trash.fill", text: "delete_study_data", backgroundColor: .red, isNavLink: false)
+                    } else {
+                        HStack{
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                        .padding()
+                    }
                 }
+                .buttonStyle(.plain)
+                .frame(height: Constants.SettingsLabelHeight)
             }
-            .alert(item: $dataDeletionState, content: { dataDeletionState in
-                switch dataDeletionState {
-                case .failed:
-                    Alert(title: Text("deletion_failed"), message: Text("deletion_failed_message"), dismissButton: Alert.Button.cancel())
-                case .succeeded:
-                    Alert(title: Text("deletion_succeeded"), message: Text("deletion_succeeded_message"), dismissButton: Alert.Button.cancel())
+            
+            // Survey
+            if Constants.SurveyIsActive {
+                
+                LUIButton {
+                    guard let url = URL(string: "survey_link".localized()) else {return}
+                    UIApplication.shared.open(url)
+                } label: {
+                    VStack {
+                        NavigationLinkLabel(imageName: "doc.fill", text: "participate_in_survey", backgroundColor: colorScheme.isLight ? .yellow : .orange, isNavLink: false)
+                    }
                 }
-            })
-
+                .frame(height: Constants.SettingsLabelHeight)
+            }
+            
+            
         }
+        .fullScreenCover(isPresented: $showStudyConsentDeclaration) {
+            StudyOptInView { participate in
+                settings.participateInStudy = participate
+                showStudyConsentDeclaration = false
+            }
+        }
+        .alert(item: $dataDeletionState, content: { dataDeletionState in
+            switch dataDeletionState {
+            case .failed:
+                Alert(title: Text("deletion_failed"), message: Text("deletion_failed_message"), dismissButton: Alert.Button.cancel())
+            case .succeeded:
+                Alert(title: Text("deletion_succeeded"), message: Text("deletion_succeeded_message"), dismissButton: Alert.Button.cancel())
+            }
+        })
     }
     
     var infoSection: some View {
         CustomSection(header: "info") {
             
-            NavigationLink {
+            LUILink(destination:
                 InformationView()
                     .modifier(GoToRootModifier(view: .Settings))
-            } label: {
+            , label: {
                 NavigationLinkLabel(imageName: "info", text: "information_and_contact", backgroundColor: Color.green)
                 
-            }
+            })
             
             if let url = URL(string: url) {
                 Link(destination: url, label: {
                     NavigationLinkLabel(imageName: "hand.raised.fill", text: "privacy_policy", backgroundColor: .red, isNavLink: false)
                 })
+                .buttonStyle(LUIButtonStyle())
             }
         }
     }
@@ -232,11 +234,11 @@ struct SettingsView: View {
         }
         
         var deletionSucceeded = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        runAfter(seconds: 1) {
             guard !deletionSucceeded else {return}
             // If the deletion takes more than 1s, we show an indicator
             self.isDeletingStudyData = true
-        })
+        }
         
         Task {
             // Call the URL to delete study data
@@ -253,7 +255,7 @@ struct SettingsView: View {
                     UserDefaults.standard.removeObject(forKey: "dataDonatorToken")
                 }
             }catch {
-               //Send an email if it fails
+                //Send an email if it fails
                 deletionSucceeded = true
                 self.isDeletingStudyData = false 
                 await MainActor.run {
