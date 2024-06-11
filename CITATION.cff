@@ -1,0 +1,38 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'AirGuard for iOS: Tracking Protection'
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - given-names: Leon
+    family-names: Böttger
+    affiliation: 'SEEMOO, TU Darmstadt'
+  - given-names: Alexander
+    family-names: Heinrich
+    affiliation: 'SEEMOO, TU Darmstadt'
+    orcid: 'https://orcid.org/0000-0002-1150-1922'
+  - given-names: Matthias
+    family-names: Hollick
+    affiliation: 'SEEMOO, TU Darmstadt'
+    orcid: 'https://orcid.org/0000-0002-9163-5989'
+repository-code: 'https://github.com/seemoo-lab/AirGuard-iOS'
+abstract: >-
+  AirTags are not the only devices that can be used to track
+  you! Samsung SmartTags and Tile trackers have similar
+  functionalities. These trackers allow to track your
+  location without your knowledge, just by placing one of
+  them in your bag, pocket or on your car.
+
+  The protection on iOS against these trackers is very
+  limited.
+keywords:
+  - iOS
+  - Bluetooth Tracker
+  - Tracking Protection
+  - Stalkin
+license: GPL-3.0
+commit: 26b647c6e5135a54350acacce235b622e47584f8
+version: '1.1'
+date-released: '2024-05-16'
