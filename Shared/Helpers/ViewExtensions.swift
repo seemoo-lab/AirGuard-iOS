@@ -54,6 +54,19 @@ func isSimulator() -> Bool {
 }
 
 
+public extension View {
+    
+    /// Applies the modifier if the if statement is true
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
+
 /// Returns the OS name
 func getOSName() -> String {
     #if targetEnvironment(macCatalyst)

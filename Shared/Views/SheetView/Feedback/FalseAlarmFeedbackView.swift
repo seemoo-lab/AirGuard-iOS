@@ -18,7 +18,7 @@ struct FalseAlarmFeedbackView: View {
         BigButtonView(buttonHeight: Constants.BigButtonHeight * 2, mainView: BigSymbolViewWithText(title: "feedback_view_false_alarm_header", symbol: "exclamationmark.shield.fill", subtitle: "feedback_view_false_alarm_subtitle", topPadding: 0), buttonView:
                         
                         VStack(spacing: 15) {
-            ColoredButton(action: {
+            GrayButton(label: "feedback_view_false_alarm_mark_as_false_alarm", action: {
                 
                 PersistenceController.sharedInstance.modifyDatabase { context in
                     notification.falseAlarm = true
@@ -27,7 +27,7 @@ struct FalseAlarmFeedbackView: View {
                     showDoneView = true
                 }
                 
-            }, label: "feedback_view_false_alarm_mark_as_false_alarm", colors: [.airGuardBlue], invertColors: true)
+            })
             
             ColoredButton(action: {
                 

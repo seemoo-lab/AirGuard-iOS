@@ -89,7 +89,7 @@ struct IntroductionButtonView<V0: View>: View {
     var body: some View {
  
         
-        ColoredButton(action: {
+        GrayButton(label: "continue", action: {
 
             if(controller.canProceed) {
                 controller.canProceed = false
@@ -98,7 +98,7 @@ struct IntroductionButtonView<V0: View>: View {
             else {
                 action()
             }
-        }, label: "continue")
+        })
             .modifier(LinkTo(content: destination, isActive: $linkActive))
             .onChange(of: controller.canProceed) { newValue in
                 if(newValue && !linkActive) {

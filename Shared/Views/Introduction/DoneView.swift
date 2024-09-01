@@ -14,9 +14,9 @@ struct IntroductionDoneView: View {
     
     var body: some View {
         
-        BigButtonView(buttonHeight: Constants.BigButtonHeight, mainView: BigSymbolViewWithText(title: "all_done", symbol: "checkmark", subtitle: "all_done_description"), buttonView: ColoredButton(action: {
+        BigButtonView(buttonHeight: Constants.BigButtonHeight, mainView: BigSymbolViewWithText(title: "all_done", symbol: "checkmark", subtitle: "all_done_description"), buttonView: GrayButton(label: "continue", action: {
             settings.tutorialCompleted = true
-        }, label: "continue"))
+        }))
     }    
 }
 

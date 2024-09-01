@@ -75,9 +75,9 @@ final class SmartTagConstants: TrackerConstants {
             // check if there is a SmartTag with identical encryption key. We then know that it's the same device, even though the mac address / uuid might be different
             if let existing = sameEncryptionData.first {
                 
-                log("Refreshed MAC - Encryption Key (\(encryptionData ?? "?")) - \(baseDevice.uniqueId?.description ?? "?")")
+                log("Refreshed SmartTag MAC - Encryption Key (\(encryptionData ?? "?")) - \(baseDevice.uniqueId?.description ?? "?")")
                 
-                transferSmartTagData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
+                transferTrackerData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
                 return
             }
             
@@ -85,14 +85,14 @@ final class SmartTagConstants: TrackerConstants {
             // check if there is a SmartTag discovered 15 minutes ago. SmartTags change their mac address every 15 minutes, so we can port the old data to the "new" device
             // we only take those SmartTags 15m/30m ago which have the same connection status - this is another identifier we can use to minimize the risk of merging two different SmartTags
             
-            for value in [15, 30] {
-                if let existing = fetchSmartTagDiscoveredXMinAgo(x: value, connectionStatus: connectionStatus, context: context) {
+            for minutes in [15, 30] {
+                if let existing = fetchPreviouslyDiscoveredDevices(minutesAgo: minutes, deviceType: .SmartTag, withConnectionStatus: connectionStatus, context: context) {
                     
-                    log("Refreshing MAC... - \(value)m - \(baseDevice.uniqueId?.description ?? "?")")
+                    log("Refreshing SmartTag MAC... - \(minutes)m - \(baseDevice.uniqueId?.description ?? "?")")
                     
                     existing.lastMacRenewal = Date()
                     
-                    transferSmartTagData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
+                    transferTrackerData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
                     
                     return
                 }
@@ -103,7 +103,7 @@ final class SmartTagConstants: TrackerConstants {
                 
                 // Due to the SmartTag architecture, we assume that the last MAC renewal happened the last quarter of the hour
                 baseDevice.lastMacRenewal = baseDevice.firstSeen?.lastFifteenMinutes()
-                log("Set lastMacRenewal to \(String(describing: baseDevice.lastMacRenewal)) from \(String(describing: baseDevice.firstSeen))")
+                log("Set SmartTag lastMacRenewal to \(String(describing: baseDevice.lastMacRenewal)) from \(String(describing: baseDevice.firstSeen))")
             }
             
             setType(device: baseDevice, type: .SmartTag, withData: encryptionData, context: context)
@@ -190,53 +190,4 @@ func getEncryptionData(serviceData: String) -> String? {
     
     // return the substring as string
     return String(encryptionKey)
-}
-
-
-/// Transfers the data (advertisement, last seen, rssi, detections ...) from the `new` SmartTag to the `existing` SmartTag
-func transferSmartTagData(existing: BaseDevice, new: BaseDevice, newEncryptionData: String?, context: NSManagedObjectContext) {
-    
-    let tempData = existing.bluetoothTempData()
-    
-    tempData.connected_background = false
-    
-    if let newEncryptionData = newEncryptionData {
-        existing.additionalData = newEncryptionData
-    }
-    
-    existing.currentBluetoothId = new.currentBluetoothId
-    
-    updateExistingDevice(existing: existing, context: context)
-    
-    log("Updated SmartTag \(existing.uniqueId ?? "?")")
-}
-
-
-/// Returns a SmartTag discovered `x` minutes ago. Adds a buffer of +- 1 minute
-func fetchSmartTagDiscoveredXMinAgo(x: Int, connectionStatus: ConnectionStatus, context: NSManagedObjectContext) -> BaseDevice? {
-    
-    let xMin: Double = Double(-minutesToSeconds(minutes: x))
-    let buffer: Double = minutesToSeconds(minutes: 1) // +- buffer
-    
-    let devices = fetchDevices(withPredicate: NSPredicate(
-        format: "lastMacRenewal >= %@ && lastMacRenewal <= %@ && deviceType == %@",
-        Date().addingTimeInterval(xMin - buffer) as CVarArg,
-        Date().addingTimeInterval(xMin + buffer) as CVarArg,
-        DeviceType.SmartTag.rawValue
-    ), context: context)
-    
-    // Only check for SmartTags with the same connection status
-    for device in devices {
-        
-        if let detections = device.detectionEvents?.array as? [DetectionEvent], let lastDetection = detections.last {
-            
-            if lastDetection.connectionStatus == connectionStatus.rawValue {
-                
-                // return the first one
-                return device
-            }
-        }
-    }
-    
-    return nil
 }

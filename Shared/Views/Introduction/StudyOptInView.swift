@@ -13,7 +13,7 @@ struct StudyOptInView: View {
     
     var body: some View {
         
-        BigButtonView(buttonHeight: Constants.BigButtonHeight + 50,
+        BigButtonView(buttonHeight: Constants.BigButtonHeight + 120,
                       mainView:
         BigSymbolView(title: "our_study", symbol: "waveform.path.ecg", imageFontSize: 75) {
             
@@ -41,15 +41,14 @@ struct StudyOptInButtonView: View {
         VStack() {
             
             Spacer()
-            Spacer()
             
             CheckboxButton(isSelected: $ageConfirmed , label: Text("age_confirmation"))
                 .frame(minWidth: 0, maxWidth: .infinity,alignment: .center)
             
-            Spacer()
+            
             Spacer()
             
-            HStack(spacing: 13) {
+            VStack(spacing: 13) {
                 
                 ColoredButton(action: {
                     
@@ -57,17 +56,17 @@ struct StudyOptInButtonView: View {
                     linkActive = true
                     selectionAction?(true)
                     
-                }, label: "participate", colors: [.airGuardBlue, .airGuardBlue], hasPadding: false)
-                .disabled(!self.ageConfirmed)
-
+                }, label: "participate", hasPadding: false)
+                .disabled(!ageConfirmed)
                 
-                ColoredButton(action: {
+                
+                GrayButton(label: "dont_participate", hasPadding: false, action: {
                     
                     settings.participateInStudy = false
                     linkActive = true
                     selectionAction?(false)
                     
-                }, label: "dont_participate", hasPadding: false)
+                })
 
             }
             .padding(.horizontal)
@@ -85,6 +84,7 @@ struct CheckboxButton: View {
     
     var body: some View {
         Button {
+            lightVibration()
             withAnimation {
                 self.isSelected.toggle()
             }

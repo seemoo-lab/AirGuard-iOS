@@ -91,7 +91,7 @@ Email: aheinrich@seemoo.tu-darmstadt.de";
 "all_done" = "Alles fertig!";
 "all_done_description" = "Wichtig: Die Hintergrund-Suche funktioniert nicht mit AirTags und „Wo ist?“-Geräten. Der Schutz vor diesen Trackern ist bereits durch die vorinstalliere Apple-App „Wo ist?“ gewährleistet.
 
-Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen verfügbar. So kann beispielsweise nur bei SmartTags festgestellt werden, ob die Tracker von ihren Besitzern getrennt sind.";
+Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen verfügbar. Falls du mehr darüber erfahren möchtest, lese dir die Artikel auf der Startseite von AirGuard durch.";
 
 
 //MARK: -- Manual Scan
@@ -173,7 +173,7 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "tracker_detail_notifications_tracker_marked_as_false_alarm" = "Als Fehlalarm markiert";
 "tracker_detail_notifications_tracker_no_feedback_saved" = "Kein Feedback gespeichert";
 
-"feedback_banner_description" = "Du hast eine Benachrichtigung erhalten. Teile uns mit, ob du denkst, dass der Tracker dich verfolgt.";
+"feedback_banner_description" = "Du hast eine Benachrichtigung erhalten. Denkst du, dass dich der Tracker verfolgt?";
 
 "feedback_view_false_alarm_header" = "Feedback";
 "feedback_view_false_alarm_subtitle" = "Bitte teile uns mit, ob du glaubst, ob dich der Tracker verfolgt oder oder dass diese Benachrichtigung ein Fehlalarm war. Du hilfst damit, die App weiter zu verbessern.";
@@ -285,9 +285,9 @@ Für alle anderen Fragen und Anregungen stehen wir gerne zur Verfügung. Bitte b
 "safe_trackers_description" = "
 Sichere Tracker sind Geräte, die dir wahrscheinlich nicht folgen.
 
-Wir betrachten zwei Typen von Trackern als sicher. Tracker, die explizit ignoriert wurden und Tracker, welche zu ihren Besitzer:innen verbunden sind.
+Wir betrachten zwei Typen von Trackern als sicher. Tracker, die explizit ignoriert wurden und Tracker, welche zu ihren Besitzer:innen verbunden sind. 
 
-Letztere können nicht verwendet werden, um deinen Standort zu verfolgen. Bitte beachte, dass der Verbindungs-Status aktuell nur für SmartTags ausgelesen werden kann.";
+Letztere können nicht verwendet werden, um deinen Standort zu verfolgen. Bitte beachte, dass der Verbindungs-Status nicht für alle Tracker ausgelesen werden kann.";
 
 
 //MARK: - Articles
@@ -311,6 +311,12 @@ Im Folgenden erfährst du, welche Tracker AirGuard automatisch im Hintergrund er
 
 **Samsung SmartTags**
 Diese Tracker werden von Samsung hergestellt und funktionieren fast wie AirTags.
+
+*Automatische Warnung bei Verfolgung*  ✅
+*Manuelle Suche*  ✅
+
+**Google „Find My Device“-Tracker**
+Dies sind Tracker, die mit Googles „Find My Device“-App kompatibel sind, aber von anderen Herstellern gefertigt werden, beispielsweise Chipolo, Eufy, Jio und Pebblebee.
 
 *Automatische Warnung bei Verfolgung*  ✅
 *Manuelle Suche*  ✅

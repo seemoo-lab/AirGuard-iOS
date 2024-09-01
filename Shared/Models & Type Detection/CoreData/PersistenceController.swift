@@ -99,7 +99,14 @@ struct PersistenceController {
     
     
     /// background thread for database work in background.
-    let backgroundQueue = DispatchQueue(label: "databaseQueue", qos: .utility)
+    private let databaseBackgroundQueue = DispatchQueue(label: "databaseQueue", qos: .utility)
+    
+    func getDatabaseQueue() -> DispatchQueue {
+        if Settings.sharedInstance.isBackground {
+            return DispatchQueue.main
+        }
+        return databaseBackgroundQueue
+    }
     
     
     /// Writes any changes to CoreData model to disk.
@@ -107,7 +114,7 @@ struct PersistenceController {
     func modifyDatabaseBackground(task: @escaping (NSManagedObjectContext) -> ()) {
         
         /// perform all operations in background - serialized (!!!)
-        backgroundQueue.async {
+        getDatabaseQueue().async {
             
             /// create new background context
             let privateMOC = container.newBackgroundContext()

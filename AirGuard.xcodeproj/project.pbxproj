@@ -13,7 +13,7 @@
 		78D84276298024B300B13B49 /* URLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D84275298024B300B13B49 /* URLSessionExtension.swift */; };
 		78D842782980252700B13B49 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D842772980252700B13B49 /* Api.swift */; };
 		78D842802982C6A500B13B49 /* AirGuardApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D8427F2982C6A500B13B49 /* AirGuardApiTests.swift */; };
-		78DF6EA1299A72AD00AFACAB /* ChipoloConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DF6EA0299A72AD00AFACAB /* ChipoloConstants.swift */; };
+		78DF6EA1299A72AD00AFACAB /* Chipolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DF6EA0299A72AD00AFACAB /* Chipolo.swift */; };
 		EB01019A28F5520B004520E9 /* DebugMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB01019928F5520B004520E9 /* DebugMapView.swift */; };
 		EB037D38283F85CF0018DF60 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB037D37283F85CF0018DF60 /* Clock.swift */; };
 		EB037D3B283F972E0018DF60 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB037D3A283F972E0018DF60 /* AppDelegate.swift */; };
@@ -21,6 +21,8 @@
 		EB03E3E728521859000B9BE1 /* BaseDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB03E3E628521859000B9BE1 /* BaseDeviceExtensions.swift */; };
 		EB16744928FB4F5D00A97500 /* BluetoothTempData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB16744828FB4F5D00A97500 /* BluetoothTempData.swift */; };
 		EB16744C28FB591400A97500 /* PrecisionFindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB16744B28FB591400A97500 /* PrecisionFindingView.swift */; };
+		EB1B6A942C12250E00DB0F47 /* MacDerandomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1B6A932C12250E00DB0F47 /* MacDerandomizer.swift */; };
+		EB1B6A962C1228EB00DB0F47 /* GrayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1B6A952C1228EB00DB0F47 /* GrayButton.swift */; };
 		EB1D95EA28B503AD00EEFF8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB1D95ED28B503AD00EEFF8C /* InfoPlist.strings */; };
 		EB2CF6A12B90AA6A008B723A /* ConnectionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CF6A02B90AA6A008B723A /* ConnectionStatus.swift */; };
 		EB2CF6A32B90BE1B008B723A /* TrackerForgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CF6A22B90BE1B008B723A /* TrackerForgetView.swift */; };
@@ -67,6 +69,7 @@
 		EB76BCCF282177F000CD5CC5 /* RSSIDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76BCCB282177F000CD5CC5 /* RSSIDecoder.swift */; };
 		EB76BCD1282177F000CD5CC5 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76BCCC282177F000CD5CC5 /* ViewExtensions.swift */; };
 		EB76BCD52822979600CD5CC5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76BCD42822979600CD5CC5 /* NotificationManager.swift */; };
+		EB76C7D02C11DB0B00C0A2ED /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76C7CF2C11DB0B00C0A2ED /* Google.swift */; };
 		EB8CB3642832790700BAB10D /* TrackingDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8CB3632832790700BAB10D /* TrackingDetection.swift */; };
 		EB8CB3662832894A00BAB10D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8CB3652832894A00BAB10D /* SettingsView.swift */; };
 		EB8D575128099EB1006B1BB8 /* AirGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8D574128099EAD006B1BB8 /* AirGuardApp.swift */; };
@@ -125,7 +128,7 @@
 		78D842772980252700B13B49 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		78D8427D2982C6A500B13B49 /* AirGuardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirGuardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78D8427F2982C6A500B13B49 /* AirGuardApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirGuardApiTests.swift; sourceTree = "<group>"; };
-		78DF6EA0299A72AD00AFACAB /* ChipoloConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipoloConstants.swift; sourceTree = "<group>"; };
+		78DF6EA0299A72AD00AFACAB /* Chipolo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chipolo.swift; sourceTree = "<group>"; };
 		EB01019928F5520B004520E9 /* DebugMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMapView.swift; sourceTree = "<group>"; };
 		EB037D37283F85CF0018DF60 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		EB037D3A283F972E0018DF60 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 		EB03E3E628521859000B9BE1 /* BaseDeviceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDeviceExtensions.swift; sourceTree = "<group>"; };
 		EB16744828FB4F5D00A97500 /* BluetoothTempData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothTempData.swift; sourceTree = "<group>"; };
 		EB16744B28FB591400A97500 /* PrecisionFindingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrecisionFindingView.swift; sourceTree = "<group>"; };
+		EB1B6A932C12250E00DB0F47 /* MacDerandomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacDerandomizer.swift; sourceTree = "<group>"; };
+		EB1B6A952C1228EB00DB0F47 /* GrayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrayButton.swift; sourceTree = "<group>"; };
 		EB1D95EE28B503AF00EEFF8C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EB2CF6A02B90AA6A008B723A /* ConnectionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatus.swift; sourceTree = "<group>"; };
 		EB2CF6A22B90BE1B008B723A /* TrackerForgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerForgetView.swift; sourceTree = "<group>"; };
@@ -181,6 +186,7 @@
 		EB76BCCB282177F000CD5CC5 /* RSSIDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSIDecoder.swift; sourceTree = "<group>"; };
 		EB76BCCC282177F000CD5CC5 /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		EB76BCD42822979600CD5CC5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		EB76C7CF2C11DB0B00C0A2ED /* Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
 		EB8CB3632832790700BAB10D /* TrackingDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingDetection.swift; sourceTree = "<group>"; };
 		EB8CB3652832894A00BAB10D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EB8D574128099EAD006B1BB8 /* AirGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirGuardApp.swift; sourceTree = "<group>"; };
@@ -300,6 +306,7 @@
 				EB5984482BB1F767004A4323 /* LUISheet.swift */,
 				EB59844C2BB210FF004A4323 /* LUILink.swift */,
 				EB59844A2BB20EC5004A4323 /* LUIButton.swift */,
+				EB1B6A952C1228EB00DB0F47 /* GrayButton.swift */,
 				EBC2864A2834F1AB007AC392 /* BluetoothOffView.swift */,
 			);
 			path = "Custom UI";
@@ -337,7 +344,8 @@
 				EB5FAE2A284E05A500D5A20A /* FindMyDevice.swift */,
 				EB5FAE2C284E05AC00D5A20A /* Tile.swift */,
 				EB5FAE2E284E05B500D5A20A /* SmartTag.swift */,
-				78DF6EA0299A72AD00AFACAB /* ChipoloConstants.swift */,
+				78DF6EA0299A72AD00AFACAB /* Chipolo.swift */,
+				EB76C7CF2C11DB0B00C0A2ED /* Google.swift */,
 			);
 			path = TrackerConstants;
 			sourceTree = "<group>";
@@ -470,6 +478,7 @@
 				EB5F8A702833C0F200ED2CD3 /* SoundManager.swift */,
 				EB76BCD42822979600CD5CC5 /* NotificationManager.swift */,
 				EB8D5773280D6539006B1BB8 /* LocationManager.swift */,
+				EB1B6A932C12250E00DB0F47 /* MacDerandomizer.swift */,
 			);
 			path = "Bluetooth & Tracking";
 			sourceTree = "<group>";
@@ -617,8 +626,10 @@
 				EB01019A28F5520B004520E9 /* DebugMapView.swift in Sources */,
 				EB6186E5282FDB4A0092280F /* BaseDevice+CoreDataClass.swift in Sources */,
 				EB5FAE36284E2FF100D5A20A /* DefaultConstants.swift in Sources */,
+				EB1B6A942C12250E00DB0F47 /* MacDerandomizer.swift in Sources */,
 				EB4D5F3A286F0CC0003BB891 /* Article.swift in Sources */,
 				EBB725BE285F6E60005EA3E4 /* DeviceTypeDetection.swift in Sources */,
+				EB1B6A962C1228EB00DB0F47 /* GrayButton.swift in Sources */,
 				EBB7B29A284D288C00AA5ED9 /* LocationAlwaysPermissionView.swift in Sources */,
 				788AA4A02988285700DB6EAA /* AppDelegate+Debug.swift in Sources */,
 				EB8D575328099EB1006B1BB8 /* ContentView.swift in Sources */,
@@ -660,7 +671,7 @@
 				EB6186E7282FDB4B0092280F /* BaseDevice+CoreDataProperties.swift in Sources */,
 				EB8D57602809A045006B1BB8 /* BluetoothManager.swift in Sources */,
 				EB8D5774280D6539006B1BB8 /* LocationManager.swift in Sources */,
-				78DF6EA1299A72AD00AFACAB /* ChipoloConstants.swift in Sources */,
+				78DF6EA1299A72AD00AFACAB /* Chipolo.swift in Sources */,
 				EB4D5F38286F057E003BB891 /* ArticleView.swift in Sources */,
 				EB76BCC22821776800CD5CC5 /* Constants.swift in Sources */,
 				EB7380042B6900E200C77B84 /* AdditionalFeedbackView.swift in Sources */,
@@ -686,6 +697,7 @@
 				EB5FAE33284E2FB200D5A20A /* TrackerIconView.swift in Sources */,
 				EBB808B92897FDD1004F3F26 /* DetailMapView.swift in Sources */,
 				EB8CB3662832894A00BAB10D /* SettingsView.swift in Sources */,
+				EB76C7D02C11DB0B00C0A2ED /* Google.swift in Sources */,
 				EB3BFB86289D284C001839BF /* EnableObservationView.swift in Sources */,
 				78AFC5E92A126CF00005AB59 /* API_KEYS.swift in Sources */,
 				EB2CF6A12B90AA6A008B723A /* ConnectionStatus.swift in Sources */,
@@ -917,7 +929,7 @@
 				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CODE_SIGN_ENTITLEMENTS = "AirGuard (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = K2B79VWGA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -937,7 +949,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-darmstadt.seemoo.airguard";
 				PRODUCT_NAME = AirGuard;
 				SDKROOT = iphoneos;
@@ -960,7 +972,7 @@
 				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CODE_SIGN_ENTITLEMENTS = "AirGuard (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = K2B79VWGA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -980,7 +992,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-darmstadt.seemoo.airguard";
 				PRODUCT_NAME = AirGuard;
 				SDKROOT = iphoneos;

@@ -18,7 +18,7 @@ struct EnableObservationView: View {
     
     var body: some View {
         
-        BigButtonView(buttonHeight: Constants.BigButtonHeight, mainView: BigSymbolViewWithText(title: "observe_tracker", symbol: "clock.fill", subtitle: "observe_tracker_description", topPadding: 0), buttonView: ColoredButton(action: {
+        BigButtonView(buttonHeight: Constants.BigButtonHeight, mainView: BigSymbolViewWithText(title: "observe_tracker", symbol: "clock.fill", subtitle: "observe_tracker_description", topPadding: 0), buttonView: GrayButton(label: "start_observation", action: {
             
             if(tracker.ignore || !settings.backgroundScanning) {
                 showObserveUnavailableAlert = true
@@ -28,7 +28,7 @@ struct EnableObservationView: View {
                 presentationMode.wrappedValue.dismiss()
             }
             
-        }, label: "start_observation")
+        })
                       
             .alert(isPresented: $showObserveUnavailableAlert, content: {
                 Alert(title: Text("feature_unavailable"), message: Text("observing_unavailable_description"))

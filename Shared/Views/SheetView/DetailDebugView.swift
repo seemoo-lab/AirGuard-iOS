@@ -67,7 +67,7 @@ struct DetailDebugView: View {
                         
                         ForEach(detections, id: \.self) { detection in
                             
-                            SettingsLabel(imageName: "wave.3.right", text: "Time: \(getTime(date: detection.time))\n\(detection.connectionStatus?.description ?? "-")\(detection.isTraveling ? "Travel" : "")")
+                            SettingsLabel(imageName: "wave.3.right", text: "Time: \(getTime(date: detection.time))\n\(detection.connectionStatus?.description ?? "-")\(detection.isTraveling ? " - Travel" : "")")
                         }
                     }
                 }

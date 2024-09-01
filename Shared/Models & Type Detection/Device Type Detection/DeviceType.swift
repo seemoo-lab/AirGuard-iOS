@@ -26,6 +26,7 @@ enum DeviceType: String, CaseIterable, Identifiable {
     case SmartTag = "Samsung SmartTag"
     /// Chipolo trackers without Find My that also work with Android
     case Chipolo = "Chipolo"
+    case Google = "Google"
     case Unknown = "Unknown"
 
     /// Reference to class containing constants and functions of type.
@@ -41,6 +42,8 @@ enum DeviceType: String, CaseIterable, Identifiable {
             return SmartTagConstants.self
         case .Chipolo:
             return ChipoloConstants.self
+        case .Google:
+            return GoogleConstants.self
         case .Unknown:
             return TrackerConstants.self
         }

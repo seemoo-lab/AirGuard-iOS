@@ -18,26 +18,19 @@ struct DebugSettingsView: View {
             
             CustomSection {
                 
-                LUIButton(action: {
+                LUILink(destination:
                     
-                    guard let fileURL = LogManager.sharedInstance.logFileURL else  {return}
-                    
-                    
-                    let shareActivity = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
-                    
-                    if let vc = UIApplication.shared.windows.first?.rootViewController{
-                        shareActivity.popoverPresentationController?.sourceView = vc.view
-                        
-                        shareActivity.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width, y: UIScreen.main.bounds.height, width: 0, height: 0)
-                        shareActivity.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
-                        vc.present(shareActivity, animated: true, completion: {
-                        })
+                    NavigationSubView {
+                        CustomSection {
+                            Text(getDebugText())
+                                .padding(.vertical, 20)
+                        }
                     }
-                    
-                }, label: {
-                    SettingsLabel(imageName: "square.and.arrow.up", text: "Share logs", backgroundColor: .orange)
+                    .navigationTitle("Logs")
+                , label: {
+                    NavigationLinkLabel(imageName: "text.justify.left", text: "Show logs", backgroundColor: .orange)
                 })
-                
+    
                 
                 Toggle(isOn: $settings.debugMode) {
                     SettingsLabel(imageName: "curlybraces", text: "Debug Mode")
@@ -127,6 +120,19 @@ struct DebugSettingsView: View {
             Spacer()
         }
         .navigationTitle("Debug Settings")
+    }
+    
+    
+    func getDebugText() -> String {
+        let fileURL = URL(fileURLWithPath: LogManager.sharedInstance.logFileURL!.path)
+        do {
+            let content = try String(contentsOf: fileURL, encoding: .utf8)
+            return content
+            
+        } catch {
+            log("Fehler beim Lesen der Datei: \(error.localizedDescription)")
+        }
+        return ""
     }
 }
 
