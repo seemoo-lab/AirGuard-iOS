@@ -60,6 +60,53 @@ func cleanDatabase(context: NSManagedObjectContext) {
 }
 
 
+/// Removes redundant detection events, that do not add any value for the tracking detection. For example, for three detections at the same location, the detection inbetween will be deleted.
+func mergeTrackingEvents(context: NSManagedObjectContext) {
+    for device in fetchDevices(context: context) {
+        
+        var firstDetectionAtLocation: DetectionEvent? = nil
+        var previousDetectionAtLocation: DetectionEvent? = nil
+        var toDelete: [DetectionEvent] = []
+        
+        for currentDetection in device.detectionEvents?.array as? [DetectionEvent] ?? [] {
+            
+            if firstDetectionAtLocation == nil {
+                firstDetectionAtLocation = currentDetection
+            }
+            else {
+                
+                if let firstDetectionAtLocation = firstDetectionAtLocation, currentDetection.location == firstDetectionAtLocation.location && currentDetection.isTraveling == firstDetectionAtLocation.isTraveling && currentDetection.connectionStatus == firstDetectionAtLocation.connectionStatus {
+                    
+                    if let prev = previousDetectionAtLocation {
+                        
+                        // Safety checks
+                        if (firstDetectionAtLocation == currentDetection || previousDetectionAtLocation == currentDetection || previousDetectionAtLocation == firstDetectionAtLocation
+                            
+                            || prev.isTraveling != currentDetection.isTraveling || prev.connectionStatus != currentDetection.connectionStatus || prev.location != currentDetection.location
+                            
+                            || prev.isTraveling != firstDetectionAtLocation.isTraveling || prev.connectionStatus != firstDetectionAtLocation.connectionStatus || prev.location != firstDetectionAtLocation.location) {
+                            log("----------------------------------------")
+                            log("ERROR MERGING TRACKING EVENTS. QUITTING.")
+                            log("----------------------------------------")
+                            return
+                        }
+                        
+                        toDelete.append(prev)
+                    }
+                    
+                    previousDetectionAtLocation = currentDetection
+                }
+                else {
+                    firstDetectionAtLocation = currentDetection
+                    previousDetectionAtLocation = nil
+                }
+            }
+        }
+        delete(entries: toDelete, context: context)
+    }
+}
+
+
 /// Removes all devices not seen for the last 30 days.
 func removeAllDevicesWithNoNotificationOlderThan30Days(context: NSManagedObjectContext) {
     
@@ -68,6 +115,22 @@ func removeAllDevicesWithNoNotificationOlderThan30Days(context: NSManagedObjectC
         // avoid removing ignored devices, to not reset the ignore flag on those
         let oldDevices = fetchDevices(withPredicate: NSPredicate(format: "ignore == FALSE && lastSeen < %@", threshold as CVarArg), context: context)
         let neverSentNotification = oldDevices.filter({ ($0.notifications?.count ?? 0) == 0 })
+        
+        delete(entries: neverSentNotification, context: context)
+    }
+}
+
+/// Removes all detections that are older than 30 days and the associated device did not produce a tracking notification.
+func removeAllDetectionsWithNoNotificationOlderThan30Days(context: NSManagedObjectContext) {
+    
+    if let threshold = Calendar.current.date(byAdding: .day, value: -30, to: Date()) {
+        
+        // avoid removing ignored devices, to not reset the ignore flag on those
+        let oldDetections = fetchDetections(withPredicate: NSPredicate(format: "time < %@", threshold as CVarArg), context: context)
+        print("Found \(oldDetections.count) detections older than 30 days")
+        
+        let neverSentNotification = oldDetections.filter({ $0.baseDevice?.notifications?.count ?? 0 == 0 })
+        print("Found \(neverSentNotification.count) detections with no tracking notification")
         
         delete(entries: neverSentNotification, context: context)
     }
@@ -85,6 +148,33 @@ func fetchDevices(withPredicate: NSPredicate? = nil, withLimit: Int? = nil, cont
     if let withLimit = withLimit {
         fetchRequest.fetchLimit = withLimit
     }
+    
+    // set predicate
+    fetchRequest.predicate = withPredicate
+    
+    // try to fetch
+    do {
+        let objects = try context.fetch(fetchRequest)
+        
+        return objects
+    }
+    
+    // error occured
+    catch {
+        log(error.localizedDescription)
+    }
+    
+    // default: nothing to return
+    return []
+}
+
+
+/// Fetches all detection events meeting the predicate.
+func fetchDetections(withPredicate: NSPredicate? = nil, context: NSManagedObjectContext) -> [DetectionEvent] {
+    
+    // create fetch request
+    let fetchRequest: NSFetchRequest<DetectionEvent>
+    fetchRequest = DetectionEvent.fetchRequest()
     
     // set predicate
     fetchRequest.predicate = withPredicate

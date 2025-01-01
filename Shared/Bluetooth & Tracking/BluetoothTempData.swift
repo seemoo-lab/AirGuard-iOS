@@ -102,6 +102,10 @@ class BluetoothTempData: ObservableObject {
         set(newValue) {
             queue.sync {
                 _connected = newValue
+                
+                DispatchQueue.main.async {
+                    self.connected_publisher = newValue
+                }
             }
         }
         get {
@@ -111,6 +115,9 @@ class BluetoothTempData: ObservableObject {
         }
     }
     private var _connected = false
+    
+    /// Specifies if the device is connected - Published for UI.
+    @Published var connected_publisher: Bool = false
     
     /// ------------------------------------------------------------------------- //
 

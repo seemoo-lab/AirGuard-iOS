@@ -22,9 +22,15 @@ struct AdditionalFeedbackView: View {
                 
                 ForEach(TrackerHideout.allCases, id: \.self) { hideout in
                     LUIButton {
-                        PersistenceController.sharedInstance.modifyDatabase { context in
-                            notification.hideout = hideout.rawValue
-                            showDoneView = true
+                        
+                        let id = notification.objectID
+                        showDoneView = true
+                        
+                        PersistenceController.sharedInstance.modifyDatabaseBackground { context in
+                            
+                            if let notification = context.object(with: id) as? TrackerNotification {
+                                notification.hideout = hideout.rawValue
+                            }
                         }
                     } label: {
                         NavigationLinkLabel(imageName: hideout.icon(), text: hideout.label(), backgroundColor: hideout.color())
@@ -33,7 +39,7 @@ struct AdditionalFeedbackView: View {
             }
         }
         .modifier(LinkTo(content: {FeedbackThanksView(showSheet: $showSheet)}, isActive: $showDoneView))
-        .navigationBarTitle("‏‏‎ ‎‎", displayMode: .inline)
+        .navigationBarItems(trailing: XButton(action: {showSheet = false}))
     }
     
     func getSymbol() -> String {

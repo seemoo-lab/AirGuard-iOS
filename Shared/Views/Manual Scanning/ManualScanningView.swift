@@ -78,7 +78,7 @@ struct ManualScanningView: View {
                                 .opacity(showStillSearchingHint ? 1 : 0)
                             
                         }
-                        
+                        .modifier(MonospacedDigitModifer())
                         .opacity(0.9)
                         .padding(.horizontal)
                         .onReceive(timer) { input in
@@ -142,6 +142,18 @@ struct ManualScanningView: View {
         }
         
         return "manual_scan_own_devices_hint".localized()
+    }
+}
+
+
+struct MonospacedDigitModifer: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 15.0, *) {
+            return content.monospacedDigit()
+        }
+        else {
+            return content
+        }
     }
 }
 

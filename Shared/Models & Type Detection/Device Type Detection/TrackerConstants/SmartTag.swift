@@ -31,7 +31,7 @@ final class SmartTagConstants: TrackerConstants {
     
     override class var minMacAddressChangeTime: Int? { 24 }
     
-    override class var iconView: AnyView {
+    override class func iconView(trackerName: String) -> AnyView {
         AnyView(RoundedRectangle(cornerRadius: 5)
             .padding(2)
             .rotationEffect(Angle(degrees: 45))
@@ -39,77 +39,8 @@ final class SmartTagConstants: TrackerConstants {
     }
     
     override class func detect(baseDevice: BaseDevice, context: NSManagedObjectContext) {
-        
-        detectTypeByNameOrAdvertisementData(baseDevice: baseDevice, deviceName: "Smart Tag", searchForService: offeredService) {
-            
-            let advertisementData = baseDevice.bluetoothTempData().advertisementData_background
-            
-            // get the raw data for the SmartTag service
-            let servData = getServiceData(advertisementData: advertisementData, key: SmartTagConstants.offeredService)
-            let encryptionData = getEncryptionData(serviceData: servData ?? "")
-            
-            // get the current owner connection status
-            let connectionStatus = connectionStatus(advertisementData: advertisementData)
-            
-            let time: Double
-            
-            // in this case, the encyrption key changes every 8h. Thus, we search for SmartTags with the same encryption key in the last 24 hours
-            if connectionStatus == .OvermatureOffline {
-                log("Detected SmartTag Disconnected More Than 8h.")
-                time = -hoursToSeconds(hours: 8)
-            }
-            // in this case, the encyrption key changes every 15m. Thus, we search for SmartTags with the same encryption key in the last 15m
-            else {
-                log("Detected SmartTag Disconnected More Than 15m.")
-                time = -minutesToSeconds(minutes: 15)
-            }
-            
-            // get all SmartTags with same encryption key during last 15 minutes or 24 hours
-            let sameEncryptionData = fetchDevices(withPredicate: NSPredicate(
-                format: "lastSeen >= %@ && deviceType == %@ && additionalData == %@",
-                Date().addingTimeInterval(time) as CVarArg,
-                DeviceType.SmartTag.rawValue, encryptionData ?? "no key" // if encryptionData = nil, nothing will be returned
-            ), context: context)
-            
-            
-            // check if there is a SmartTag with identical encryption key. We then know that it's the same device, even though the mac address / uuid might be different
-            if let existing = sameEncryptionData.first {
-                
-                log("Refreshed SmartTag MAC - Encryption Key (\(encryptionData ?? "?")) - \(baseDevice.uniqueId?.description ?? "?")")
-                
-                transferTrackerData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
-                return
-            }
-            
-            
-            // check if there is a SmartTag discovered 15 minutes ago. SmartTags change their mac address every 15 minutes, so we can port the old data to the "new" device
-            // we only take those SmartTags 15m/30m ago which have the same connection status - this is another identifier we can use to minimize the risk of merging two different SmartTags
-            
-            for minutes in [15, 30] {
-                if let existing = fetchPreviouslyDiscoveredDevices(minutesAgo: minutes, deviceType: .SmartTag, withConnectionStatus: connectionStatus, context: context) {
-                    
-                    log("Refreshing SmartTag MAC... - \(minutes)m - \(baseDevice.uniqueId?.description ?? "?")")
-                    
-                    existing.lastMacRenewal = Date()
-                    
-                    transferTrackerData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
-                    
-                    return
-                }
-            }
-            
-            // This actually is a new SmartTag, no data transfer needed
-            if connectionStatus == .PrematureOffline {
-                
-                // Due to the SmartTag architecture, we assume that the last MAC renewal happened the last quarter of the hour
-                baseDevice.lastMacRenewal = baseDevice.firstSeen?.lastFifteenMinutes()
-                log("Set SmartTag lastMacRenewal to \(String(describing: baseDevice.lastMacRenewal)) from \(String(describing: baseDevice.firstSeen))")
-            }
-            
-            setType(device: baseDevice, type: .SmartTag, withData: encryptionData, context: context)
-        }
+        detectTrackersBy15MinTechnique(baseDevice: baseDevice, context: context, nameForIdentification: "Smart Tag", trackerType: .SmartTag, encryptionDataStartByteInclusive: 4, encryptionDataEndByteExclusive: 12)
     }
-    
     
     /// Extracts the SmartTagConnectionStatus out of the advertisement data
     override class func connectionStatus(advertisementData: [String : Any]) -> ConnectionStatus {
@@ -165,22 +96,100 @@ final class SmartTagConstants: TrackerConstants {
 }
 
 
+/// Detects trackers based on their type and the fact that SmartTags and similar devices always change their encryption key exactly every 15 minutes
+func detectTrackersBy15MinTechnique(baseDevice: BaseDevice, context: NSManagedObjectContext, nameForIdentification: String, trackerType: DeviceType, encryptionDataStartByteInclusive: Int, encryptionDataEndByteExclusive: Int, onDidSetType: @escaping () -> () = {}) {
+    guard let offeredService = trackerType.constants.offeredService else { return }
+    
+    detectTypeByNameOrAdvertisementData(baseDevice: baseDevice, deviceName: nameForIdentification, searchForService: offeredService) {
+        
+        let advertisementData = baseDevice.bluetoothTempData().advertisementData_background
+        
+        // get the raw data for the SmartTag service
+        let servData = getServiceData(advertisementData: advertisementData, key: offeredService)
+        let encryptionData = getEncryptionData(serviceData: servData ?? "", startByteInclusive: encryptionDataStartByteInclusive, endByteExclusive: encryptionDataEndByteExclusive)
+        
+        // get the current owner connection status
+        let connectionStatus = trackerType.constants.connectionStatus(advertisementData: advertisementData)
+        
+        let time: Double
+        
+        // in this case, the encyrption key changes every 8h. Thus, we search for SmartTags with the same encryption key in the last 24 hours
+        if connectionStatus == .OvermatureOffline {
+            log("Detected \(trackerType.constants.name) Disconnected More Than 8h.")
+            time = -hoursToSeconds(hours: 8)
+        }
+        // in this case, the encyrption key changes every 15m. Thus, we search for SmartTags with the same encryption key in the last 15m
+        else {
+            log("Detected \(trackerType.constants.name) Disconnected More Than 15m.")
+            time = -minutesToSeconds(minutes: 15)
+        }
+        
+        // get all SmartTags with same encryption key during last 15 minutes or 24 hours
+        let sameEncryptionData = fetchDevices(withPredicate: NSPredicate(
+            format: "lastSeen >= %@ && deviceType == %@ && additionalData == %@",
+            Date().addingTimeInterval(time) as CVarArg,
+            trackerType.rawValue, encryptionData ?? "no key" // if encryptionData = nil, nothing will be returned
+        ), context: context)
+        
+        
+        // check if there is a SmartTag with identical encryption key. We then know that it's the same device, even though the mac address / uuid might be different
+        if let existing = sameEncryptionData.first {
+            
+            log("Refreshed \(trackerType.constants.name) MAC - Encryption Key (\(encryptionData ?? "?")) - \(baseDevice.uniqueId?.description ?? "?")")
+            transferTrackerData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
+            return
+        }
+        
+        
+        // check if there is a SmartTag discovered 15 minutes ago. SmartTags change their mac address every 15 minutes, so we can port the old data to the "new" device
+        // we only take those SmartTags 15m/30m ago which have the same connection status - this is another identifier we can use to minimize the risk of merging two different SmartTags
+        
+        for minutes in [15, 30] {
+            if let existing = fetchPreviouslyDiscoveredDevices(minutesAgo: minutes, deviceType: trackerType, withConnectionStatus: connectionStatus, context: context) {
+                
+                log("Refreshing \(trackerType.constants.name) MAC... - \(minutes)m - \(baseDevice.uniqueId?.description ?? "?")")
+                existing.lastMacRenewal = Date()
+                transferTrackerData(existing: existing, new: baseDevice, newEncryptionData: encryptionData, context: context)
+                
+                return
+            }
+        }
+        
+        // This actually is a new SmartTag, no data transfer needed
+        if connectionStatus == .PrematureOffline {
+            
+            // Due to the SmartTag architecture, we assume that the last MAC renewal happened the last quarter of the hour
+            baseDevice.lastMacRenewal = baseDevice.firstSeen?.lastFifteenMinutes()
+            log("Set \(trackerType.constants.name) lastMacRenewal to \(String(describing: baseDevice.lastMacRenewal)) from \(String(describing: baseDevice.firstSeen))")
+        }
+        
+        setType(device: baseDevice, type: trackerType, withData: encryptionData, context: context)
+        onDidSetType()
+    }
+}
+
+
+
 /// Extracts the encryption data from service data of a SmartTag
-func getEncryptionData(serviceData: String) -> String? {
+func getEncryptionData(serviceData: String, startByteInclusive: Int, endByteExclusive: Int) -> String? {
+    
+    // *2 for hex string
+    let dataEndIndex = endByteExclusive*2
+    let dataStartIndex = startByteInclusive*2
     
     // encryption key cannot be extracted
-    if serviceData.count < 24 {
+    if serviceData.count < dataEndIndex {
         return nil
     }
     
     // start of advertisement data
     let startIndex = serviceData.startIndex
     
-    // encryption key begins after the 8th hex character
-    let encryptionKeyStartIndex = serviceData.index(startIndex, offsetBy: 8)
+    // encryption key begins after the 8th hex character for SmartTags
+    let encryptionKeyStartIndex = serviceData.index(startIndex, offsetBy: dataStartIndex)
     
-    // encryption key has 64bit -> 64/4 = 16 hex characters. 16 + 8 = 24
-    let encryptionKeyStopIndex = serviceData.index(startIndex, offsetBy: 24)
+    // SmartTag encryption key has 64bit -> 64/4 = 16 hex characters. 16 + 8 = 24
+    let encryptionKeyStopIndex = serviceData.index(startIndex, offsetBy: dataEndIndex)
     
     // encryption key range
     let range = encryptionKeyStartIndex..<encryptionKeyStopIndex

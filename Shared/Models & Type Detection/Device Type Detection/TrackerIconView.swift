@@ -28,9 +28,14 @@ struct TrackerIconView: ViewModifier {
                 
                 Group {
                     if(imageName != "") {
+                        
+                        let showingAppleLogo = imageName == "applelogo"
+                        
                         Image(systemName: imageName)
-                            .font(.system(size: size * 0.6))
-                            .offset(x: -size * 0.01, y: -size * 0.02)
+                            .font(.system(size: size * (showingAppleLogo ? 0.6 : imageName == "airpodspro" ? 0.5 : 0.55)))
+                            .if(showingAppleLogo, transform: { view in
+                                view.offset(x: -size * 0.01, y: -size * 0.02)
+                            })
                     }
                     else {
                         Text(text)

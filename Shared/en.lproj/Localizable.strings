@@ -7,8 +7,11 @@
 */
 
 "unknown_device" = "Unknown";
-"find_my_device" = "\"Find My\" Tracker";
+"find_my_device" = "Apple Find My Device";
+"google_find_my_device" = "Google Find My Device";
+"offline_android_device" = "Android Device (offline)";
 "chipolo_without_findmy" = "Chipolo (w/o Find My)";
+"pebblebee_without_findmy" = "Pebblebee (w/o Find My)";
 "left" = "Left";
 "right" = "Right";
 
@@ -97,7 +100,7 @@ For technical reasons, not all features are available for every tracker type. If
 
 "we_detected_X_trackers_around_you" = "We detected %@ %@ around you so far.";
 "manual_scan_own_devices_hint" = "Own trackers may be hidden.";
-"manual_scan_dangerous_hint" = "All trackers, including non-dangerous ones, are displayed.";
+"manual_scan_dangerous_hint" = "Non-dangerous trackers are also displayed.";
 "tracker_singular" = "tracker";
 "tracker_plural" = "trackers";
 
@@ -117,7 +120,15 @@ For technical reasons, not all features are available for every tracker type. If
 "more" = "More";
 "more_trackerdetailview_description" = "Learn more, e.g. how to disable the tracker.";
 "website_manufacturer" = "Manufacturer's Website";
-"scan_nfc" = "Information About Owner";
+"more_trackerdetailview_owner_information" = "Information About Owner";
+"more_trackerdetailview_owner_information_fmdn" = "If you have found this tracker, you can request information about its owner here. To do this, the tracker must be set to a special mode. This takes about one minute.\n\n%@ Other trackers may work in a similar way.";
+"more_trackerdetailview_owner_information_fmdn_chipolo" = "For Chipolo trackers, find the button on the tracker and press it for 30 seconds, wait for two beeps, then release the button. You will hear a confirmation tone.";
+"more_trackerdetailview_owner_information_fmdn_pebblebee" = "For Pebblebee trackers, press the button three times in succession. The action is confirmed with a beep.";
+"more_trackerdetailview_owner_information_unavailable_title" = "Owner Info Unavailable";
+"more_trackerdetailview_owner_information_unavailable_description" = "The phone of the owner of this tracker has been offline for too long. Owner information is not available. Check again later.";
+
+"more_trackerdetailview_owner_information_fmdn_show_owner_information" = "Show Owner Information";
+"more_trackerdetailview_owner_information_fmdn_connecting" = "Connected. Waiting for information...";
 
 "accuracy" = "Accuracy";
 "background_scanning" = "Background Scanning";
@@ -163,9 +174,9 @@ For technical reasons, not all features are available for every tracker type. If
 "observe_tracker" = "Observe Tracker";
 "off" = "Off";
 "start_observation" = "Start Observation";
-"observe_tracker_description" = "If you are not sure if this tracker follows you, you can manually observe it.\n\nIn one hour, AirGuard will search for this tracker and deliver a notification immediately, even if you did not move with this tracker. If the tracker is not around anymore, you will receive a notification about that as well.";
+"observe_tracker_description" = "If you are not sure if this tracker follows you, you can manually observe it.\n\nIn one hour, AirGuard will search for this tracker and deliver a notification immediately, even if you did not move with this tracker.\n\nIf the tracker is not around anymore, you will receive a notification about that as well.";
 "feature_unavailable" = "Feature Unavailable";
-"observing_unavailable_description" = "Enable background scanning and disable 'Ignore This Tracker' to observe this tracker.";
+"observing_unavailable_description" = "Enable background scanning in \"Normal\" or \"High\" mode and disable 'Ignore This Tracker' to observe this tracker.";
 
 "tracker_detail_notifications_tracker_hideout" = "Tracker Hideout";
 "tracker_detail_notifications_tracker_marked_as_threat" = "Marked as Threat";
@@ -178,6 +189,8 @@ For technical reasons, not all features are available for every tracker type. If
 "feedback_view_false_alarm_subtitle" = "Please let us know if you think that the tracker is following you or that this notification was a false alarm. This will help us to further improve the app.";
 "feedback_view_false_alarm_mark_as_false_alarm" = "Mark as False Alarm";
 "feedback_view_false_alarm_mark_as_threat" = "Mark as a Threat";
+"feedback_view_false_alarm_mark_as_false_alarm_footer" = "Select this option if the tracker was not intentionally used to track you.";
+"feedback_view_false_alarm_mark_as_threat_footer" = "Select this option if you know that the tracker has been intentionally used to track your location.";
 "feedback_view_thanks_header" = "Thank you!";
 "feedback_view_thanks_subtitle" = "Your feedback has been successfully saved. If you want to edit it again later, tap the feedback button next to the notification.";
 "feedback_view_thanks_done_button" = "Done";
@@ -196,7 +209,6 @@ For technical reasons, not all features are available for every tracker type. If
 "now" = "just now";
 
 "home" = "Home";
-"done" = "Done";
 "settings" = "Settings";
 "welcome_to" = "Welcome to";
 "continue" = "Continue";
@@ -204,11 +216,11 @@ For technical reasons, not all features are available for every tracker type. If
 "notifications" = "Notifications";
 
 "security_level" = "Security Level";
-"low" = "Low";
+"security_level_low" = "Low Power";
 "security_level_low_description" = "Using the low security level will delay notifications longer. You shouldn't get many false alarms with this setting, but it's also possible that you won't receive a notification for a tracker which actually follows you.";
-"normal" = "Normal";
+"security_level_normal" = "Normal";
 "security_level_normal_description" = "The normal security level provides a good compromise between too many false notifications and fast detection speed of trackers following you.";
-"high" = "High";
+"security_level_high" = "High";
 "security_level_high_description" = "Using the high security level will send notifications faster. You will receive notifications for trackers which follow you very fast - but you might also get a lot of false alarms with this setting.";
 
 "information_and_contact" = "Information & Contact";
@@ -259,13 +271,14 @@ For all other questions and suggestions, we are happy to help. However, please a
 "forget_tracker_alert_header" = "Are you sure?";
 "forget_tracker_alert_description" = "This operation will delete all information about this tracker.";
 
-"min_mac_address_change_time_changes_never_info" = "%@ devices do not change their identity over time. This can lead to more false warnings. If you are warned, check that the tracker is carried by from someone around you.";
-"min_mac_address_change_time_info" = "Attention: %@ devices change their identity at least every %@ hours. These devices are therefore recognized as a new device periodically and can be displayed multiple times.";
+"min_mac_address_change_time_changes_never_info" = "This tracker type does not change its identity over time. This can lead to more false warnings. If you are warned, check if the tracker is carried by from someone around you.";
+"min_mac_address_change_time_info" = "Attention: This tracker type changes its identity at least every %@ hours. The tracker can be recognized as a new device periodically and can be displayed multiple times.";
 
 "locate_tracker" = "Locate Tracker";
 "trying_connection" = "No signal. Connecting...";
 "precision_finding_hint" = "Move slowly and try to maximize the signal strength to find the tracker.";
 "close_stop_searching" = "Close and Stop Searching";
+"tracker_appearance_button" = "How Does This Tracker Look Like?";
 
 "no_risk" = "No Risk";
 "medium_risk" = "Medium Risk";
@@ -316,31 +329,43 @@ These tags are made by Samsung and work almost the same as AirTags.
 *Automatic tracking alert* ✅
 *Manual Scan* ✅
 
-**Google Find My Device Tracker**
+**Google Find My Device Trackers**
 These are trackers that are compatible with Googles's Find My Device network, but are made by other manufacturers. There are a few manufacturers that make such trackers, for example Chipolo, Eufy, Jio, and Pebblebee.
 
 *Automatic tracking alert* ✅
 *Manual Scan* ✅
 
-**Tile Tracker**
+**Tile Trackers**
 Tile is a company that exclusively makes Bluetooth trackers. These also have similar features to AirTags.
 
 *Automatic tracking alert* ✅
 *Manual scanning* ✅
 
-**Chipolo Tracker (without Find My)**
+**Chipolo Trackers (without Find My)**
 Chipolo offers Find My trackers that only work with iPhones and trackers that also work with Android devices. Here we cover the trackers that are also compatible with Android phones.
 
 *Automatic tracking alert* ✅
 *Manual Scan* ✅
 
-**AirTags**
+**Pebblebee Tracker (without Find My)**
+Pebblebee trackers are available for both the Apple and Google networks. However, Pebblebee also offers the option of operating the trackers in the Pebblebee network. The trackers are also recognized by AirGuard in this mode.
+
+*Automatic tracking alert* ✅
+*Manual Scan* ✅
+
+**Samsung Find My Mobile Tracker**
+Like Samsung SmartTags, Find My Mobile trackers are operated via the Samsung SmartThings Find network. Find My Mobile trackers can be, for example, Samsung smartphones in offline mode or other devices such as wireless headphones
+.  
+*Automatic tracking alert* ✅
+*Manual Scan* ✅
+
+**Apple AirTags**
 AirTags are Apple's trackers. As a result, they are only detectable to a limited extent, as many signals are filtered by the system. In the manual scan we can find AirTags and you can locate them. Tracking detection in the background is already provided by the Apple Find My App.
 
 *Automatic tracking alert* ❌
 *Manual Scan* ✅
 
-**Find My Tracker**
+**Apple Find My Tracker**
 These are trackers that are compatible with Apple's Find My, but come from other manufacturers. There are a few manufacturers that make such trackers: Chipolo, Pebblebee, Atuvos, etc. As with AirTags, the tracker cannot be detected in the background. Again, the Find My app automatically warns you.
 
 *Automatic tracking alert* ❌
@@ -417,13 +442,13 @@ If you know more numbers for different countries, please get into contact at [ah
 "article_faq_subheader" = "Frequently Asked Questions";
 "article_faq_text" = "In this article, we have compiled some of the frequently asked questions.
 
-**I found trackers via manual search, should I be worried?**
+**I found trackers via the Manual Scan, should I be worried?**
 *The trackers you see in manual scan are only the trackers which are around you. They are not necessarily tracking you. AirGuard will only notify you if those trackers travelled with you. If that is not the case, there usually is nothing to worry about.*
 
 **I get notifications for my own trackers. Can I ignore or name them?**
 *For technical reasons, ignoring trackers is only possible for Tile trackers. Trackers cannot be named.*
 
-**Why can AirTags only be found in the manual search?**
+**Why can AirTags only be found in the Manual Scan?**
 *This is due to technical reasons. Unfortunately, this will not change in the foreseeable future. However, the pre-installed \"Find My\" app already protects against such devices.*
 
 **Why are devices that are connected to their owners harmless?**

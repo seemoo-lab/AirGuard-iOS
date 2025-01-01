@@ -49,9 +49,9 @@ struct ContentView: View {
 
                     NavigationView {
                         TrackerDetailView(tracker: tracker, bluetoothData: tracker.bluetoothTempData())
-                            .navigationBarItems(trailing: Button(action: {
+                            .navigationBarItems(trailing: XButton(action: {
                                 settings.showSheet = false
-                            }, label: {Text("done").bold().font(.system(size: 17))}))
+                            }))
                     }
                 }
             }

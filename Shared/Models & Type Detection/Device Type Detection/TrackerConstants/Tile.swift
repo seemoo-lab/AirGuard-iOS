@@ -34,7 +34,7 @@ final class TileConstants: TrackerConstants {
     
     override class var supportURL: String? { "https://tileteam.zendesk.com/hc/en-us/articles/203954683-Return-a-Tile-to-Its-Owner" }
     
-    override class var iconView: AnyView {
+    override class func iconView(trackerName: String) -> AnyView {
         AnyView(RoundedRectangle(cornerRadius: 5)
             .padding(1)
             .modifier(TrackerIconView(text: "tile")))

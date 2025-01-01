@@ -24,9 +24,10 @@ enum DeviceType: String, CaseIterable, Identifiable {
     case FindMyDevice = "FindMy Device"
     case Tile = "Tile"
     case SmartTag = "Samsung SmartTag"
-    /// Chipolo trackers without Find My that also work with Android
     case Chipolo = "Chipolo"
     case Google = "Google"
+    case Pebblebee = "Pebblebee"
+    case FindMyMobile = "Samsung FindMyMobile"
     case Unknown = "Unknown"
 
     /// Reference to class containing constants and functions of type.
@@ -44,9 +45,17 @@ enum DeviceType: String, CaseIterable, Identifiable {
             return ChipoloConstants.self
         case .Google:
             return GoogleConstants.self
+        case .Pebblebee:
+            return PebblebeeConstants.self
+        case .FindMyMobile:
+            return FindMyMobileConstants.self
         case .Unknown:
             return TrackerConstants.self
         }
+    }
+    
+    static func getAvailableTypes(filterAvailableForBackgroundScanning: Bool) -> [DeviceType] {
+        return DeviceType.allCases.filter({ $0.constants.isEnabled && ((!filterAvailableForBackgroundScanning || $0.constants.supportsBackgroundScanning) && $0 != .Unknown) })
     }
     
     /// Sets the user defaults key to ignore the device for push notifications

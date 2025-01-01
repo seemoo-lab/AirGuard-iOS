@@ -102,9 +102,6 @@ struct PersistenceController {
     private let databaseBackgroundQueue = DispatchQueue(label: "databaseQueue", qos: .utility)
     
     func getDatabaseQueue() -> DispatchQueue {
-        if Settings.sharedInstance.isBackground {
-            return DispatchQueue.main
-        }
         return databaseBackgroundQueue
     }
     

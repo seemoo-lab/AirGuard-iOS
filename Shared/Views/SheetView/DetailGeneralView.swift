@@ -9,6 +9,14 @@ import SwiftUI
 
 struct DetailGeneralView: View {
     
+    internal init(tracker: BaseDevice, soundManager: SoundManager) {
+        self.tracker = tracker
+        self.soundManager = soundManager
+        self.isBeingObserved = tracker.observingStartDate != nil
+        self.observingWasTurnedOn = tracker.observingStartDate != nil
+        self.ignore = tracker.ignore
+    }
+    
     @ObservedObject var tracker: BaseDevice
     @ObservedObject var settings = Settings.sharedInstance
     @ObservedObject var soundManager: SoundManager
@@ -17,7 +25,10 @@ struct DetailGeneralView: View {
     let persistenceController = PersistenceController.sharedInstance
     
     @State var showPrecisionFinding = false
-    @State var observingWasTurnedOn = false
+    
+    @State var isBeingObserved: Bool
+    @State var observingWasTurnedOn: Bool
+    @State var ignore: Bool
     
     var body: some View {
         
@@ -25,7 +36,7 @@ struct DetailGeneralView: View {
         
         let type = tracker.getType
         let macAddessResetTime = type.constants.minMacAddressChangeTime
-        let infoString = macAddessResetTime != nil ? String(format: "min_mac_address_change_time_info".localized(), type.constants.name, macAddessResetTime!.description) : String(format: "min_mac_address_change_time_changes_never_info".localized(), type.constants.name)
+        let infoString = macAddessResetTime != nil ? String(format: "min_mac_address_change_time_info".localized(), macAddessResetTime!.description) : "min_mac_address_change_time_changes_never_info".localized()
         
         CustomSection(header: "general", footer: infoString) {
                 
@@ -40,23 +51,23 @@ struct DetailGeneralView: View {
                 ) {
                     
                     let binding = Binding {
-                        
-                        tracker.observingStartDate != nil
-                        
+                        isBeingObserved
                     } set: { newValue in
                         
                         if newValue {
                             observingWasTurnedOn = true
+                            isBeingObserved = true
                             
-                            // Do this on main thread to avoid lag
-                            PersistenceController.sharedInstance.modifyDatabase { context in
+                            modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, tracker in
+
                                 TrackingDetection.sharedInstance.startObservingTracker(tracker: tracker, context: context)
                             }
                         }
                         else {
-                            // Do this on main thread to avoid lag
-                            PersistenceController.sharedInstance.modifyDatabase { context in
-                                
+            
+                            isBeingObserved = false
+                            modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, tracker in
+
                                 TrackingDetection.sharedInstance.stopObservingTracker(tracker: tracker, context: context)
                             }
                         }
@@ -64,12 +75,15 @@ struct DetailGeneralView: View {
                     
                     let color = Color(#colorLiteral(red: 0.3667442501, green: 0.422971189, blue: 0.9019283652, alpha: 1))
                     
-                    if binding.wrappedValue || observingWasTurnedOn {
+                    if isBeingObserved || observingWasTurnedOn {
                         Toggle(isOn: binding) {
                             SettingsLabel(imageName: "clock.fill", text: "observe_tracker", backgroundColor: color)
                         }
-                        .onAppear {
-                            observingWasTurnedOn = true
+                        .onChange(of: tracker.observingStartDate) { newValue in
+                            // this can happen if the sheet was open, and the tracker observation expired
+                            if newValue == nil && isBeingObserved {
+                                isBeingObserved = false
+                            }
                         }
                     }
                     else {
@@ -81,16 +95,17 @@ struct DetailGeneralView: View {
                 
                 if(tracker.getType.constants.supportsIgnore) {
                     
-                    let binding = Binding(get: {return tracker.ignore}, set: { newValue in
+                    let binding = Binding {
+                        ignore // local ignore variable to "fake" being quicker, if background operation takes longer to complete
+                    } set: { newValue in
+                        ignore = newValue
+                        isBeingObserved = false
                         
-                        // Do this on main thread to avoid lag
-                        PersistenceController.sharedInstance.modifyDatabase { context in
-                            
+                        modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, tracker in
                             tracker.ignore = newValue
                             TrackingDetection.sharedInstance.stopObservingTracker(tracker: tracker, context: context)
                         }
-                    })
-                    
+                    }
 
                     Toggle(isOn: binding) {
                         SettingsLabel(imageName: "nosign", text: "ignore_this_tracker", backgroundColor: .red)

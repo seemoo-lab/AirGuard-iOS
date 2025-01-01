@@ -40,7 +40,7 @@ struct BigButtonView<T1: View, T2: View>: View {
                 buttonView
                     .frame(maxWidth: .infinity)
                     .frame(height: buttonHeight)
-                    .background(TintedBlur().edgesIgnoringSafeArea(.all))
+                    .background(BackgroundColor().edgesIgnoringSafeArea(.all))
             }
             
             .ignoresSafeArea(.keyboard)
@@ -52,7 +52,7 @@ struct BigButtonView<T1: View, T2: View>: View {
         .overlay(
             GeometryReader { geo in
                 VStack {
-                    TintedBlur()
+                    BackgroundColor()
                         .frame(height: geo.safeAreaInsets.top)
                     Spacer()
                 }
@@ -62,20 +62,17 @@ struct BigButtonView<T1: View, T2: View>: View {
     }
 }
 
-struct TintedBlur: View {
+struct BackgroundColor: View {
     
     @Environment(\.sheetActive) private var sheetActive
-    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
-        Blur().brightness(getBrightness())
-    }
-    
-    func getBrightness() -> Double {
         if sheetActive {
-            return colorScheme == .light ? 0.02 : -0.075
+            Color.sheetBackground
         }
-        return colorScheme == .light ? 0.01 : -0.2
+        else {
+            Color.defaultBackground
+        }
     }
 }
 
@@ -116,7 +113,6 @@ struct ColoredButton: View {
             .luiSheet(isPresented: .constant(true), content: {
                 NavigationView {
                     IntroductionView()
-                        .navigationTitle("Test")
                         .navigationViewStyle(StackNavigationViewStyle())
                 }
                    

@@ -74,7 +74,9 @@ class Settings: ObservableObject {
     /// Shows if the user agreed that the app can scan in the background.
     @Published var backgroundScanning = userDefaults.bool(forKey: UserDefaultKeys.backgroundScanning.rawValue) {
         didSet {userDefaults.set(backgroundScanning, forKey: UserDefaultKeys.backgroundScanning.rawValue)}}
-
+    
+    /// True, if bluetooth scanning should only occur on device movement (significant location updates)
+    var lowPowerScan: Bool { securityLevel == .Low }
     
     /// Shows if the app is in background or inactive.
     @Published var isBackground = true {
@@ -206,11 +208,11 @@ enum SecurityLevel: String, CaseIterable {
     var name: String {
         switch self {
         case .Low:
-            return "low"
+            return "security_level_low"
         case .Normal:
-            return "normal"
+            return "security_level_normal"
         case .High:
-            return "high"
+            return "security_level_high"
         }
     }
     
@@ -242,6 +244,7 @@ enum SecurityLevel: String, CaseIterable {
 enum UserDefaultKeys: String {
     case debugMode
     case debugPush
+    case lowPowerScan
     case stoppedNotificationID
     case stoppedLocationID
     case lastMultipleSmartTagsNotification

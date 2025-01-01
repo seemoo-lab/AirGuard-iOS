@@ -231,7 +231,7 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
                 
                 self.centralManager?.stopScan()
                 
-                let uuids = DeviceType.allCases.filter({$0.constants.supportsBackgroundScanning}).map({CBUUID(string: $0.constants.offeredService!)})
+                let uuids = DeviceType.getAvailableTypes(filterAvailableForBackgroundScanning: true).map({CBUUID(string: $0.constants.offeredService!)})
                 
                 if(settings.isBackground) {
                     
@@ -486,7 +486,7 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
                 
                 if let characteristic = service.characteristics?.first(where: {$0.uuid.uuidString == request.characteristicID}) {
                  
-                    // we want to be notified if red/write operation was successful
+                    // we want to be notified if read/write operation was successful
                     peripheral.setNotifyValue(true, for: characteristic)
                     
                     // read data
@@ -496,14 +496,22 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
                     }
                     
                     // write data
-                    if let data = request.data, request.operation == .WriteCharacteristic {
-                        //log("Writing characteristic of \(peripheral.identifier.description)...")
-                        peripheral.writeValue(data, for: characteristic, type: .withResponse)
+                    if let data = request.data, request.operation == .WriteCharacteristic || request.operation == .WriteReadCharacteristic {
                         
-                        // If write request is not acknowleged after one second, we assume that it was unsuccessful
+                        let noResponse = characteristic.properties.contains(.writeWithoutResponse)
+                        peripheral.writeValue(data, for: characteristic, type: noResponse ? .withoutResponse : .withResponse)
+                        
                         bluetoothQueue.asyncAfter(deadline: .now() + 1, execute: { [self] in
-                            if(requests.contains(where: {$0.id == request.id})) {
-                                finishRequest(request: request, withState: .Failure, peripheral: peripheral)
+                            
+                            if noResponse {
+                                // Assume that everything worked
+                                finishRequest(request: request, withState: .Success, peripheral: peripheral)
+                            }
+                            else {
+                                // If write request is not acknowledged after one second, we assume that it was unsuccessful
+                                if(requests.contains(where: {$0.id == request.id})) {
+                                    finishRequest(request: request, withState: .Failure, peripheral: peripheral)
+                                }
                             }
                         })
                     }
@@ -537,7 +545,7 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
         for request in requests {
-            if(request.deviceID == peripheral.identifier.uuidString && request.characteristicID == characteristic.uuid.uuidString && request.operation == .ReadCharacteristic) {
+            if(request.deviceID == peripheral.identifier.uuidString && request.characteristicID == characteristic.uuid.uuidString && (request.operation == .ReadCharacteristic || request.operation == .WriteReadCharacteristic)) {
                 
                 log("Read characteristic!")
                 
@@ -557,10 +565,9 @@ open class BluetoothManager: NSObject, CBPeripheralDelegate, CBCentralManagerDel
     private func finishRequest(request: BluetoothRequest, withState: BluetoothRequestState, data: Data? = nil, peripheral: CBPeripheral?) {
 
         request.callback(withState, data)
-        
         requests.removeAll(where: {request.id == $0.id})
         
-        if let peripheral = peripheral {
+        if let peripheral = peripheral, !request.stayConnected {
             centralManager?.cancelPeripheralConnection(peripheral)
         }
     }

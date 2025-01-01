@@ -9,8 +9,6 @@ import SwiftUI
 
 struct TrackerHistoryView: View {
     
-    @ObservedObject var clock = Clock.sharedInstance
-    
     // Show all devices EXCEPT those shown in manual scan
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \BaseDevice.lastSeen, ascending: false)],
@@ -44,10 +42,10 @@ struct TrackerHistoryView: View {
                     
                     ForEach(devices) { elem in
                         
-                        if let detectionEvents = elem.detectionEvents, let lastSeenSeconds = getLastSeenSeconds(device: elem, currentDate: clock.currentDate) {
+                        if let detectionEvents = elem.detectionEvents, let lastSeen = elem.lastSeen {
                             
                             let times = detectionEvents.count
-                            let timesText = String(format: "seen_x_times_last".localized(), times.description, getSimpleSecondsText(seconds: lastSeenSeconds, longerDate: false))
+                            let timesText = String(format: "seen_x_times_last".localized(), times.description, getAbsoluteDateString(date: lastSeen, longerDate: false))
                             
                             CustomSection(header: timesText) {
                                 DeviceEntryButton(device: elem, showAlerts: true, showSignal: false)

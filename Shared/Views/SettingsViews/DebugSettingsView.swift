@@ -19,6 +19,13 @@ struct DebugSettingsView: View {
             CustomSection {
                 
                 LUILink(destination:
+                    DataCapturerView()
+                , label: {
+                    NavigationLinkLabel(imageName: "circle.fill", text: "DataCapture", backgroundColor: .red)
+                })
+                
+                
+                LUILink(destination:
                     
                     NavigationSubView {
                         CustomSection {
@@ -37,7 +44,7 @@ struct DebugSettingsView: View {
                 }
                 
                 Toggle(isOn: $settings.debugPush) {
-                    SettingsLabel(imageName: "bell", text: "Debug Push", backgroundColor: .red)
+                    SettingsLabel(imageName: "bell.fill", text: "Debug Push", backgroundColor: .red)
                 }
                 
                 
@@ -56,7 +63,7 @@ struct DebugSettingsView: View {
                     }
                    
                 }) {
-                    SettingsLabel(imageName: "bell", text: "Fake Notification", backgroundColor: .green)
+                    SettingsLabel(imageName: "bell.fill", text: "Fake Notification", backgroundColor: .green)
                 }
                 
                 LUIButton(action: {

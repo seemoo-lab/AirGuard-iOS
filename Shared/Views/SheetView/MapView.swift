@@ -279,7 +279,7 @@ class MapAnnotation: NSObject, MKAnnotation {
 
 
 /// Extension to make CLLocationCoordinate2D conform to Equatable, Identifiable and Hashable
-extension CLLocationCoordinate2D: Equatable, Hashable, Identifiable {
+extension CLLocationCoordinate2D: @retroactive Equatable, @retroactive Hashable, @retroactive Identifiable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

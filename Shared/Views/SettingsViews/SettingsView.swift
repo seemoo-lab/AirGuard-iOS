@@ -122,7 +122,6 @@ struct SettingsView: View {
                     ForEach(SecurityLevel.allCases, id: \.self) { level in
                         
                         Text(level.name.localized())
-                        
                             .id(level.rawValue)
                     }
                 }

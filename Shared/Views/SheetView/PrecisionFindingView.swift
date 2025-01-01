@@ -178,7 +178,7 @@ struct PrecisionOverlayElements: View {
             
             Spacer()
             
-            SoundAndCloseView(soundManager: soundManager, tracker: tracker)
+            SoundAndCloseView(soundManager: soundManager, tracker: tracker, bluetoothData: tracker.bluetoothTempData(), notReachable: notReachable)
         }
     }
 }
@@ -189,15 +189,17 @@ struct SoundAndCloseView: View {
     @ObservedObject var soundManager: SoundManager
     @ObservedObject var tracker: BaseDevice
     @State private var showSoundErrorInfo = false
+    @ObservedObject var bluetoothData: BluetoothTempData
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    let notReachable: Bool
     
     var body: some View {
         
         let rightLabelColor = Color.mainColor.opacity(0.5)
         
         CustomSection(backgroundColor: Color.white.opacity(colorScheme.isLight ? 0.8 : 0.1)) {
-            if(tracker.getType.constants.canPlaySound) {
+            if(!notReachable && tracker.getType.constants.canPlaySound && tracker.getType.constants.connectionStatus(advertisementData: bluetoothData.advertisementData_publisher) != .Connected) {
                 LUIButton {
                     lightVibration()
                     soundManager.playSound(constants: tracker.getType.constants, bluetoothUUID: tracker.currentBluetoothId)
@@ -206,36 +208,29 @@ struct SoundAndCloseView: View {
                         SettingsLabel(imageName: "speaker.wave.2.fill", text: "play_sound", backgroundColor: .orange)
                             .fixedSize(horizontal: true, vertical: false)
                         
-                        ZStack {
+                        ZStack(alignment: .trailing) {
                             HStack {
-                                
-                                Spacer()
-                                
                                 Text("connecting_in_progress")
                                     .lineLimit(1)
                                     .foregroundColor(rightLabelColor)
                                     .padding(.trailing, 7)
                                 ProgressView()
                             }
+                            .frame(maxWidth: .infinity, alignment: .trailing)
                             .opacity(soundManager.soundRequest ? 1 : 0)
                             
-                            HStack {
-                                Spacer()
-                                Text("playing_in_progress")
-                                    .lineLimit(1)
-                                    .foregroundColor(rightLabelColor)
-                                
-                            }.opacity(soundManager.playingSound ? 1 : 0)
+                            
+                            Text("playing_in_progress")
+                                .lineLimit(1)
+                                .foregroundColor(rightLabelColor)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .opacity(soundManager.playingSound ? 1 : 0)
                             
                             if let error = soundManager.error {
-                                
-                                HStack {
-                                    Spacer()
-                                    Text(error.title)
-                                        .lineLimit(1)
-                                        .foregroundColor(rightLabelColor)
-                                    
-                                }
+                                Text(error.title)
+                                    .lineLimit(1)
+                                    .foregroundColor(rightLabelColor)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
                             }
                         }
                         .alert(isPresented: $showSoundErrorInfo, content: {
@@ -251,6 +246,15 @@ struct SoundAndCloseView: View {
                     .contentShape(Rectangle())
                 }
             }
+            
+            if let url = URL(string: "http://www.google.com/search?q=\(tracker.getName) Tracker&tbm=isch") {
+                Link(destination: url, label: {
+                    SettingsLabel(imageName: "eye.fill", text: "tracker_appearance_button", backgroundColor: .green)
+                })
+                .buttonStyle(LUIButtonStyle())
+            }
+            
+            
             LUIButton {
                 DispatchQueue.main.async {
                     presentationMode.wrappedValue.dismiss()

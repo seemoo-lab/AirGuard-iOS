@@ -12,6 +12,8 @@ struct DetailDebugView: View {
     @ObservedObject var tracker: BaseDevice
     @ObservedObject var settings = Settings.sharedInstance
     @ObservedObject var bluetoothData: BluetoothTempData
+    @State var showingDetections = false
+    @State var loadingOwnerLink = false
     
     var body: some View {
         
@@ -56,18 +58,35 @@ struct DetailDebugView: View {
                             NavigationLinkLabel(imageName: "bolt.fill", text: "Connect", backgroundColor: .red)
                         }
                         
-                        SettingsLabel(imageName: "bolt.fill", text: "Connected: \(bluetoothData.connected_background.description)", backgroundColor: .green)
+                        SettingsLabel(imageName: "bolt.fill", text: "Connected: \(bluetoothData.connected_publisher.description)", backgroundColor: .green)
                     }
+                }
+                
+                if #available(iOS 15.0, *), tracker.getType == .Google {
+                    CustomSection(header: "FMDN") {
+                        FMDNDebugView(tracker: tracker)
+                    } 
                 }
                 
                 CustomSection(header: "All Detections") {
                     SettingsLabel(imageName: "number", text: "Detections: \(tracker.detectionEvents?.count ?? 0)", backgroundColor: .orange)
                     
-                    if let detections = tracker.detectionEvents?.array as? [DetectionEvent] {
-                        
-                        ForEach(detections, id: \.self) { detection in
+                    if showingDetections {
+                        if let detections = tracker.detectionEvents?.array as? [DetectionEvent] {
                             
-                            SettingsLabel(imageName: "wave.3.right", text: "Time: \(getTime(date: detection.time))\n\(detection.connectionStatus?.description ?? "-")\(detection.isTraveling ? " - Travel" : "")")
+                            ForEach(detections, id: \.self) { detection in
+                                
+                                SettingsLabel(imageName: "wave.3.right", text: "Time: \(getTime(date: detection.time))\n\(detection.connectionStatus?.description ?? "-")\(detection.isTraveling ? " - Travel" : "")")
+                            }
+                        }
+                    }
+                    else {
+                        LUIButton {
+                            withAnimation {
+                                showingDetections = true
+                            }
+                        } label: {
+                            NavigationLinkLabel(imageName: "eye", text: "Show All DetectionEvents")
                         }
                     }
                 }
@@ -77,24 +96,25 @@ struct DetailDebugView: View {
                     SettingsLabel(imageName: "info", text: "Last MAC Refresh: \(getTime(date: tracker.lastMacRenewal))")
                     
                     if let service = tracker.getType.constants.offeredService {
-                        SettingsLabel(imageName: "info", text: "Service Data: \(getServiceData(advertisementData: bluetoothData.advertisementData_publisher, key: service) ?? "no value")")
+                        InfoAndCopyButton(label: "Service Data", info: getServiceData(advertisementData: bluetoothData.advertisementData_publisher, key: service))
                     }
                     
                     SettingsLabel(imageName: "info", text: "Additional Data: \(tracker.additionalData?.description ?? "---")")
                     
                     if let serv = bluetoothData.peripheral_background?.services {
                         ForEach(serv, id: \.self) { s in
-                            SettingsLabel(imageName: "info", text: "Service offered: " + s.uuid.description)
+                            InfoAndCopyButton(label: "Service offered", info: s.uuid.uuidString)
                         }
                     }
                 }
                 
                 
                 CustomSection {
-                    SettingsLabel(imageName: "info", text: "UniqueID: " + (tracker.uniqueId?.description ?? "no id"))
-                    SettingsLabel(imageName: "info", text: "CurrentBluetoothID: " + (tracker.currentBluetoothId?.description ?? "no id"))
-                    SettingsLabel(imageName: "info", text: "PeripheralID: " + (bluetoothData.peripheral_background?.identifier.description ?? "no id"))
-                    SettingsLabel(imageName: "info", text: "BluetoothDataID: " + (bluetoothData.identifier_background))
+                    
+                    InfoAndCopyButton(label: "UniqueID", info: tracker.uniqueId)
+                    InfoAndCopyButton(label: "CurrentBluetoothID", info: tracker.currentBluetoothId)
+                    InfoAndCopyButton(label: "PeripheralID", info: bluetoothData.peripheral_background?.identifier.uuidString)
+                    InfoAndCopyButton(label: "BluetoothDataID", info: bluetoothData.identifier_background)
                 }
                 
                 CustomSection(header: "CoreBluetooth") {
@@ -105,7 +125,7 @@ struct DetailDebugView: View {
             }
         }
     }
-    
+
     func getTime(date: Date?) -> String {
         
         if let date = date {
@@ -115,5 +135,30 @@ struct DetailDebugView: View {
             return formatter.string(for: date) ?? "-"
         }
         return "-"
+    }
+}
+
+
+struct InfoAndCopyButton: View {
+    
+    let label: String
+    let info: String?
+    
+    var body: some View {
+        let infoDescription = (info ?? "No Value")
+        
+        LUIButton {
+            copyToClipboard(string: infoDescription)
+        } label: {
+            SettingsLabel(imageName: "info", text: "\(label): " + infoDescription)
+        }
+    }
+    
+    func copyToClipboard(string: String?) {
+        if let string = string {
+            doubleVibration()
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = string
+        }
     }
 }

@@ -22,7 +22,7 @@ final class AirTagConstants: TrackerConstants {
     
     override class var soundDuration: Int? { 15 }
     
-    override class var supportsNFC: Bool { true }
+    override class var supportsOwnerInfoOverNFC: Bool { true }
     
     override class var bestRSSI: Int { -41 }
     
@@ -30,7 +30,7 @@ final class AirTagConstants: TrackerConstants {
     
     override class var minMacAddressChangeTime: Int? { 24 }
     
-    override class var iconView: AnyView {
+    override class func iconView(trackerName: String) -> AnyView {
         AnyView(Circle()
             .modifier(TrackerIconView(imageName: "applelogo")))
     }
@@ -78,5 +78,5 @@ func detectAirTagsAndFindMyDevices(baseDevice: BaseDevice, detectService: String
 
 
 #Preview {
-    AirTagConstants.iconView
+    AirTagConstants.iconView(trackerName: "")
 }

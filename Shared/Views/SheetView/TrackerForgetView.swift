@@ -33,10 +33,8 @@ struct TrackerForgetView: View {
     func delete() {
         Settings.sharedInstance.showSheet = false
         
-        runAfter(seconds: 1) {
-            PersistenceController.sharedInstance.modifyDatabase { context in
-                context.delete(tracker)
-            }
+        modifyDeviceOnBackgroundThread(objectID: tracker.objectID) { context, device in
+            context.delete(device)
         }
     }
 }

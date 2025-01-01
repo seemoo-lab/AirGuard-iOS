@@ -55,18 +55,19 @@ actor SendStatisticsController {
                   let firstDiscovery = device.firstSeen,
                   let lastDiscovery = device.lastSeen,
                   let deviceType = device.deviceType else {
-                    continue
-                }
+                continue
+            }
             
             //Get beacons for device
             let detectionEvents = device.detectionEvents
             let beacons = detectionEvents?.compactMap({ element -> API_Request.Beacon? in
-                guard let detectionEvent = element as? DetectionEvent,
-                      let time = detectionEvent.time,
-                      let rssi = detectionEvent.rssi?.intValue
-                else {return nil}
-                
-                return API_Request.Beacon(receivedAt: time, rssi: rssi, serviceUUIDs: [], connectionState: detectionEvent.connectionStatus ?? ConnectionStatus.Unknown.rawValue)
+                if let detectionEvent = element as? DetectionEvent,
+                   let time = detectionEvent.time,
+                   let rssi = detectionEvent.rssi?.intValue, let connectionState = detectionEvent.connectionStatus,
+                   connectionState != ConnectionStatus.Connected.rawValue {
+                    return API_Request.Beacon(receivedAt: time, rssi: rssi, serviceUUIDs: [], connectionState: connectionState)
+                }
+                return nil
             })
             
             //Get the notifications
@@ -186,7 +187,6 @@ actor SendStatisticsController {
             log("Failed submitting new background refresh task \(error.localizedDescription)")
         }
     }
-
 }
 
 enum StatisticsError: Error {

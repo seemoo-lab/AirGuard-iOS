@@ -24,9 +24,12 @@
 		EB1B6A942C12250E00DB0F47 /* MacDerandomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1B6A932C12250E00DB0F47 /* MacDerandomizer.swift */; };
 		EB1B6A962C1228EB00DB0F47 /* GrayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1B6A952C1228EB00DB0F47 /* GrayButton.swift */; };
 		EB1D95EA28B503AD00EEFF8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB1D95ED28B503AD00EEFF8C /* InfoPlist.strings */; };
+		EB2323D22C863ABA00852428 /* FMDNOwnerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2323D12C863ABA00852428 /* FMDNOwnerInfoView.swift */; };
 		EB2CF6A12B90AA6A008B723A /* ConnectionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CF6A02B90AA6A008B723A /* ConnectionStatus.swift */; };
 		EB2CF6A32B90BE1B008B723A /* TrackerForgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CF6A22B90BE1B008B723A /* TrackerForgetView.swift */; };
+		EB3448B12C43A65500E98F95 /* DataCapturerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3448B02C43A65500E98F95 /* DataCapturerView.swift */; };
 		EB3865C52844C54300A271AA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3865C42844C54300A271AA /* MapView.swift */; };
+		EB3B845F2C7F960300021B1D /* FMDN.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3B845E2C7F960300021B1D /* FMDN.swift */; };
 		EB3BFB86289D284C001839BF /* EnableObservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BFB85289D284C001839BF /* EnableObservationView.swift */; };
 		EB3E70B1287ADC5F00A44FF9 /* TrackerHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3E70B0287ADC5F00A44FF9 /* TrackerHistoryView.swift */; };
 		EB46DC4628211E8E007B41B7 /* ManualScanningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB46DC4528211E8E007B41B7 /* ManualScanningView.swift */; };
@@ -38,6 +41,9 @@
 		EB4D5F3A286F0CC0003BB891 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4D5F39286F0CC0003BB891 /* Article.swift */; };
 		EB51A61928291D8300652573 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB51A61728291D8300652573 /* DataModel.xcdatamodeld */; };
 		EB51A61F2829214300652573 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB51A61E2829214300652573 /* PersistenceController.swift */; };
+		EB5316222CA1A1FF0036C7AB /* FMDNDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5316212CA1A1F80036C7AB /* FMDNDebugView.swift */; };
+		EB5316242CA1A2CF0036C7AB /* FMDNOwnerOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5316232CA1A2BD0036C7AB /* FMDNOwnerOperations.swift */; };
+		EB5722712CA2B34F00C92293 /* Pebblebee.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5722702CA2B34C00C92293 /* Pebblebee.swift */; };
 		EB597BDA284CA77000CC55F2 /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB597BD9284CA77000CC55F2 /* PermissionView.swift */; };
 		EB597BDC284CA8F300CC55F2 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB597BDB284CA8F300CC55F2 /* NotificationPermissionView.swift */; };
 		EB597BDE284CA9DB00CC55F2 /* LocationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB597BDD284CA9DB00CC55F2 /* LocationPermissionView.swift */; };
@@ -69,7 +75,6 @@
 		EB76BCCF282177F000CD5CC5 /* RSSIDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76BCCB282177F000CD5CC5 /* RSSIDecoder.swift */; };
 		EB76BCD1282177F000CD5CC5 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76BCCC282177F000CD5CC5 /* ViewExtensions.swift */; };
 		EB76BCD52822979600CD5CC5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76BCD42822979600CD5CC5 /* NotificationManager.swift */; };
-		EB76C7D02C11DB0B00C0A2ED /* Google.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB76C7CF2C11DB0B00C0A2ED /* Google.swift */; };
 		EB8CB3642832790700BAB10D /* TrackingDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8CB3632832790700BAB10D /* TrackingDetection.swift */; };
 		EB8CB3662832894A00BAB10D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8CB3652832894A00BAB10D /* SettingsView.swift */; };
 		EB8D575128099EB1006B1BB8 /* AirGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8D574128099EAD006B1BB8 /* AirGuardApp.swift */; };
@@ -107,6 +112,7 @@
 		EBF553C12865C93300872AD7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF553C02865C93300872AD7 /* HomeView.swift */; };
 		EBF553C42865E47300872AD7 /* RiskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF553C32865E47300872AD7 /* RiskView.swift */; };
 		EBF553C62865EA2500872AD7 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF553C52865EA2500872AD7 /* CardView.swift */; };
+		EBFAD96B2CA823FB0015E504 /* SamsungFindMyMobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFAD96A2CA823F50015E504 /* SamsungFindMyMobile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,9 +147,12 @@
 		EB1B6A932C12250E00DB0F47 /* MacDerandomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacDerandomizer.swift; sourceTree = "<group>"; };
 		EB1B6A952C1228EB00DB0F47 /* GrayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrayButton.swift; sourceTree = "<group>"; };
 		EB1D95EE28B503AF00EEFF8C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EB2323D12C863ABA00852428 /* FMDNOwnerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDNOwnerInfoView.swift; sourceTree = "<group>"; };
 		EB2CF6A02B90AA6A008B723A /* ConnectionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatus.swift; sourceTree = "<group>"; };
 		EB2CF6A22B90BE1B008B723A /* TrackerForgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerForgetView.swift; sourceTree = "<group>"; };
+		EB3448B02C43A65500E98F95 /* DataCapturerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCapturerView.swift; sourceTree = "<group>"; };
 		EB3865C42844C54300A271AA /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		EB3B845E2C7F960300021B1D /* FMDN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDN.swift; sourceTree = "<group>"; };
 		EB3BFB85289D284C001839BF /* EnableObservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableObservationView.swift; sourceTree = "<group>"; };
 		EB3E70B0287ADC5F00A44FF9 /* TrackerHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerHistoryView.swift; sourceTree = "<group>"; };
 		EB46DC4528211E8E007B41B7 /* ManualScanningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualScanningView.swift; sourceTree = "<group>"; };
@@ -155,6 +164,9 @@
 		EB4D5F39286F0CC0003BB891 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		EB51A61828291D8300652573 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		EB51A61E2829214300652573 /* PersistenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		EB5316212CA1A1F80036C7AB /* FMDNDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDNDebugView.swift; sourceTree = "<group>"; };
+		EB5316232CA1A2BD0036C7AB /* FMDNOwnerOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDNOwnerOperations.swift; sourceTree = "<group>"; };
+		EB5722702CA2B34C00C92293 /* Pebblebee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pebblebee.swift; sourceTree = "<group>"; };
 		EB597BD9284CA77000CC55F2 /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
 		EB597BDB284CA8F300CC55F2 /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
 		EB597BDD284CA9DB00CC55F2 /* LocationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionView.swift; sourceTree = "<group>"; };
@@ -186,7 +198,6 @@
 		EB76BCCB282177F000CD5CC5 /* RSSIDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSIDecoder.swift; sourceTree = "<group>"; };
 		EB76BCCC282177F000CD5CC5 /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		EB76BCD42822979600CD5CC5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		EB76C7CF2C11DB0B00C0A2ED /* Google.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Google.swift; sourceTree = "<group>"; };
 		EB8CB3632832790700BAB10D /* TrackingDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingDetection.swift; sourceTree = "<group>"; };
 		EB8CB3652832894A00BAB10D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EB8D574128099EAD006B1BB8 /* AirGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirGuardApp.swift; sourceTree = "<group>"; };
@@ -228,6 +239,7 @@
 		EBF553C02865C93300872AD7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EBF553C32865E47300872AD7 /* RiskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskView.swift; sourceTree = "<group>"; };
 		EBF553C52865EA2500872AD7 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		EBFAD96A2CA823F50015E504 /* SamsungFindMyMobile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamsungFindMyMobile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +293,7 @@
 				EB8CB3652832894A00BAB10D /* SettingsView.swift */,
 				EB5FAE38284E40CD00D5A20A /* DisableDevicesView.swift */,
 				EBB725B6285DCDBB005EA3E4 /* DebugSettingsView.swift */,
+				EB3448B02C43A65500E98F95 /* DataCapturerView.swift */,
 				EB4D5F35286EFE18003BB891 /* AppInfoView.swift */,
 				EB01019928F5520B004520E9 /* DebugMapView.swift */,
 			);
@@ -325,6 +338,16 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		EB5722722CA2D29800C92293 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				EBB808C0289800F8004F3F26 /* DetailDebugView.swift */,
+				EB5316212CA1A1F80036C7AB /* FMDNDebugView.swift */,
+				EB5316232CA1A2BD0036C7AB /* FMDNOwnerOperations.swift */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
 		EB5FAE27284E058500D5A20A /* Device Type Detection */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,8 +367,10 @@
 				EB5FAE2A284E05A500D5A20A /* FindMyDevice.swift */,
 				EB5FAE2C284E05AC00D5A20A /* Tile.swift */,
 				EB5FAE2E284E05B500D5A20A /* SmartTag.swift */,
+				EBFAD96A2CA823F50015E504 /* SamsungFindMyMobile.swift */,
 				78DF6EA0299A72AD00AFACAB /* Chipolo.swift */,
-				EB76C7CF2C11DB0B00C0A2ED /* Google.swift */,
+				EB5722702CA2B34C00C92293 /* Pebblebee.swift */,
+				EB3B845E2C7F960300021B1D /* FMDN.swift */,
 			);
 			path = TrackerConstants;
 			sourceTree = "<group>";
@@ -427,9 +452,10 @@
 				EB3BFB85289D284C001839BF /* EnableObservationView.swift */,
 				EBB808BC2897FFA0004F3F26 /* DetailNotificationsView.swift */,
 				EBB808BE2898003B004F3F26 /* DetailMoreView.swift */,
-				EBB808C0289800F8004F3F26 /* DetailDebugView.swift */,
+				EB2323D12C863ABA00852428 /* FMDNOwnerInfoView.swift */,
 				EB6C61C428250351001ABF81 /* RSSIIndicator.swift */,
 				EB2CF6A22B90BE1B008B723A /* TrackerForgetView.swift */,
+				EB5722722CA2D29800C92293 /* Debug */,
 				EB2CF69F2B909296008B723A /* Feedback */,
 			);
 			path = SheetView;
@@ -636,9 +662,11 @@
 				EB5FAE2D284E05AC00D5A20A /* Tile.swift in Sources */,
 				EBB725B9285DE1C6005EA3E4 /* Logger.swift in Sources */,
 				EB5FAE39284E40CD00D5A20A /* DisableDevicesView.swift in Sources */,
+				EBFAD96B2CA823FB0015E504 /* SamsungFindMyMobile.swift in Sources */,
 				EBB725C1285F741D005EA3E4 /* BluetoothRequest.swift in Sources */,
 				EB4D5F36286EFE18003BB891 /* AppInfoView.swift in Sources */,
 				EB597BE2284CD52A00CC55F2 /* DoneView.swift in Sources */,
+				EB2323D22C863ABA00852428 /* FMDNOwnerInfoView.swift in Sources */,
 				EBF553C12865C93300872AD7 /* HomeView.swift in Sources */,
 				EB76BCD52822979600CD5CC5 /* NotificationManager.swift in Sources */,
 				EBB725B7285DCDBB005EA3E4 /* DebugSettingsView.swift in Sources */,
@@ -690,6 +718,7 @@
 				EBF553C42865E47300872AD7 /* RiskView.swift in Sources */,
 				EB4BD4C92906AEFC0028E569 /* ManualScanningDeviceList.swift in Sources */,
 				EB51A61928291D8300652573 /* DataModel.xcdatamodeld in Sources */,
+				EB3448B12C43A65500E98F95 /* DataCapturerView.swift in Sources */,
 				EBC7CBD7282047BF00167E29 /* Settings.swift in Sources */,
 				78D84276298024B300B13B49 /* URLSessionExtension.swift in Sources */,
 				EB59844D2BB210FF004A4323 /* LUILink.swift in Sources */,
@@ -697,7 +726,6 @@
 				EB5FAE33284E2FB200D5A20A /* TrackerIconView.swift in Sources */,
 				EBB808B92897FDD1004F3F26 /* DetailMapView.swift in Sources */,
 				EB8CB3662832894A00BAB10D /* SettingsView.swift in Sources */,
-				EB76C7D02C11DB0B00C0A2ED /* Google.swift in Sources */,
 				EB3BFB86289D284C001839BF /* EnableObservationView.swift in Sources */,
 				78AFC5E92A126CF00005AB59 /* API_KEYS.swift in Sources */,
 				EB2CF6A12B90AA6A008B723A /* ConnectionStatus.swift in Sources */,
@@ -706,12 +734,16 @@
 				78D842742980242D00B13B49 /* SendStatisticsController.swift in Sources */,
 				EB9D4DC628683BDF0039B668 /* RiskDetailView.swift in Sources */,
 				EBB808C1289800F8004F3F26 /* DetailDebugView.swift in Sources */,
+				EB5316242CA1A2CF0036C7AB /* FMDNOwnerOperations.swift in Sources */,
+				EB3B845F2C7F960300021B1D /* FMDN.swift in Sources */,
 				EB4BD4C72906ABF60028E569 /* NavigationSubView.swift in Sources */,
 				EB46DC4628211E8E007B41B7 /* ManualScanningView.swift in Sources */,
 				EB597BDA284CA77000CC55F2 /* PermissionView.swift in Sources */,
 				EBB466242B6114A600CF1630 /* FalseAlarmFeedbackView.swift in Sources */,
 				EB7451362B57E16600CBFC02 /* TrackingDetection+Observation.swift in Sources */,
 				EB8CB3642832790700BAB10D /* TrackingDetection.swift in Sources */,
+				EB5316222CA1A1FF0036C7AB /* FMDNDebugView.swift in Sources */,
+				EB5722712CA2B34F00C92293 /* Pebblebee.swift in Sources */,
 				EB5FAE29284E059800D5A20A /* AirTag.swift in Sources */,
 				EBB808BF2898003B004F3F26 /* DetailMoreView.swift in Sources */,
 				EBB725B4285CBF5E005EA3E4 /* Date.swift in Sources */,
@@ -929,7 +961,7 @@
 				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CODE_SIGN_ENTITLEMENTS = "AirGuard (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K2B79VWGA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -949,7 +981,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-darmstadt.seemoo.airguard";
 				PRODUCT_NAME = AirGuard;
 				SDKROOT = iphoneos;
@@ -972,7 +1004,7 @@
 				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CODE_SIGN_ENTITLEMENTS = "AirGuard (iOS).entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K2B79VWGA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -992,7 +1024,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-darmstadt.seemoo.airguard";
 				PRODUCT_NAME = AirGuard;
 				SDKROOT = iphoneos;

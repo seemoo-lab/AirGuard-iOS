@@ -28,9 +28,10 @@ final class FindMyDeviceConstants: TrackerConstants {
     
     override class var minMacAddressChangeTime: Int? { 24 }
     
-    override class var iconView: AnyView {
-        name.contains("AirPods") ? AnyView(Circle()
-            .modifier(TrackerIconView(imageName: "airpods"))) : AnyView(FindMyIcon())
+    override class func iconView(trackerName: String) -> AnyView {
+        trackerName.contains("AirPods") ? 
+        AnyView(Circle()
+            .modifier(TrackerIconView(imageName: trackerName.contains("Pro") ? "airpodspro" : "airpods"))) : AnyView(FindMyIcon())
     }
     
     override class func detect(baseDevice: BaseDevice, context: NSManagedObjectContext) {
@@ -89,7 +90,7 @@ final class FindMyDeviceConstants: TrackerConstants {
 
 
 /// Method to read the model name of Find My devices
-func retrieveFindMyName(device: BaseDevice, context: NSManagedObjectContext) {
+fileprivate func retrieveFindMyName(device: BaseDevice, context: NSManagedObjectContext) {
     
     if let id = device.currentBluetoothId, device.name == nil {
         
@@ -153,7 +154,7 @@ struct Pie: Shape {
         let radius = rect.size.width/2
         let startAngle = Angle(degrees: start)
         let endAngle = Angle(degrees: end)
-        let lineWidth = radius * 0.45
+        let lineWidth = radius * 0.5
         
         p.addArc(center: center, radius: abs(lineWidth - radius), startAngle: startAngle, endAngle: endAngle, clockwise: false)
         p.addArc(center: center, radius: radius, startAngle: endAngle, endAngle: startAngle, clockwise: true)

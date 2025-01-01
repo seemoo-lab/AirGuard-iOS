@@ -22,7 +22,7 @@ struct DisableDevicesView: View {
                 
                 CustomSection(footer: "ignore_type_footer") {
                     
-                    let types = DeviceType.allCases.filter({$0 != .Unknown && $0.constants.supportsBackgroundScanning})
+                    let types = DeviceType.getAvailableTypes(filterAvailableForBackgroundScanning: true)
                     
                     ForEach(types) { type in
                         
@@ -63,7 +63,7 @@ struct DisableDeviceTypeView: View {
         
         Toggle(isOn: binding) {
             HStack {
-                deviceType.constants.iconView
+                deviceType.constants.iconView(trackerName: "")
                 Text("ignore_every".localized() + " " + deviceType.constants.name)
                     .foregroundColor(.mainColor)
                 

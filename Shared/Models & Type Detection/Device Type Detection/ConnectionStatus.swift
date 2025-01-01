@@ -14,7 +14,7 @@ enum ConnectionStatus: String {
     case Connected = "CONNECTED"
     
     /// The owner was connected during the last 15 minutes
-    case PrematureOffline
+    case PrematureOffline = "PREMATURE_OFFLINE"
     
     /// The owner was disconnected to the tracker for more than 15 minutes, but less than 8 hours
     case Offline = "OFFLINE"

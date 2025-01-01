@@ -29,8 +29,17 @@ func getServiceDataKeys(advertisementData: [String : Any]) -> [String] {
     let servData = advertisementData[CBAdvertisementDataServiceDataKey]
     
     if let servData = servData as? [CBUUID : Data] {
-        
         return servData.keys.map({$0.uuidString})
+    }
+    return []
+}
+
+/// Extracts all service data keys as hex strings from the advertisement data.
+func getServiceUUIDKeys(advertisementData: [String : Any]) -> [String] {
+    let servUUIDs = advertisementData[CBAdvertisementDataServiceUUIDsKey]
+    
+    if let uuids = servUUIDs as? [CBUUID] {
+        return uuids.map({$0.uuidString})
     }
     return []
 }

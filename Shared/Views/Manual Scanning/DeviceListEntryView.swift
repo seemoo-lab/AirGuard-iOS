@@ -26,7 +26,7 @@ struct DeviceListEntryView: View {
             
             let color = Color.airGuardBlue.opacity(colorScheme.isLight ? 0.8 : 1)
             
-            device.getType.constants.iconView
+            device.getType.constants.iconView(trackerName: device.getName)
                 .padding(.trailing, 3)
             
             Text(device.getName)
@@ -96,8 +96,14 @@ struct Previews_DeviceListEntryView_Previews: PreviewProvider {
         try? vc.save()
         
         return NavigationView {
-            DeviceListEntryView(device: device, bluetoothData: BluetoothTempData(identifier: UUID().uuidString), showAlerts: true, showLoading: false)
-                .environment(\.managedObjectContext, vc)
+            ZStack {
+                Color.blue
+                
+                CustomSection {
+                    DeviceListEntryView(device: device, bluetoothData: BluetoothTempData(identifier: UUID().uuidString), showAlerts: true, showLoading: false)
+                        .environment(\.managedObjectContext, vc)
+                }
+            }
                 .padding()
         }
     }

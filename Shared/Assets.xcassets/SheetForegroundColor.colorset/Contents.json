@@ -5,9 +5,9 @@
         "color-space" : "display-p3",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.988",
-          "green" : "0.988",
-          "red" : "0.988"
+          "blue" : "1.000",
+          "green" : "1.000",
+          "red" : "1.000"
         }
       },
       "idiom" : "universal"
@@ -23,9 +23,9 @@
         "color-space" : "display-p3",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.150",
-          "green" : "0.150",
-          "red" : "0.150"
+          "blue" : "0.130",
+          "green" : "0.130",
+          "red" : "0.130"
         }
       },
       "idiom" : "universal"
@@ -35,9 +35,9 @@
         "color-space" : "display-p3",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.988",
-          "green" : "0.988",
-          "red" : "0.988"
+          "blue" : "1.000",
+          "green" : "1.000",
+          "red" : "1.000"
         }
       },
       "idiom" : "ipad"
@@ -65,9 +65,9 @@
         "color-space" : "display-p3",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.988",
-          "green" : "0.988",
-          "red" : "0.988"
+          "blue" : "1.000",
+          "green" : "1.000",
+          "red" : "1.000"
         }
       },
       "idiom" : "ipad",

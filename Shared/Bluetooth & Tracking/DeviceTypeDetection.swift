@@ -47,7 +47,7 @@ func runDetections(bluetoothData: BluetoothTempData, baseDevice: BaseDevice, con
     if(!baseDevice.isTracker && !baseDevice.ignore && !bluetoothData.connecting_background) {
         
         // these devices can be detected using the advertisement data.
-        for elem in DeviceType.allCases.filter({$0.constants.supportsBackgroundScanning}) {
+        for elem in DeviceType.getAvailableTypes(filterAvailableForBackgroundScanning: true) {
             elem.constants.detect(baseDevice: baseDevice, context: context)
         }
         
@@ -58,7 +58,7 @@ func runDetections(bluetoothData: BluetoothTempData, baseDevice: BaseDevice, con
             bluetoothData.connecting_background = true
             
             // Try all types
-            for elem in DeviceType.allCases.filter({!$0.constants.supportsBackgroundScanning}) {
+            for elem in DeviceType.getAvailableTypes(filterAvailableForBackgroundScanning: false) {
                 elem.constants.detect(baseDevice: baseDevice, context: context)
             }
         }

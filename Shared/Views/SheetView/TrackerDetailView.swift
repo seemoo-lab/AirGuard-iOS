@@ -41,7 +41,7 @@ struct TrackerDetailView: View {
             DetailGeneralView(tracker: tracker, soundManager: soundManager)
             DetailNotificationsView(tracker: tracker)
             
-            DetailMoreView(tracker: tracker)
+            DetailMoreView(tracker: tracker, bluetoothData: bluetoothData)
             DetailDebugView(tracker: tracker, bluetoothData: bluetoothData)
             
             TrackerForgetView(tracker: tracker)
@@ -49,7 +49,6 @@ struct TrackerDetailView: View {
         .animation(.spring(), value: tracker.ignore)
         .animation(.spring(), value: notCurrentlyReachable)
         .animation(.spring(), value: showingBanner)
-        .navigationBarTitle("‏‏‎ ‎‎", displayMode: .inline)
         .luiSheet(isPresented: $showFeedbackSheet, content: {
             if let last = (tracker.notifications?.array as? [TrackerNotification] ?? []).last {
                 NavigationView {

@@ -40,6 +40,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         
         PersistenceController.sharedInstance.modifyDatabaseBackground { context in
             removeAllDevicesWithNoNotificationOlderThan30Days(context: context)
+            removeAllDetectionsWithNoNotificationOlderThan30Days(context: context)
+            mergeTrackingEvents(context: context)
         }
         
         return true

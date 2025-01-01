@@ -214,6 +214,11 @@ class TrackingDetection: ObservableObject {
     /// Adds a detection event for the given device and stores it in the database. Important: the BaseDevice needs to be saved already!
     func addDetectionEvent(toDevice: BaseDevice, bluetoothData: BluetoothTempData, context: NSManagedObjectContext) {
         
+        if BluetoothManager.sharedInstance.scanning && Settings.sharedInstance.lowPowerScan && Settings.sharedInstance.isBackground && LocationManager.sharedInstance.lastSignificantLocationUpdate.isOlderThan(seconds: minutesToSeconds(minutes: 10)) {
+            log("Long time on this location. Save power: Disabling scan.")
+            BluetoothManager.sharedInstance.stopScan()
+        }
+        
         if let lastDetectionEvent = toDevice.detectionEvents?.array.last as? DetectionEvent {
             if let previousSeen = lastDetectionEvent.time {
                 

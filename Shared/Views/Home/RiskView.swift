@@ -26,6 +26,13 @@ struct RiskView: View {
         LUILink(style: .Plain, destination: RiskDetailView(notifications: arr), label: {
             RiskCardView(notifications: arr)
         })
+        .allowsHitTesting(settings.backgroundScanning)
+        .contentShape(Rectangle())
+        .if(!settings.backgroundScanning, transform: { view in
+            view.onTapGesture {
+                Settings.sharedInstance.selectedTab = .Settings
+            }
+        })
     }
 }
 

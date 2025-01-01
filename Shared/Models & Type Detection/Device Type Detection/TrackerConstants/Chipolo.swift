@@ -24,7 +24,7 @@ final class ChipoloConstants: TrackerConstants {
         "https://support.chipolo.net/hc/en-us/articles/6238525469969-How-to-disable-a-Chipolo-ONE-Spot-"
     }
     
-    override class var iconView: AnyView {
+    override class func iconView(trackerName: String) -> AnyView {
         AnyView (
             Circle()
                 .padding(1)

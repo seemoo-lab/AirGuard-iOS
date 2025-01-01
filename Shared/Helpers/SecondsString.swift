@@ -28,13 +28,18 @@ func getSimpleSecondsText(seconds: Int, longerDate: Bool = true) -> String {
         
     }
     
-    /// Older than 1000 seonds - return the absolute date
+    return getAbsoluteDateString(date: Date().addingTimeInterval(-Double(seconds)), longerDate: longerDate)
+}
+
+
+/// Returns a fixed string representing the given date.
+func getAbsoluteDateString(date: Date, longerDate: Bool = true) -> String {
     let formatter = DateFormatter()
     formatter.timeStyle = .short
     formatter.dateStyle = longerDate ? .long : .short // spell out date or not
     formatter.doesRelativeDateFormatting = true
     
-    return formatter.string(from: Date().addingTimeInterval(-Double(seconds)))
+    return formatter.string(from: date)
 }
 
 

@@ -167,11 +167,19 @@ open class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObjec
             
             /// no client is interested in a new location
             if callbacks.isEmpty {
-                log("Significant Location Update")
-                lastSignificantLocationUpdate = Date()
                 
                 self.locationManager?.stopUpdatingLocation()
                 
+                if let lastNew = locations.last, let lastOld = lastLocation, lastNew.distance(from: lastOld) > TrackingDetection.minLocationDist {
+                    log("Significant Location Update")
+                    lastSignificantLocationUpdate = Date()
+                    
+                    if Settings.sharedInstance.lowPowerScan && Settings.sharedInstance.isBackground && !BluetoothManager.sharedInstance.scanning {
+                        log("Restarting scan due to significant location update...")
+                        BluetoothManager.sharedInstance.startScan()
+                    }
+                }
+                    
                 return
             }
             

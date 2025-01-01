@@ -22,29 +22,35 @@ struct BluetoothRequest: Equatable, Identifiable {
         return BluetoothRequest(deviceID: deviceID, serviceID: nil, characteristicID: nil, data: nil, callback: {state, data in callback(state)}, operation: .ProbeConnect)
     }
         
-    /// Creates a Bluetooth request which probes the connection to a given device
+    /// Creates a Bluetooth request which checks if a service is present on a given device
     static func probeService(deviceID: String, serviceID: String, callback: @escaping (BluetoothRequestState) -> Void) -> BluetoothRequest {
         return BluetoothRequest(deviceID: deviceID, serviceID: serviceID, characteristicID: nil, data: nil, callback: {state, data in callback(state)}, operation: .ProbeService)
     }
     
     /// Creates a Bluetooth request which reads a characteristic of a given device
-    static func readCharacteristic(deviceID: String, serviceID: String, characteristicID: String, callback: @escaping (BluetoothRequestState, Data?) -> Void) -> BluetoothRequest {
-        return BluetoothRequest(deviceID: deviceID, serviceID: serviceID, characteristicID: characteristicID, data: nil, callback: callback, operation: .ReadCharacteristic)
+    static func readCharacteristic(deviceID: String, serviceID: String, characteristicID: String, stayConnected: Bool = false, callback: @escaping (BluetoothRequestState, Data?) -> Void) -> BluetoothRequest {
+        return BluetoothRequest(deviceID: deviceID, serviceID: serviceID, characteristicID: characteristicID, data: nil, stayConnected: stayConnected, callback: callback, operation: .ReadCharacteristic)
     }
     
     /// Creates a Bluetooth request which writes to a characteristic of a given device
     static func writeCharacteristic(deviceID: String, serviceID: String, characteristicID: String, data: Data, callback: @escaping (BluetoothRequestState) -> Void) -> BluetoothRequest {
         return BluetoothRequest(deviceID: deviceID, serviceID: serviceID, characteristicID: characteristicID, data: data, callback: {state, data in callback(state)}, operation: .WriteCharacteristic)
     }
+    
+    /// Creates a Bluetooth request which writes an opcode to a characteristic of a given device and resturns the response data
+    static func writeReadCharacteristic(deviceID: String, serviceID: String, characteristicID: String, data: Data, callback: @escaping (BluetoothRequestState, Data?) -> Void) -> BluetoothRequest {
+        return BluetoothRequest(deviceID: deviceID, serviceID: serviceID, characteristicID: characteristicID, data: data, callback: {state, data in callback(state, data)}, operation: .WriteReadCharacteristic)
+    }
         
     /// Private initializer
-    private init(deviceID: String, serviceID: String?, characteristicID: String?, data: Data?, callback: @escaping (BluetoothRequestState, Data?) -> Void, operation: BluetoothRequestOperation) {
+    private init(deviceID: String, serviceID: String?, characteristicID: String?, data: Data?, stayConnected: Bool = false, callback: @escaping (BluetoothRequestState, Data?) -> Void, operation: BluetoothRequestOperation) {
         self.deviceID = deviceID
         self.serviceID = serviceID
         self.characteristicID = characteristicID
         self.data = data
         self.callback = callback
         self.operation = operation
+        self.stayConnected = stayConnected
     }
     
     /// The ID of the request
@@ -67,6 +73,9 @@ struct BluetoothRequest: Equatable, Identifiable {
     
     /// Makes semantics of request clear
     var operation: BluetoothRequestOperation
+    
+    /// True, if the peripheral should stay connected after the operation was performed.
+    var stayConnected: Bool
 }
 
 
@@ -84,6 +93,9 @@ enum BluetoothRequestOperation {
     
     /// Read the value of a characteristic
     case ReadCharacteristic
+    
+    /// Write an opcode, and return the resulting response
+    case WriteReadCharacteristic
 }
 
 

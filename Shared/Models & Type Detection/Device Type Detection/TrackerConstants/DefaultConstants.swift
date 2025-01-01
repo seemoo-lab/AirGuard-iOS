@@ -34,8 +34,11 @@ class TrackerConstants {
     /// States in seconds how long a tracker plays a sound until it turns off automatically. Used for UI
     class var soundDuration: Int? { nil }
     
-    /// Shows if the tracker has a build-in NFC tag
-    class var supportsNFC: Bool { false }
+    /// Shows if the tracker has a build-in NFC tag to read out more information about the owner. Currently only supported by AirTag.
+    class var supportsOwnerInfoOverNFC: Bool { false }
+    
+    /// Shows if the tracker supports provinding more information about the owner over Bluetooth. Currently only supported by Google FMDN devices.
+    class var supportsOwnerInfoOverBluetooth: Bool { false }
     
     /// Shows if the tracker supports the ignore function. This means the tracker never changes its MAC address
     class var supportsIgnore: Bool { false }
@@ -68,8 +71,11 @@ class TrackerConstants {
     /// Specifies how many seconds backwards tracking events are considered. By default this is 1 day.
     class var trackingEventsSince: TimeInterval {daysToSeconds(days: 1)}
     
+    /// If false, the device type will be hidden from UI and be excluded from scanning.
+    class var isEnabled: Bool { true }
+    
     /// A SwiftUI view representing the tracker as small glyph. Used for manual scanning view.
-    class var iconView: AnyView {
+    class func iconView(trackerName: String) -> AnyView {
         AnyView(Circle()
             .modifier(TrackerIconView()))
     }
@@ -104,7 +110,7 @@ func detectTypeByNameOrAdvertisementData(baseDevice: BaseDevice, deviceName: Str
     }
     
     // fallback - check for services
-    let services = getServiceDataKeys(advertisementData: tempData.advertisementData_background)
+    let services = getServiceDataKeys(advertisementData: tempData.advertisementData_background) + getServiceUUIDKeys(advertisementData: tempData.advertisementData_background)
     
     if(services.contains(searchForService)) {
         callback()

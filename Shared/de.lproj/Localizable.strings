@@ -7,8 +7,11 @@
 */
 
 "unknown_device" = "Unbekannt";
-"find_my_device" = "„Wo ist?“-Tracker";
-"chipolo_without_findmy" = "Chipolo (ohne „Wo ist?“)";
+"find_my_device" = "Wo ist?-Gerät";
+"google_find_my_device" = "Google Mein Gerät finden";
+"offline_android_device" = "Android-Gerät (offline)";
+"chipolo_without_findmy" = "Chipolo (ohne Wo ist?)";
+"pebblebee_without_findmy" = "Pebblebee (ohne Wo ist?)";
 "left" = "Links";
 "right" = "Rechts";
 
@@ -61,7 +64,7 @@ Du kannst die App ohne Teilnahme an der Studie verwenden. Wenn du teilnimmst, ge
 Du kannst eine Löschung deiner Daten per E-Mail beantragen. Dafür musst du deine ID zur Identifizierung aus der App kopieren und uns diese mitteilen. Anschließend können wir den mit dir verbundenen Datensatz löschen.
 
 **Datenverarbeitung**
-Alle Daten werden vertraulich behandelt und auf Servern der TU Darmstadt gespeichert. Keine weiteren Personen außerhalb des FG SEEMOO an der TU Darmstadt erhalten Zugriff. Eine Identifizierung der einzelnen Teilnehmer:innen ist nicht möglich. Mit der Teilnahme sind keine Risiken verbunden. Die Datenverarbeitung dieser Studie geschieht nach datenschutzrechtlichen Bestimmungen der Datenschutzgrundverordnung (DSGVO) sowie des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Die Daten werden ausschließlich für die im Aufklärungsbogen beschriebenen Zwecke verwendet.
+Alle Daten werden vertraulich behandelt und auf Servern der TU Darmstadt gespeichert. Keine weiteren Personen außerhalb des FG SEEMOO an der TU Darmstadt erhalten Zugriff. Eine Identifizierung der einzelnen Teilnehmenden ist nicht möglich. Mit der Teilnahme sind keine Risiken verbunden. Die Datenverarbeitung dieser Studie geschieht nach datenschutzrechtlichen Bestimmungen der Datenschutzgrundverordnung (DSGVO) sowie des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Die Daten werden ausschließlich für die im Aufklärungsbogen beschriebenen Zwecke verwendet.
 
 Bei Teilnahme an dieser Studie bestätigst du, dass du älter als 18 Jahre alt sind und diese Einverständniserklärung gelesen hast.
 
@@ -118,7 +121,15 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "more" = "Mehr";
 "more_trackerdetailview_description" = "Erfahre bspw. wie der Tracker deaktiviert werden kann.";
 "website_manufacturer" = "Webseite des Herstellers";
-"scan_nfc" = "Informationen über Besitzer:in";
+"more_trackerdetailview_owner_information" = "Info über besitzende Person";
+"more_trackerdetailview_owner_information_fmdn" = "Falls du diesen Tracker gefunden hast, kannst du hier Informationen über die besitzende Person anfordern. Dafür muss der Tracker in einen speziellen Modus versetzt werden. Dies dauert ca. eine Minute. %@ Andere Tracker funktionieren möglicherweise ähnlich.";
+"more_trackerdetailview_owner_information_fmdn_chipolo" = "Für Chipolo-Tracker suche den Button am Tracker und drücke ihn für 30 Sekunden, warte zwei Pieptöne ab, dann lasse den Button los. Anschließend wird ein Bestätigungston abgespielt.";
+"more_trackerdetailview_owner_information_fmdn_pebblebee" = "Für Pebblebee-Tracker drücke den Button drei mal hintereinander. Die Aktion wird mit einem Piepton bestätigt.";
+"more_trackerdetailview_owner_information_unavailable_title" = "Information über besitzende Person nicht verfügbar";
+"more_trackerdetailview_owner_information_unavailable_description" = "Das Telefon der besitzenden Person dieses Trackers war zu lange offline. Informationen über die besitzende Person sind nicht mehr verfügbar. Versuche es später erneut.";
+
+"more_trackerdetailview_owner_information_fmdn_show_owner_information" = "Informationen anzeigen";
+"more_trackerdetailview_owner_information_fmdn_connecting" = "Verbunden. Auf Informationen warten...";
 
 "accuracy" = "Genauigkeit";
 "background_scanning" = "Hintergrund-Suche";
@@ -143,7 +154,7 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "bluetooth_off_description" = "Bluetooth muss eingeschaltet sein, um AirGuard zu nutzen.";
 
 "playback_failed" = "Abspielen fehlgeschlagen!";
-"playback_failed_description" = "Der Tracker erlaubt es zurzeit nicht, einen Ton abzuspielen. Das bedeutet meistens, dass der Tracker mit seinem:seiner Besitzer:in verbunden ist. Aus diesem Grund ist es unwahrscheinlich, dass dir dieser Tracker folgt.";
+"playback_failed_description" = "Der Tracker erlaubt es zurzeit nicht, einen Ton abzuspielen. Das bedeutet meistens, dass der Tracker mit der besitzenden Person verbunden ist. Aus diesem Grund ist es unwahrscheinlich, dass dir dieser Tracker folgt.";
 
 "couldnt_connect" = "Verbinden fehlgeschlagen!";
 "couldnt_connect_description" = "Dein Gerät konnte sich nicht mit diesem Tracker verbinden. Das bedeutet meistens, dass sich der Tracker nicht mehr in Reichweite befindet. Bewege dich etwas und versuche es erneut.";
@@ -164,9 +175,9 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "observe_tracker" = "Tracker beobachten";
 "off" = "Aus";
 "start_observation" = "Beobachten starten";
-"observe_tracker_description" = "Falls du dir nicht sicher bist, ob der Tracker dir folgt, kannst du ihn manuell beobachten.\n\nIn einer Stunde wird AirGuard nach dem Tracker suchen und dir sofort eine Benachrichtigung schicken, selbst wenn du dich nicht mit dem Tracker bewegt hast. Wenn der Tracker nicht mehr in der Nähe ist, wirst du auch eine Benachrichtigung darüber erhalten.";
+"observe_tracker_description" = "Falls du dir nicht sicher bist, ob der Tracker dir folgt, kannst du ihn manuell beobachten.\n\nIn einer Stunde wird AirGuard nach dem Tracker suchen und dir sofort eine Benachrichtigung schicken, selbst wenn du dich nicht mit dem Tracker bewegt hast.\n\nWenn der Tracker nicht mehr in der Nähe ist, wirst du auch eine Benachrichtigung darüber erhalten.";
 "feature_unavailable" = "Funktion nicht verfügbar";
-"observing_unavailable_description" = "Aktiviere die Hintergrund-Suche und deaktiviere „Diesen Tracker ignorieren“, um den Tracker zu beobachten.";
+"observing_unavailable_description" = "Aktiviere die Hintergrund-Suche im Modus „Normal“ oder „Hoch“ und deaktiviere „Diesen Tracker ignorieren“, um den Tracker zu beobachten.";
 
 "tracker_detail_notifications_tracker_hideout" = "Tracker-Versteck";
 "tracker_detail_notifications_tracker_marked_as_threat" = "Als Bedrohung markiert";
@@ -176,9 +187,11 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "feedback_banner_description" = "Du hast eine Benachrichtigung erhalten. Denkst du, dass dich der Tracker verfolgt?";
 
 "feedback_view_false_alarm_header" = "Feedback";
-"feedback_view_false_alarm_subtitle" = "Bitte teile uns mit, ob du glaubst, ob dich der Tracker verfolgt oder oder dass diese Benachrichtigung ein Fehlalarm war. Du hilfst damit, die App weiter zu verbessern.";
+"feedback_view_false_alarm_subtitle" = "Bitte teile uns mit, ob du glaubst, dass dich der Tracker verfolgt oder dass diese Benachrichtigung ein Fehlalarm war. Du hilfst damit, die App weiter zu verbessern.";
 "feedback_view_false_alarm_mark_as_false_alarm" = "Als Fehlalarm markieren";
 "feedback_view_false_alarm_mark_as_threat" = "Als Bedrohung markieren";
+"feedback_view_false_alarm_mark_as_false_alarm_footer" = "Wähle diese Option aus, wenn der Tracker nicht absichtlich benutzt wurde, um dich zu verfolgen.";
+"feedback_view_false_alarm_mark_as_threat_footer" = "Wähle diese Option aus, wenn du weißt, dass der Tracker absichtlich benutzt wurde, um deinen Standort zu verfolgen.";
 "feedback_view_thanks_header" = "Vielen Dank!";
 "feedback_view_thanks_subtitle" = "Dein Feedback wurde erfolgreich gespeichert. Falls du es später noch einmal bearbeiten möchtest, tippe auf den Feedback-Button neben der Benachrichtigung.";
 "feedback_view_thanks_done_button" = "Fertig";
@@ -197,7 +210,6 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "now" = "jetzt gerade";
 
 "home" = "Startseite";
-"done" = "Fertig";
 "settings" = "Einstellungen";
 "welcome_to" = "Willkommen bei";
 "continue" = "Fortfahren";
@@ -205,11 +217,11 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "notifications" = "Benachrichtigungen";
 
 "security_level" = "Sicherheitsstufe";
-"low" = "Niedrig";
+"security_level_low" = "Strom sparen";
 "security_level_low_description" = "Mit der niedrigen Sicherheitsstufe dauert es länger, bis Benachrichtigungen zu Trackern zugestellt werden. Du solltest nicht viele falsche Alarme mit deiner Einstellung bekommen, aber es ist auch möglich, dass du keine Benachrichtigung für einen Tracker erhältst, der dir wirklich folgt.";
-"normal" = "Normal";
+"security_level_normal" = "Normal";
 "security_level_normal_description" = "Die normale Sicherheitsstufe ist ein guter Kompromiss zwischen zu vielen falschen Alarmen und einer schnellen Erkennungsgeschwindigkeit von Trackern, die dir wirklich folgen.";
-"high" = "Hoch";
+"security_level_high" = "Hoch";
 "security_level_high_description" = "Mit der hohen Sicherheitsstufe werden Benachrichtigungen zu Trackern schneller zugestellt. Allerdings kann es auch sein, dass du mehr falsche Alarme mit dieser Einstellung bekommst.";
 
 "information_and_contact" = "Informationen & Kontakt";
@@ -251,21 +263,22 @@ Für alle anderen Fragen und Anregungen stehen wir gerne zur Verfügung. Bitte b
 
 "nearby" = "In der Nähe";
 "no_connection" = "Aktuell nicht in Reichweite";
-"owner_connected" = "Mit Besitzer:in verbunden";
-"owner_premature_offline" = "Mit Besitzer:in verbunden in letzten 15m";
-"owner_disconnected" = "Von Besitzer:in getrennt";
+"owner_connected" = "Mit besitzender Person verbunden";
+"owner_premature_offline" = "Mit besitzender Person verbunden in letzten 15m";
+"owner_disconnected" = "Von besitzender Person getrennt";
 "unknown_connection_status" = "Unbekannter Verbindungsstatus";
 "forget_tracker" = "Tracker vergessen";
 "forget_tracker_alert_header" = "Bist du sicher?";
 "forget_tracker_alert_description" = "Hiermit werden alle Informationen über diesen Tracker unwiderruflich gelöscht.";
 
-"min_mac_address_change_time_changes_never_info" = "%@-Geräte ändern ihre Identität im Laufe der Zeit nicht. Dies kann zu mehr falschen Warnungen führen. Falls du gewarnt wirst, überprüfe, ob der Tracker nicht von jemanden aus der Umgebung stammt.";
-"min_mac_address_change_time_info" = "Achtung: %@-Geräte ändern ihre Identität mindestens alle %@ Stunden. Diese Geräte werden daher periodisch als ein neues Gerät erkannt und können mehrfach angezeigt werden.";
+"min_mac_address_change_time_changes_never_info" = "Dieser Tracker-Typ ändert seine Identität im Laufe der Zeit nicht. Dies kann zu mehr falschen Warnungen führen. Falls du gewarnt wirst, überprüfe, ob der Tracker von jemanden aus der Umgebung stammt.";
+"min_mac_address_change_time_info" = "Achtung: Dieser Tracker-Typ ändert seine Identität mindestens alle %@ Stunden. Der Tracker wird daher periodisch als ein neues Gerät erkannt und kann mehrfach angezeigt werden.";
 
 "locate_tracker" = "Tracker orten";
 "trying_connection" = "Kein Signal. Verbinde...";
 "precision_finding_hint" = "Bewege dich langsam und versuche, die Signalstärke zu maximieren, um den Tracker zu finden.";
 "close_stop_searching" = "Schließen und Suche beenden";
+"tracker_appearance_button" = "Wie sieht dieser Tracker aus?";
 
 "no_risk" = "Kein Risiko";
 "medium_risk" = "Mittleres Risiko";
@@ -285,7 +298,7 @@ Für alle anderen Fragen und Anregungen stehen wir gerne zur Verfügung. Bitte b
 "safe_trackers_description" = "
 Sichere Tracker sind Geräte, die dir wahrscheinlich nicht folgen.
 
-Wir betrachten zwei Typen von Trackern als sicher. Tracker, die explizit ignoriert wurden und Tracker, welche zu ihren Besitzer:innen verbunden sind. 
+Wir betrachten zwei Typen von Trackern als sicher. Tracker, die explizit ignoriert wurden und Tracker, welche in der Nähe des Smartphones der besitzenden Person sind. 
 
 Letztere können nicht verwendet werden, um deinen Standort zu verfolgen. Bitte beachte, dass der Verbindungs-Status nicht für alle Tracker ausgelesen werden kann.";
 
@@ -300,12 +313,12 @@ Letztere können nicht verwendet werden, um deinen Standort zu verfolgen. Bitte 
 
 "article_howitworks_header" = "Wie funktioniert AirGuard?";
 "article_howitworks_subheader" = "Erfahre, wie AirGuard dich vor bösartigen Trackern schützt";
-"article_howitworks_text" = "Smarte Tracker verwenden Bluetooth, um sich mit fremden Geräten zu verbinden. Diese Geräte senden dann ihren Standort an das Internet. Dadurch kann der:die Besitzer:in des Trackers den Standort bestimmen, selbst wenn der Tracker viele Kilometer entfernt ist.\n\nDas ist der Grund, warum diese Tracker auch zum Stalking von Menschen missbraucht werden können. Um dich gegen einen solchen Angriff zu schützen, nutzt AirGuard Bluetooth, um nach Trackern in der Nähe zu suchen. Dein Standort wird genutzt, um zu bestimmen, ob der Tracker sich mit dir bewegt.\n\nErkennt AirGuard einen verdächtigen Tracker, wird dir eine Benachrichtigung mit detaillierten Informationen zugestellt.";
+"article_howitworks_text" = "Smarte Tracker verwenden Bluetooth, um sich mit fremden Geräten zu verbinden. Diese Geräte senden dann ihren Standort an das Internet. Dadurch kann die besitzende Person des Trackers den Standort bestimmen, selbst wenn der Tracker viele Kilometer entfernt ist.\n\nDas ist der Grund, warum diese Tracker auch zum Stalking von Menschen missbraucht werden können. Um dich gegen einen solchen Angriff zu schützen, nutzt AirGuard Bluetooth, um nach Trackern in der Nähe zu suchen. Dein Standort wird genutzt, um zu bestimmen, ob der Tracker sich mit dir bewegt.\n\nErkennt AirGuard einen verdächtigen Tracker, wird dir eine Benachrichtigung mit detaillierten Informationen zugestellt.";
 
 
 "article_supported_trackers_header" = "Einschränkungen dieser App";
 "article_supported_trackers_subheader" = "Welche Tracker AirGuard finden kann";
-"article_supported_trackers_text" = "AirGuard kann nur Bluetooth-basierte Tracker finden. Tracker, die mit GPS funktionieren und den Standort über eine Mobilfunkverbindung mit dem:der Besitzer:in teilen, können nicht gefunden werden.
+"article_supported_trackers_text" = "AirGuard kann nur Bluetooth-basierte Tracker finden. Tracker, die mit GPS funktionieren und den Standort über eine Mobilfunkverbindung mit der besitzenden Person teilen, können nicht gefunden werden.
 
 Im Folgenden erfährst du, welche Tracker AirGuard automatisch im Hintergrund erkennen kann und welche Tracker über die manuelle Suche sichtbar sind.
 
@@ -315,7 +328,7 @@ Diese Tracker werden von Samsung hergestellt und funktionieren fast wie AirTags.
 *Automatische Warnung bei Verfolgung*  ✅
 *Manuelle Suche*  ✅
 
-**Google „Find My Device“-Tracker**
+**Google „Mein Gerät finden“-Tracker**
 Dies sind Tracker, die mit Googles „Find My Device“-App kompatibel sind, aber von anderen Herstellern gefertigt werden, beispielsweise Chipolo, Eufy, Jio und Pebblebee.
 
 *Automatische Warnung bei Verfolgung*  ✅
@@ -327,8 +340,20 @@ Tile ist eine Firma, die ausschließlich Bluetooth-Tracker herstellt. Auch diese
 *Automatische Warnung bei Verfolgung*  ✅
 *Manuelle Suche*  ✅
 
-**Chipolo Tracker (ohne „Wo ist?“)**
+**Chipolo-Tracker (ohne Wo ist?)**
 Chipolo bietet „Wo ist?“ Tracker an, die nur mit dem iPhone funktionieren und Tracker, die auch mit Android-Geräten funktionieren. Hier geht es um die Version, welche auch mit Android kompatibel ist und „Wo ist?“ nicht unterstützt.
+
+*Automatische Warnung bei Verfolgung*  ✅
+*Manuelle Suche*  ✅
+
+**Pebblebee-Tracker (ohne Wo ist?)**
+Pebblebee-Tracker gibt es sowohl für das Apple- als auch für das Google-Netzwerk. Pebblebee bietet jedoch auch die Möglichkeit an, die Tracker im Pebblebee-Netzwerk zu betreiben. Auch in diesem Modus werden die Tracker von AirGuard erkannt.
+
+*Automatische Warnung bei Verfolgung*  ✅
+*Manuelle Suche*  ✅
+
+**Samsung Find My Mobile-Tracker**
+Find My Mobile-Tracker werden wie die Samsung SmartTags über das Samsung SmartThings Find-Netzwerk betrieben. Find My Mobile-Tracker können beispielsweise Samsung-Smartphones im Offline-Modus oder andere Geräte wie kabellose Kopfhörer sein.
 
 *Automatische Warnung bei Verfolgung*  ✅
 *Manuelle Suche*  ✅
@@ -339,13 +364,13 @@ AirTags sind die Tracker von Apple. Diese sind nur eingeschränkt erkennbar, da 
 *Automatische Warnung bei Verfolgung*  ❌
 *Manuelle Suche*  ✅
 
-**„Wo ist?“ Tracker**
+**Wo ist?-Tracker**
 Dies sind Tracker, die mit Apples „Wo ist?“-App kompatibel sind, aber von anderen Herstellern gefertigt werden, beispielsweise Chipolo, Pebblebee und Atuvos. Wie bei AirTags gilt, dass die Tracker nicht im Hintergrund erkannt werden können. Auch hier warnt die „Wo ist?“-App automatisch.
 
 *Automatische Warnung bei Verfolgung*  ❌
 *Manuelle Suche*  ✅
 
-Beachte, dass es derzeit nicht für alle Tracker-Typen möglich ist, zu bestimmen, ob sie mit ihren Besitzer:innen verbunden sind. Du könntest also auch deine eigenen oder die Tracker von Freunden finden.\n\nWichtig ist auch, dass manche Tracker ihre Identität (Bluetooth-MAC-Adresse) mehrmals täglich verändern. Daher können Tracker mehrfach in der App angezeigt werden. Es ist oft nicht möglich, diese verschiedenen, zufällig generierten Identitäten einem Tracker zuzuordnen.
+Beachte, dass es derzeit nicht für alle Tracker-Typen möglich ist, zu bestimmen, ob sie mit ihren Besitzenden verbunden sind. Du könntest also auch deine eigenen oder die Tracker von Freunden finden.\n\nWichtig ist auch, dass manche Tracker ihre Identität (Bluetooth-MAC-Adresse) mehrmals täglich verändern. Daher können Tracker mehrfach in der App angezeigt werden. Es ist oft nicht möglich, diese verschiedenen, zufällig generierten Identitäten einem Tracker zuzuordnen.
 ";
 
 "get_help" = "Hilfe bekommen";
@@ -426,11 +451,11 @@ Wenn du weitere Nummern für andere Länder kennst, wende dich bitte an [aheinri
 **Warum können AirTags nur in der manuellen Suche gefunden werden?**
 *Das hat technische Gründe. Leider wird sich das nicht in absehbarer Zeit ändern. Jedoch schützt die vorinstallierte „Wo Ist?“-App bereits vor solchen Geräten.*
 
-**Warum sind Geräte, die mit ihren Besitzer:innen verbunden sind, ungefährlich?**
-*Falls die Geräte mit den Besitzer:innen verbunden sind, befinden sie sich in einem Zustand, in dem sie nicht von sich aus Standorte senden können. Das heißt, dann können sie nicht für Stalking verwendet werden.*
+**Warum sind Geräte, die mit ihren Besitzenden verbunden sind, ungefährlich?**
+*Falls die Geräte mit ihren Besitzenden verbunden sind, befinden sie sich in einem Zustand, in dem sie nicht von sich aus Standorte senden können. Das heißt, dann können sie nicht für Stalking verwendet werden.*
 
 **Warum werden meine eigenen AirTags nicht angezeigt?**
-*Es kann sein, dass eigene AirTags in der App manchmal nicht angezeigt werden. AirTags werden jedoch immer zuverlässig angezeigt, wenn sie mit einer anderen Apple-ID verknüpft sind und nicht mit einem Besitzer:innen-Gerät verbunden sind.*
+*Es kann sein, dass eigene AirTags in der App manchmal nicht angezeigt werden. AirTags werden jedoch immer zuverlässig angezeigt, wenn sie mit einer anderen Apple-ID verknüpft sind und nicht mit einem Gerät der besitzenden Person verbunden sind.*
 
 **Warum werden manche Tracker doppelt angezeigt?**
 *Einige Tracker verändern in bestimmten Intervallen ihre Identität (Bluetooth-Adresse). Dadurch ist eine Zuordnung nicht immer möglich, weshalb manche Tracker doppelt angezeigt werden können.*
