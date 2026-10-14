@@ -24,43 +24,38 @@ struct ContentView: View {
         })
         
         TabView(selection: $settings.selectedTab) {
+            
+            HomeView()
+                .tabItem {
+                    Label("home", systemImage: "house")}
+                .tag(Tabs.HomeView)
+            
+            ManualScanningView()
+                .tabItem {
+                    Label("manual_scan", systemImage: "magnifyingglass")}
+                .tag(Tabs.ManualScan)
+            
+            SettingsView()
+                .tabItem {
+                    Label("settings", systemImage: "gear")}
+                .tag(Tabs.Settings)
+        }
+        .luiSheet(isPresented: $settings.showSheet) {
+            
+            if let tracker = settings.selectedTracker {
                 
-                HomeView()
-                    .tabItem {
-                        Label("home", systemImage: "house")
-                    }
-                    .tag(Tabs.HomeView)
-
-                    ManualScanningView()
-                        .tabItem {
-                            Label("manual_scan", systemImage: "magnifyingglass")
-                        }
-                        .tag(Tabs.ManualScan)
-                
-                SettingsView()
-                    .tabItem {
-                        Label("settings", systemImage: "gear")
-                    }
-                    .tag(Tabs.Settings)
-            }
-            .luiSheet(isPresented: $settings.showSheet) {
-                
-                if let tracker = settings.selectedTracker {
-
-                    NavigationView {
-                        TrackerDetailView(tracker: tracker, bluetoothData: tracker.bluetoothTempData())
-                            .navigationBarItems(trailing: XButton(action: {
-                                settings.showSheet = false
-                            }))
-                    }
+                NavigationView {
+                    TrackerDetailView(tracker: tracker, bluetoothData: tracker.bluetoothTempData())
+                        .navigationBarItems(trailing: XButton(action: {
+                            settings.showSheet = false}))
                 }
             }
-             
+        }
         .fullScreenCover(isPresented: showIntroduction, content: {
-            if(!settings.appLaunchedBefore) {
+            
+            if (!settings.appLaunchedBefore) {
                 IntroductionView()
-            }
-            else {
+            } else {
                 NavigationView {
                     NotificationPermissionView()
                 }
