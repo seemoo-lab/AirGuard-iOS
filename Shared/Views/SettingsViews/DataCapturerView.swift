@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct DataCapturerView: View {
     
@@ -91,7 +92,7 @@ struct DataCapturerView: View {
             }
    
         }
-        .onChange(of: clock.currentDate) { newValue in
+        .onChange(of: clock.currentDate) { _, newValue in
             
             if !recording {
                 return

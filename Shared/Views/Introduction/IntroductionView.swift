@@ -100,7 +100,7 @@ struct IntroductionButtonView<V0: View>: View {
             }
         })
             .modifier(LinkTo(content: destination, isActive: $linkActive))
-            .onChange(of: controller.canProceed) { newValue in
+            .onChange(of: controller.canProceed) { _, newValue in
                 if(newValue && !linkActive) {
                     controller.canProceed = false
                     linkActive = true

@@ -77,7 +77,7 @@ struct DeviceEntryButton: View {
         .foregroundColor(.primary)
         .buttonStyle(PlainButtonStyle())
         
-        .onChange(of: settings.showSheet) { newValue in
+        .onChange(of: settings.showSheet) { _, newValue in
             if(newValue) {
                 
                 runAfter(seconds: 0.3) {

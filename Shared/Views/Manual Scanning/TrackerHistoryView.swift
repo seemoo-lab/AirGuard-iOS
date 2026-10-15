@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct TrackerHistoryView: View {
     
@@ -75,4 +76,3 @@ struct Previews_OldTrackersView_Previews: PreviewProvider {
         TrackerHistoryView()
     }
 }
-

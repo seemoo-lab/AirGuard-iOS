@@ -110,7 +110,7 @@ struct GoToRootModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .onChange(of: settings.goToRoot) { _ in
+            .onChange(of: settings.goToRoot) { _, _ in
                 if(settings.goToRootTab == view) {
                     presentationMode.wrappedValue.dismiss()
                 }

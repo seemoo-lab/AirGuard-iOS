@@ -248,7 +248,11 @@ private struct SafeAreaInsetsKey: EnvironmentKey {
     
     /// returns the EdgeInsets for the current view
     static var defaultValue: EdgeInsets {
-        (UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.safeAreaInsets ?? .zero).insets
+        let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first(where: \.isKeyWindow)
+        return (keyWindow?.safeAreaInsets ?? .zero).insets
     }
 }
 

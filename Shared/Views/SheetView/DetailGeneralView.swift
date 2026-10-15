@@ -79,7 +79,7 @@ struct DetailGeneralView: View {
                         Toggle(isOn: binding) {
                             SettingsLabel(imageName: "clock.fill", text: "observe_tracker", backgroundColor: color)
                         }
-                        .onChange(of: tracker.observingStartDate) { newValue in
+                        .onChange(of: tracker.observingStartDate) { _, newValue in
                             // this can happen if the sheet was open, and the tracker observation expired
                             if newValue == nil && isBeingObserved {
                                 isBeingObserved = false

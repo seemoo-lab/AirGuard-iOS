@@ -49,7 +49,7 @@ struct LocationAlwaysPermissionView: View {
             }
             
         }
-        .onChange(of: canProceed) { newValue in
+        .onChange(of: canProceed) { _, newValue in
             settings.backgroundScanning = true
             locationManager.enableBackgroundLocationUpdate()
             IntroducationViewController.sharedInstance.canProceed = true

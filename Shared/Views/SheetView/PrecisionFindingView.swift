@@ -86,7 +86,7 @@ struct PrecisionFindingView: View {
         .onDisappear{
             BluetoothManager.sharedInstance.disableFastScan()
         }
-        .onChange(of: scenePhase) { newPhase in
+        .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 runAfter(seconds: 1) {
                     startScan()
@@ -139,20 +139,21 @@ struct PrecisionOverlayElements: View {
             Spacer()
             
             Indicator(pct: pct, color: textColor)
-                .onChange(of: pct, perform: {[pct] newPct in
+                .onChange(of: pct) { oldPct, newPct in
                     if newPct == 0 {
                         errorVibration()
-                    } else if abs(pct - newPct) > 0.05, self.lastVibration.isOlderThan(seconds: 5) {
+                    } else if abs(oldPct - newPct) > 0.05, self.lastVibration.isOlderThan(seconds: 5) {
                         lastVibration = Date()
-                        if pct > newPct {
+                        let previous = oldPct
+                        if previous > newPct {
                             // User is going away
                             errorVibration()
-                        }else {
+                        } else {
                             // User is getting closer
                             doubleVibration()
                         }
                     }
-                })
+                }
             
             Group {
                 if(notReachable) {
@@ -237,8 +238,8 @@ struct SoundAndCloseView: View {
                             Alert(title: Text(soundManager.error?.title ?? ""), message: Text(soundManager.error?.description ?? ""))
                         })
                         
-                        .onChange(of: soundManager.error) { val in
-                            if(val != nil) {
+                        .onChange(of: soundManager.error) { _, newError in
+                            if newError != nil {
                                 showSoundErrorInfo = true
                             }
                         }

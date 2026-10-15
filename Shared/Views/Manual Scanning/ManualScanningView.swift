@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Combine
+import CoreData
 
 
 struct ManualScanningView: View {

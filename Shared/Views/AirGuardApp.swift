@@ -24,8 +24,7 @@ struct AirGuardApp: App {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(appDelegate)
-                .onChange(of: scenePhase) { newPhase in
-                    
+                .onChange(of: scenePhase) { _, newPhase in
                     if newPhase == .active {
                         settings.isBackground = false
                         appAppeared()

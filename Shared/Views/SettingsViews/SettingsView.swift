@@ -76,7 +76,7 @@ struct SettingsView: View {
                     .simultaneousGesture(LongPressGesture(minimumDuration: 0.5).onEnded({_ in showDebugOptions = true}))
             }
             
-            .onChange(of: settings.backgroundScanning, perform: { newValue in
+            .onChange(of: settings.backgroundScanning) { _, newValue in
                 
                 // enabled background scanning
                 if(newValue) {
@@ -102,7 +102,7 @@ struct SettingsView: View {
                 else {
                     locationManager.disableBackgroundLocationUpdate()
                 }
-            })
+            }
             
             
             if(settings.backgroundScanning) {

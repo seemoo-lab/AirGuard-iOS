@@ -36,7 +36,7 @@ struct LocationPermissionView: View {
         }, canSkip: true) {
             LocationAlwaysPermissionView()
         }
-        .onChange(of: canProceed) { newValue in
+        .onChange(of: canProceed) { _, newValue in
             IntroducationViewController.sharedInstance.canProceed = true
         }
     }
