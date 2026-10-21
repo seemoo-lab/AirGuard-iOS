@@ -149,19 +149,19 @@ struct MapView: UIViewRepresentable {
             /// Regular/single annotation
             if let annotation = annotation as? MapAnnotation {
                 
-                /// Create the view for the annotation and set the color
                 let view = MarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-                
-                view.glyphTintColor = .clear
-                view.glyphText = ""
-                view.markerTintColor = .clear
-                
+
+                // If there's only one location, show no glyph text; otherwise, number by startDate
+                view.glyphText = nil
+                if parent.annotations.count > 1,
+                   let index = parent.annotations.sorted(by: { $0.startDate < $1.startDate })
+                    .firstIndex(where: { $0 === annotation }) {
+                    view.glyphText = String(index + 1)
+                }
+
                 view.titleVisibility = parent.showAnnotationLabels ? .adaptive : .hidden
 
-                let size: CGFloat = 20
-                let locationdot = UIImage(named: "locationdot")?.resized(to: CGSize(width: size, height: size))
-                view.image = locationdot
-                view.centerOffset = CGPoint(x: 0, y: 0)
+                view.centerOffset = CGPoint(x: 0, y: -16)
                 
                 return view
             }
@@ -182,16 +182,6 @@ struct MapView: UIViewRepresentable {
                 lineRenderer.lineJoin = .round
                 
                 return lineRenderer
-            }
-            
-            
-            /// Creates the view for circles.
-            if let circle = overlay as? MKCircle {
-                let circleRenderer = MKCircleRenderer(overlay: circle)
-                circleRenderer.fillColor = primaryColor.withAlphaComponent(0.2)
-                circleRenderer.strokeColor = UIColor.clear
-                circleRenderer.lineWidth = 2
-                return circleRenderer
             }
             
             /// Fallback - default
@@ -230,6 +220,9 @@ class MapAnnotation: NSObject, MKAnnotation {
     /// The coordinate of the annotation
     let coordinate: CLLocationCoordinate2D
     
+    /// The start date of the annotation
+    let startDate: Date
+    
     /// The title of the annotation
     let title: String?
     
@@ -256,6 +249,7 @@ class MapAnnotation: NSObject, MKAnnotation {
         
         /// Extract the coordinate from the clusteredLocation
         self.coordinate = clusteredLocation.location
+        self.startDate = clusteredLocation.startDate
         
         /// The string for the start date
         let startDateString = dateFormatter.string(from: clusteredLocation.startDate)
