@@ -233,6 +233,7 @@ For all other questions and suggestions, we are happy to help. However, please a
 "informationview_contact_alert_read_faq" = "Read FAQ";
 "credits" = "Credits";
 "developer_maintainer" = "Developer & Maintainer";
+"developer" = "Developer";
 "maintainer" = "Maintainer";
 "copyright" = "Copyright";
 "informationview_airguard_os" = "AirGuard for %@";

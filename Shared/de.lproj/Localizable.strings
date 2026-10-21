@@ -234,6 +234,7 @@ Für alle anderen Fragen und Anregungen stehen wir gerne zur Verfügung. Bitte b
 "informationview_contact_alert_read_faq" = "FAQ lesen";
 "credits" = "Danksagungen";
 "developer_maintainer" = "Entwickler & Maintainer";
+"developer" = "Entwickler";
 "maintainer" = "Maintainer";
 "copyright" = "Urheberrecht";
 "informationview_airguard_os" = "AirGuard für %@";

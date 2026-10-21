@@ -69,20 +69,20 @@ struct InformationView: View {
                 
                 if let url = URL(string: "https://www.leonboettger.com") {
                     Link(destination: url, label: {
-                        NavigationLinkLabel(imageName: "curlybraces", text: "developer_maintainer", backgroundColor: .green, isNavLink: false, status: "Leon Böttger")
+                        NavigationLinkLabel(imageName: "curlybraces", text: "developer", backgroundColor: .green, isNavLink: false, status: "Leon Böttger")
                     })
                     .buttonStyle(LUIButtonStyle())
                 }
                 
                 LUIButton(action: {
-                    writeMail(to: "aheinrich@seemoo.tu-darmstadt.de")
+                    writeMail(to: "mfuchs@seemoo.tu-darmstadt.de")
                 }) {
-                    NavigationLinkLabel(imageName: "person.fill", text: "maintainer", backgroundColor: .orange, isNavLink: false, status: "Alexander Heinrich")
+                    NavigationLinkLabel(imageName: "person.fill", text: "maintainer", backgroundColor: .orange, isNavLink: false, status: "Manuel Fuchs")
                 }
             }
             
             LUILink(destination:
-                        NavigationSubView {
+                NavigationSubView {
                     CustomSection() {
                         Text("copyright_text")
                             .frame(maxWidth: .infinity)
@@ -91,7 +91,7 @@ struct InformationView: View {
                             .padding(.vertical)
                     }
                     .navigationTitle("informationview_used_content")
-            }, label: {
+                }, label: {
                 Text("informationview_used_content")
                     .font(.system(size: 13))
                     .foregroundColor(.grayColor)
@@ -103,11 +103,10 @@ struct InformationView: View {
         .navigationBarTitle("", displayMode: .inline)
         .background(
             LUILink(destination: ZStack {
-                    if let article = showedArticle {
-                        ArticleView(article: article)
-                    }
+                if let article = showedArticle {
+                    ArticleView(article: article)
                 }
-            , isActive: showingArticleBinding, label: {
+            }, isActive: showingArticleBinding, label: {
                 EmptyView()
             })
         )
