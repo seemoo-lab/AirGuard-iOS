@@ -34,6 +34,9 @@ extension BaseDevice  {
     
     /// The custom name of the device. `nil` if device type name is used.
     @NSManaged public var name: String?
+
+    /// A private note added by the user.
+    @NSManaged public var note: String?
     
     /// The identifier to identify the device. This ID does not change and is set to the Bluetooth UUID on first discovery of the device.
     @NSManaged public var uniqueId: String?

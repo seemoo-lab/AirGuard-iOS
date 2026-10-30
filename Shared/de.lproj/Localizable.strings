@@ -108,6 +108,10 @@ Aus technischen Gründen sind nicht alle Funktionen für jeden Tracker-Typen ver
 "last_seen" = "Zuletzt gesehen";
 "tracker_locations" = "Tracker-Standorte";
 
+"note" = "Notiz";
+"add_note" = "Notiz hinzufügen";
+"delete_note" = "Notiz löschen";
+
 "general" = "Allgemein";
 "study_settings" = "Studienteilnahme";
 
@@ -484,4 +488,3 @@ Wir bitten jeden teilzunehmen, unabhängig davon, ob du persönlich solche Vorf�
 [Jetzt teilnehmen!](https://survey.seemoo.tu-darmstadt.de/index.php/317138?G06Q39=AirGuardAppiOS&lang=de&newtest=Y)
 
 Vielen Dank für deine Zeit und Hilfe bei dieser wichtigen Forschung.";
-

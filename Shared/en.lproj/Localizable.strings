@@ -108,6 +108,10 @@ For technical reasons, not all features are available for every tracker type. If
 "last_seen" = "Last seen";
 "tracker_locations" = "Tracker Locations";
 
+"note" = "Note";
+"add_note" = "Add a note";
+"delete_note" = "Delete note";
+
 "general" = "General";
 "study_settings" = "Study Participation";
 "ignore_trackers_footer" = "Ignoring trackers will stop notifications in the background.";
