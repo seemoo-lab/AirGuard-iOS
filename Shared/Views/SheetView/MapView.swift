@@ -10,6 +10,8 @@ import MapKit
 
 /// The identifier for our custom MarkerAnnotationView
 let reuseIdentifier = "trackerAnnotation"
+let clusterReuseIdentifier = "trackerAnnotationCluster"
+let trackerClusteringIdentifier = "trackerLocation"
 
 
 /// SwiftUI wrapper for MKMapView
@@ -79,6 +81,8 @@ struct MapView: UIViewRepresentable {
         
         /// Set the delegate
         view.delegate = context.coordinator
+        view.register(MarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: reuseIdentifier)
+        view.register(ClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: clusterReuseIdentifier)
         
         /// Move annotations up
         view.layoutMargins.top = -40
@@ -104,6 +108,9 @@ struct MapView: UIViewRepresentable {
     
     /// Updates the `MKMapView`
     func updateUIView(_ uiView: MKMapView, context: Context) {
+        
+        /// Keep the coordinator in sync with the current SwiftUI value.
+        context.coordinator.parent = self
         
         /// We received new location data. Otherwise, we do not need to refresh
         if locationsCount != connections.count {
@@ -146,17 +153,29 @@ struct MapView: UIViewRepresentable {
         /// Creates the view for individual annotations.
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             
+            /// Clustered annotations
+            if let cluster = annotation as? MKClusterAnnotation {
+                guard let view = mapView.dequeueReusableAnnotationView(
+                    withIdentifier: clusterReuseIdentifier,
+                    for: cluster
+                ) as? ClusterAnnotationView else {
+                    return nil
+                }
+                
+                view.glyphText = String(cluster.memberAnnotations.count)
+                view.titleVisibility = .hidden
+                view.subtitleVisibility = .hidden
+                
+                return view
+            }
+            
             /// Regular/single annotation
             if let annotation = annotation as? MapAnnotation {
-                
-                let view = MarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-
-                // If there's only one location, show no glyph text; otherwise, number by startDate
-                view.glyphText = nil
-                if parent.annotations.count > 1,
-                   let index = parent.annotations.sorted(by: { $0.startDate < $1.startDate })
-                    .firstIndex(where: { $0 === annotation }) {
-                    view.glyphText = String(index + 1)
+                guard let view = mapView.dequeueReusableAnnotationView(
+                    withIdentifier: reuseIdentifier,
+                    for: annotation
+                ) as? MarkerAnnotationView else {
+                    return nil
                 }
 
                 view.titleVisibility = parent.showAnnotationLabels ? .adaptive : .hidden
@@ -167,6 +186,26 @@ struct MapView: UIViewRepresentable {
             }
             
             return nil
+        }
+        
+        
+        /// Zooms in to reveal the individual annotations represented by a cluster.
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            guard let cluster = view.annotation as? MKClusterAnnotation else {
+                return
+            }
+            
+            let mapRect = cluster.memberAnnotations
+                .map { MKMapPoint($0.coordinate) }
+                .reduce(MKMapRect.null) { rect, point in
+                    rect.union(MKMapRect(origin: point, size: MKMapSize(width: 0, height: 0)))
+                }
+            
+            mapView.setVisibleMapRect(
+                mapRect,
+                edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 80, right: 80),
+                animated: true
+            )
         }
         
         
@@ -203,13 +242,43 @@ struct MapView: UIViewRepresentable {
 }
 
 
-/// Disables MKMapKit clustering
 final class MarkerAnnotationView: MKMarkerAnnotationView {
-    override var annotation: MKAnnotation? {
-        willSet {
-            /// Disables clustering of pins
-            displayPriority = MKFeatureDisplayPriority.required
-        }
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = trackerClusteringIdentifier
+        displayPriority = .defaultHigh
+        collisionMode = .circle
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        glyphText = nil
+        titleVisibility = .adaptive
+        subtitleVisibility = .adaptive
+        clusteringIdentifier = trackerClusteringIdentifier
+    }
+}
+
+final class ClusterAnnotationView: MKMarkerAnnotationView {
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        displayPriority = .required
+        collisionMode = .circle
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        glyphText = nil
+        titleVisibility = .hidden
+        subtitleVisibility = .hidden
     }
 }
 
@@ -291,15 +360,20 @@ extension CLLocationCoordinate2D: @retroactive Equatable, @retroactive Hashable,
 struct Previews_MapView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let loc1 = CLLocationCoordinate2D(latitude: 51, longitude: 8)
-        
-        let loc2 = CLLocationCoordinate2D(latitude: 52, longitude: 9)
-        
+        let loc1 = CLLocationCoordinate2D(latitude: 51.0, longitude: 7.1)
+        let loc2 = CLLocationCoordinate2D(latitude: 51.0001, longitude: 7.1001)
+        let loc3 = CLLocationCoordinate2D(latitude: 51.0001, longitude: 7.10001)
+        let loc4 = CLLocationCoordinate2D(latitude: 51.01, longitude: 7.1)
         
         let mapAnnotation1 = MapAnnotation(clusteredLocation: ClusteredLocation(location: loc1, startDate: .distantPast, endDate: .distantPast, worstAccuracy: 10))
-        
         let mapAnnotation2 = MapAnnotation(clusteredLocation: ClusteredLocation(location: loc2, startDate: .distantPast, endDate: .distantPast, worstAccuracy: 10))
+        let mapAnnotation3 = MapAnnotation(clusteredLocation: ClusteredLocation(location: loc3, startDate: .distantPast, endDate: .distantPast, worstAccuracy: 10))
+        let mapAnnotation4 = MapAnnotation(clusteredLocation: ClusteredLocation(location: loc4, startDate: .distantPast, endDate: .distantPast, worstAccuracy: 10))
         
-        MapView(annotations: [mapAnnotation1, mapAnnotation2], connections: [loc1, loc2], mapFinishedLoading: .constant(true))
+        MapView(annotations: [
+            mapAnnotation1, mapAnnotation2, mapAnnotation3, mapAnnotation4
+        ], connections: [
+            loc1, loc2, loc3, loc4
+        ], mapFinishedLoading: .constant(true))
     }
 }
