@@ -58,15 +58,17 @@ struct NavigationLinkLabel: View {
     var backgroundColor: Color
     var isNavLink: Bool
     let status: String
+    var showLinkIndicator: Bool
     
     @Environment(\.isEnabled) private var isEnabled: Bool
     
-    init(imageName: String, text: String, backgroundColor: Color = Color.blue, isNavLink: Bool = true, status: String = "") {
+    init(imageName: String, text: String, backgroundColor: Color = Color.blue, isNavLink: Bool = true, status: String = "", showLinkIndicator: Bool = true) {
         self.imageName = imageName
         self.text = text
         self.backgroundColor = backgroundColor
         self.isNavLink = isNavLink
         self.status = status
+        self.showLinkIndicator = showLinkIndicator
     }
     
     
@@ -81,15 +83,17 @@ struct NavigationLinkLabel: View {
                     .opacity(isEnabled ? 1 : 0.5)
             }
             
-            if(isNavLink) {
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.gray)
-                    .opacity(isEnabled ? 1 : 0.5)
-            }
-            else {
-                Image(systemName: "link")
-                    .foregroundColor(.gray)
-                    .opacity(isEnabled ? 1 : 0.5)
+            if showLinkIndicator {
+                if(isNavLink) {
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                        .opacity(isEnabled ? 1 : 0.5)
+                }
+                else {
+                    Image(systemName: "link")
+                        .foregroundColor(.gray)
+                        .opacity(isEnabled ? 1 : 0.5)
+                }
             }
         }
         .frame(height: Constants.SettingsLabelHeight)

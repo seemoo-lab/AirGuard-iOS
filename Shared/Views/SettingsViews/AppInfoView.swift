@@ -75,10 +75,19 @@ struct InformationView: View {
                 }
                 
                 LUIButton(action: {
-                    writeMail(to: "mfuchs@seemoo.tu-darmstadt.de")
+                    writeMail(to: "aheinrich@seemoo.tu-darmstadt.de")
                 }) {
-                    NavigationLinkLabel(imageName: "person.fill", text: "maintainer", backgroundColor: .orange, isNavLink: false, status: "Manuel Fuchs")
+                    NavigationLinkLabel(imageName: "curlybraces", text: "developer", backgroundColor: .green, isNavLink: false, status: "Alexander Heinrich")
                 }
+                
+                NavigationLinkLabel(
+                    imageName: "person.fill",
+                    text: "maintainer",
+                    backgroundColor: .orange,
+                    isNavLink: false,
+                    status: "Manuel Fuchs",
+                    showLinkIndicator: false
+                )
             }
             
             LUILink(destination:
