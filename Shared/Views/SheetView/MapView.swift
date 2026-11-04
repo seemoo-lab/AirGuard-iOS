@@ -52,7 +52,6 @@ struct MapView: UIViewRepresentable {
                 /// Draw polyline between both coordinates.
                 let polyline = MKPolyline(coordinates: connection, count: 2)
                 onView.addOverlay(polyline)
-                
             }
         }
         
@@ -65,6 +64,25 @@ struct MapView: UIViewRepresentable {
             let circle = MKCircle(center: center, radius: LocationManager.sharedInstance.accuracyLimit)
             onView.addOverlay(circle)
         }
+    }
+
+    /// Shows all annotations with the map padding used for marker selection.
+    func setVisibleMapRect(on mapView: MKMapView, animated: Bool) {
+        guard !annotations.isEmpty else {
+            return
+        }
+
+        let mapRect = annotations
+            .map { MKMapPoint($0.coordinate) }
+            .reduce(MKMapRect.null) { rect, point in
+                rect.union(MKMapRect(origin: point, size: MKMapSize(width: 0, height: 0)))
+            }
+
+        mapView.setVisibleMapRect(
+            mapRect,
+            edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 80, right: 80),
+            animated: animated
+        )
     }
     
     
@@ -91,7 +109,8 @@ struct MapView: UIViewRepresentable {
         setUpOverlays(onView: view)
         
         /// Add the annotations and put them in focus
-        view.showAnnotations(annotations, animated: false)
+        view.addAnnotations(annotations)
+        setVisibleMapRect(on: view, animated: false)
         
         /// Hide the map - we will show it after it has been loaded
         view.layer.opacity = 0
@@ -123,7 +142,8 @@ struct MapView: UIViewRepresentable {
             setUpOverlays(onView: uiView)
             
             /// Add the annotations and put them in focus
-            uiView.showAnnotations(annotations, animated: true)
+            uiView.addAnnotations(annotations)
+            setVisibleMapRect(on: uiView, animated: true)
             
             /// Update `locationsCount`
             DispatchQueue.main.async {
